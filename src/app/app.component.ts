@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Place } from './place';
 
 @Component({
-  selector: 'app-root',
+  selector: 'kz-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
