@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { Place } from './place';
 
 @Component({
@@ -8,7 +9,4 @@ import { Place } from './place';
 })
 export class AppComponent {
   title = 'World of Images';
-  MapClicked = function(event){
-    
-  }
 }
