@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ImageService } from '../image.service';
+
 @Component({
   selector: 'kz-map',
   templateUrl: './map.component.html',
@@ -7,13 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapComponent implements OnInit {
 
-  constructor() { }
+  constructor(private imageService: ImageService) {}
 
   ngOnInit() {
   }
 
   MapClicked = function(event){
-    document.getElementById('output').innerHTML='X: ' + event.offsetX + '<br>Y: ' + event.offsetY;
+    let place = this.imageService.getPlace();
+    //document.getElementById('output').innerHTML='X: ' + place.x + '<br>Y: ' + place.y;
   }
 
 }
