@@ -42,6 +42,9 @@ describe('MapComponent', () => {
     
     //Assert
     expect(emitSpy).toHaveBeenCalled();
+    let params=emitSpy.calls.argsFor(0);
+    expect(params[0].x).toEqual(14);
+    expect(params[0].y).toEqual(8);
   }));
 
 });
