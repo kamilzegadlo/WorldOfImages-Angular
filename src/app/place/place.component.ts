@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Place } from '../place';
+import { PLACE } from '../mock-place';
 
 @Component({
   selector: 'kz-place',
@@ -10,6 +13,13 @@ export class PlaceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.selectedPlace=PLACE;
   }
+
+  @Input() selectedPlace: Place;
+  //@Input('selectedPlace') set selectedPlace(selectedPlace: Place) {
+  //  debugger;
+ // }
+
 
 }

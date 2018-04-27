@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { ImageService } from '../image.service';
 
@@ -14,9 +14,10 @@ export class MapComponent implements OnInit {
   ngOnInit() {
   }
 
+  @Output() placeSelected = new EventEmitter();
+
   MapClicked = function(event){
-    let place = this.imageService.getPlace();
-    //document.getElementById('output').innerHTML='X: ' + place.x + '<br>Y: ' + place.y;
+    this.placeSelected.emit(this.imageService.getPlace(event.offsetX, event.offsetY));
   }
 
 }

@@ -3,7 +3,7 @@
     <h1>
         Click on any place on the map!
     </h1>
-    <kz-map></kz-map>
-    <kz-place></kz-place>
+    <kz-map  (placeSelected)="selected($event)"></kz-map>
+    <kz-place [selectedPlace]="selectedPlace"></kz-place>
 </div>
 

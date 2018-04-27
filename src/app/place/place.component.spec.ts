@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlaceComponent } from './place.component';
+import { PLACE } from '../mock-place';
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;
@@ -16,6 +17,7 @@ describe('PlaceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlaceComponent);
     component = fixture.componentInstance;
+    component.selectedPlace=PLACE;
     fixture.detectChanges();
   });
 

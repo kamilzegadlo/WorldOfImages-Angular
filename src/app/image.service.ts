@@ -8,8 +8,13 @@ export class ImageService {
 
   constructor() { }
 
-  getPlace(): Place {
-    return PLACE;
+  getPlace(x:number, y:number): Place {
+    return {
+      name: 'test name',
+      x:x,
+      y:y,
+      images: null
+    }
   }
 
 }

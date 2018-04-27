@@ -8,9 +8,9 @@ import { ImageService } from './image.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    PlaceComponent,
     MapComponent,
-    PlaceComponent
+    AppComponent
   ],
   imports: [
     BrowserModule

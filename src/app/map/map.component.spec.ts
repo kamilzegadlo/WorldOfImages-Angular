@@ -41,12 +41,25 @@ describe('MapComponent', () => {
 
   it('when clicked, image service should be called', inject(
     [ImageService], (imageServiceMock: ImageServiceMock) => {
-      
+    //arrange
     const fixture = TestBed.createComponent(MapComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;
-    component.MapClicked(null)
+
+    let event={
+      offsetX: 11,
+      offsetY: 15
+    };
+
+    //act
+    component.MapClicked(event);
+
+    //assert
     expect(imageServiceMock.getPlace.calls.count()).toBe(1);
+    let params=imageServiceMock.getPlace.calls.argsFor(0);
+    expect(params[0]).toEqual(11);
+    expect(params[1]).toEqual(15);
+    //unit test event emiter was called?
   }));
 
 });
