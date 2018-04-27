@@ -1,22 +1,13 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapComponent } from './map.component';
-import { ImageService } from '../image.service';
 
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 
-  type ImageServiceMock = { getPlace: jasmine.Spy };
-
   beforeEach(async(() => {
-    let imageServiceMock: ImageServiceMock = {
-      getPlace: jasmine.createSpy('getPlace').and.returnValue({x:100, y:150}),
-    };
-
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ImageService, useValue: imageServiceMock } ],
       declarations: [ MapComponent ]
     })
     .compileComponents();
@@ -39,27 +30,18 @@ describe('MapComponent', () => {
     expect(compiled.querySelector('#WorldMap')).not.toBeUndefined();
   }));
 
-  it('when clicked, image service should be called', inject(
-    [ImageService], (imageServiceMock: ImageServiceMock) => {
-    //arrange
+  it('should emit the selected coordinates', async(() => {
+    //Arrange
     const fixture = TestBed.createComponent(MapComponent);
     fixture.detectChanges();
-    component = fixture.componentInstance;
+    const compiled = fixture.debugElement.nativeElement;
+    let emitSpy = spyOn(component.selectedCoordinates, 'emit');
 
-    let event={
-      offsetX: 11,
-      offsetY: 15
-    };
-
-    //act
-    component.MapClicked(event);
-
-    //assert
-    expect(imageServiceMock.getPlace.calls.count()).toBe(1);
-    let params=imageServiceMock.getPlace.calls.argsFor(0);
-    expect(params[0]).toEqual(11);
-    expect(params[1]).toEqual(15);
-    //unit test event emiter was called?
+    //Act
+    component.MapClicked({offsetX:14, offsetY:8});
+    
+    //Assert
+    expect(emitSpy).toHaveBeenCalled();
   }));
 
 });

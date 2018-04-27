@@ -1,6 +1,6 @@
-export class Place {
+import { Coordinates } from './Coordinates';
+
+export interface Place extends Coordinates {
     name: string;
-    x: number;
-    y: number;
     images: File[];
   }

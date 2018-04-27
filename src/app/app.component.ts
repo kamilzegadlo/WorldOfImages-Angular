@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 import { Place } from './place';
+import { Coordinates } from './Coordinates';
 
 @Component({
   selector: 'kz-root',
@@ -11,9 +12,9 @@ import { Place } from './place';
 export class AppComponent {
   title = 'World of Images';
 
-  selectedPlace: Place;// = new Subject();
+  selectedCoordinates: Coordinates;// = new Subject();
 
-  selected(selected: Place) {
-    this.selectedPlace=selected;//this.selectedPlace.next(selected);
+  selected(selected: Coordinates) {
+    this.selectedCoordinates=selected;//this.selectedPlace.next(selected);
   }
 }

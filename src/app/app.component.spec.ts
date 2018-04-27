@@ -1,17 +1,37 @@
+import { Input, Output, EventEmitter, Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { PlaceComponent } from './place/place.component';
 import { ImageService } from './image.service';
+import { Coordinates } from './Coordinates';
 
 describe('AppComponent', () => {
+
+  @Component({
+    selector: 'kz-map',
+    template: `<p>map</p>`
+  })
+  class MockMapComponent {
+    @Output() selectedCoordinates = new EventEmitter();
+    MapClicked() {};
+  }
+
+  @Component({
+    selector: 'kz-place',
+    template: `<p>place</p>`
+  })
+  class MockPlaceComponent {
+    @Input() selectedCoordinates: Coordinates;
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ImageService} ],
       declarations: [
-        AppComponent, MapComponent, PlaceComponent
+        AppComponent, MockMapComponent, MockPlaceComponent
       ],
     }).compileComponents();
   }));

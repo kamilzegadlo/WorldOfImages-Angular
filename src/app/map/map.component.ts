@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { ImageService } from '../image.service';
+import { Coordinates } from '../Coordinates';
 
 @Component({
   selector: 'kz-map',
@@ -9,15 +9,15 @@ import { ImageService } from '../image.service';
 })
 export class MapComponent implements OnInit {
 
-  constructor(private imageService: ImageService) {}
+  constructor() {}
 
   ngOnInit() {
   }
 
-  @Output() placeSelected = new EventEmitter();
+  @Output() selectedCoordinates = new EventEmitter();
 
   MapClicked = function(event){
-    this.placeSelected.emit(this.imageService.getPlace(event.offsetX, event.offsetY));
+    this.selectedCoordinates.emit(<Coordinates>{x:event.offsetX, y:event.offsetY});
   }
 
 }
