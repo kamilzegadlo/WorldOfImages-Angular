@@ -1,4 +1,4 @@
-import { Coordinates } from './Coordinates';
+import { Coordinates } from './barrel';
 
 export interface Place extends Coordinates {
     name: string;

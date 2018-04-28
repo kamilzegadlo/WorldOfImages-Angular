@@ -1,11 +1,7 @@
 import { Input, Output, EventEmitter, Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 
-import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
-import { PlaceComponent } from './place/place.component';
-import { ImageService } from './image.service';
-import { Coordinates } from './Coordinates';
+import { AppComponent, Coordinates, ImageService, MapComponent, PlaceComponent } from './barrel';
 
 describe('AppComponent', () => {
 

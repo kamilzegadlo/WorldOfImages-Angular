@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Place } from './place';
-import { PLACE } from './mock-place';
+import { Place, PLACE } from './barrel';
 
 @Injectable()
 export class ImageService {

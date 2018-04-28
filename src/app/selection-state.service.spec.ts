@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SelectionStateService } from './selection-state.service';
+import { SelectionStateService } from './barrel';
 
 describe('SelectionStateService', () => {
   beforeEach(() => {

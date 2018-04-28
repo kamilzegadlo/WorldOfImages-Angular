@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ImageService } from './image.service';
-import { PLACE } from './mock-place';
+import { ImageService, PLACE } from './barrel';
 
 describe('ImageService', () => {
   beforeEach(() => {

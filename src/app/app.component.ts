@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 
-import { Place } from './place';
-import { Coordinates } from './Coordinates';
+import { Coordinates, Place } from './barrel';
 
 @Component({
   selector: 'kz-root',

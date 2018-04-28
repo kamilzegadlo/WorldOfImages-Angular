@@ -1,11 +1,7 @@
 import { EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
-import { PlaceComponent } from './place.component';
-import { PLACE } from '../mock-place';
-import { ImageService } from '../image.service';
-import { Coordinates } from '../Coordinates';
-import { SelectionStateService } from '../selection-state.service';
+import { Coordinates, ImageService, PlaceComponent, PLACE, SelectionStateService } from '../barrel';
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;

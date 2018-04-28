@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { Coordinates } from '../Coordinates';
-import { SelectionStateService } from '../selection-state.service';
+import { Coordinates, SelectionStateService } from '../barrel';
 
 @Component({
   selector: 'kz-map',

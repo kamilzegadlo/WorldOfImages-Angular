@@ -1,10 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ImageService } from '../image.service';
-import { Place } from '../place';
-import { Coordinates } from '../Coordinates';
-import { PLACE } from '../mock-place';
-import { SelectionStateService } from '../selection-state.service';
+import { Coordinates, Place, PLACE, ImageService, SelectionStateService } from '../barrel';
 
 @Component({
   selector: 'kz-place',

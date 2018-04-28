@@ -1,8 +1,7 @@
+import { EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
-import { MapComponent } from './map.component';
-import { SelectionStateService } from '../selection-state.service';
-import { EventEmitter } from '@angular/core';
+import { MapComponent, SelectionStateService } from '../barrel';
 
 describe('MapComponent', () => {
   let component: MapComponent;

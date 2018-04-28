@@ -1,4 +1,4 @@
-import { Place } from './place';
+import { Place } from './barrel';
 
 export const PLACE: Place = {
     name: "The First Place",
