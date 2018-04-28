@@ -51,12 +51,12 @@ describe('PlaceComponent', () => {
     };
 
     //act
-    selectionStateServiceMock.selectedCoordinates.emit(<Coordinates>{x:3, y:12});
+    selectionStateServiceMock.selectedCoordinates.emit(selectedCoordinates);
 
     //assert
     expect(imageServiceMock.getPlace.calls.count()).toBe(2);
     let params=imageServiceMock.getPlace.calls.argsFor(0);
-    expect(params[0]).toEqual(3);
-    expect(params[1]).toEqual(12);
+    expect(params[0].x).toEqual(selectedCoordinates.x);
+    expect(params[0].y).toEqual(selectedCoordinates.y);
   }));
 });

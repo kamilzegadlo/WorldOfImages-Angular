@@ -19,6 +19,6 @@ export class PlaceComponent implements OnInit {
   private selectedPlace: Coordinates;
 
   private getPlace(coordinates: Coordinates) {
-    this.selectedPlace = this.imageService.getPlace(coordinates.x, coordinates.y);
+    this.selectedPlace = this.imageService.getPlace(coordinates);
   }
 }

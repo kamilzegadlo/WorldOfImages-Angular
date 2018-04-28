@@ -14,7 +14,7 @@ describe('ImageService', () => {
   }));
 
   it('should return a mocked place', inject([ImageService], (service: ImageService) => {
-    let place=service.getPlace(13, 14);
+    let place=service.getPlace({x:13, y:14});
 
     expect(place.x).toBe(13);
     expect(place.y).toBe(14);

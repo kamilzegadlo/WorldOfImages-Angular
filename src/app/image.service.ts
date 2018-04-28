@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { Place, PLACE } from './barrel';
+import { Coordinates, Place, PLACE } from './barrel';
 
 @Injectable()
 export class ImageService {
 
   constructor() { }
 
-  getPlace(x:number, y:number): Place {
+  getPlace(coordinates: Coordinates): Place {
     return {
       name: 'test name',
-      x:x,
-      y:y,
+      x:coordinates.x,
+      y:coordinates.y,
       images: null
     }
   }
