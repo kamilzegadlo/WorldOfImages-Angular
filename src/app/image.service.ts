@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Coordinates, Place, PLACE } from './barrel';
+import { Coordinates, Place } from './barrel';
 
 @Injectable()
 export class ImageService {

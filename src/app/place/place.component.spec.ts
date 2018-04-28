@@ -1,7 +1,7 @@
 import { EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
-import { Coordinates, ImageService, PlaceComponent, PLACE, SelectionStateService } from '../barrel';
+import { Coordinates, ImageService, PlaceComponent, SelectionStateService } from '../barrel';
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Coordinates, Place, PLACE, ImageService, SelectionStateService } from '../barrel';
+import { Coordinates, Place, placeNullObject, ImageService, SelectionStateService } from '../barrel';
 
 @Component({
   selector: 'kz-place',
@@ -12,7 +12,7 @@ export class PlaceComponent implements OnInit {
   constructor(private imageService: ImageService, private selectionStateService: SelectionStateService) { }
 
   ngOnInit() {
-    this.selectedPlace=PLACE;
+    this.selectedPlace = placeNullObject;
     this.selectionStateService.selectedCoordinates.subscribe(newSelectedCoordinates => this.getPlace(newSelectedCoordinates));
   }
 
