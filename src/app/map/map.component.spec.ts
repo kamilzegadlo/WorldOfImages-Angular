@@ -33,17 +33,12 @@ describe('MapComponent', () => {
   });
 
   it('should render world map image', async(() => {
-    const fixture = TestBed.createComponent(MapComponent);
-    fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('#WorldMap')).not.toBeUndefined();
   }));
 
   it('should emit the selected coordinates', inject(
     [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
-    const fixture = TestBed.createComponent(MapComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
     let nextSpy = spyOn(selectionStateServiceMock.selectedCoordinates, 'next');
 
     //Act
