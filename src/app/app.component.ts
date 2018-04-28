@@ -11,10 +11,4 @@ import { Coordinates } from './Coordinates';
 })
 export class AppComponent {
   title = 'World of Images';
-
-  selectedCoordinates: Coordinates;// = new Subject();
-
-  selected(selected: Coordinates) {
-    this.selectedCoordinates=selected;//this.selectedPlace.next(selected);
-  }
 }

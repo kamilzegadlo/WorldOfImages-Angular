@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Coordinates } from '../Coordinates';
+import { SelectionStateService } from '../selection-state.service';
 
 @Component({
   selector: 'kz-map',
@@ -9,15 +10,13 @@ import { Coordinates } from '../Coordinates';
 })
 export class MapComponent implements OnInit {
 
-  constructor() {}
+  constructor(private selectionStateService: SelectionStateService) {}
 
   ngOnInit() {
   }
 
-  @Output() selectedCoordinates = new EventEmitter();
-
   MapClicked = function(event){
-    this.selectedCoordinates.emit(<Coordinates>{x:event.offsetX, y:event.offsetY});
+    this.selectionStateService.selectedCoordinates.emit(<Coordinates>{x:event.offsetX, y:event.offsetY});
   }
 
 }

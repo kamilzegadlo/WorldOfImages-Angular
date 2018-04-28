@@ -4,6 +4,7 @@ import { ImageService } from '../image.service';
 import { Place } from '../place';
 import { Coordinates } from '../Coordinates';
 import { PLACE } from '../mock-place';
+import { SelectionStateService } from '../selection-state.service';
 
 @Component({
   selector: 'kz-place',
@@ -12,17 +13,16 @@ import { PLACE } from '../mock-place';
 })
 export class PlaceComponent implements OnInit {
 
-  constructor(private imageService: ImageService) { }
+  constructor(private imageService: ImageService, private selectionStateService: SelectionStateService) { }
 
   ngOnInit() {
     this.selectedPlace=PLACE;
+    this.selectionStateService.selectedCoordinates.subscribe(newSelectedCoordinates => this.getPlace(newSelectedCoordinates));
   }
 
   private selectedPlace: Coordinates;
-  @Input('selectedCoordinates') set selectedCoordinates(selectedCoordinates: Coordinates) {
-    if(this.imageService && selectedCoordinates)
-      this.selectedPlace = this.imageService.getPlace(selectedCoordinates.x, selectedCoordinates.y);
+
+  private getPlace(coordinates: Coordinates) {
+    this.selectedPlace = this.imageService.getPlace(coordinates.x, coordinates.y);
   }
-
-
 }
