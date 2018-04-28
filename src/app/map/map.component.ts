@@ -15,7 +15,7 @@ export class MapComponent implements OnInit {
   }
 
   MapClicked = function(event){
-    this.selectionStateService.selectedCoordinates.emit(<Coordinates>{x:event.offsetX, y:event.offsetY});
+    this.selectionStateService.selectedCoordinates.next(<Coordinates>{x:event.offsetX, y:event.offsetY});
   }
 
 }

@@ -44,15 +44,15 @@ describe('MapComponent', () => {
     const fixture = TestBed.createComponent(MapComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    let emitSpy = spyOn(selectionStateServiceMock.selectedCoordinates, 'emit');
+    let nextSpy = spyOn(selectionStateServiceMock.selectedCoordinates, 'next');
 
     //Act
     component.MapClicked({offsetX:14, offsetY:8});
     
     //Assert
-    expect(emitSpy).toHaveBeenCalled();
-    expect(emitSpy.calls.count()).toBe(1);
-    let params=emitSpy.calls.argsFor(0);
+    expect(nextSpy).toHaveBeenCalled();
+    expect(nextSpy.calls.count()).toBe(1);
+    let params=nextSpy.calls.argsFor(0);
     expect(params[0].x).toEqual(14);
     expect(params[0].y).toEqual(8);
   }));

@@ -1,12 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { Coordinates } from './barrel';
+import { Coordinates, placeNullObject } from './barrel';
 
 @Injectable()
 export class SelectionStateService {
 
   constructor() { }
 
-  selectedCoordinates = new EventEmitter<Coordinates>();
+  selectedCoordinates = new BehaviorSubject<Coordinates>(placeNullObject);
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
-import { Coordinates, Place, placeNullObject, ImageService, SelectionStateService } from '../barrel';
+import { Coordinates, Place, ImageService, SelectionStateService } from '../barrel';
 
 @Component({
   selector: 'kz-place',
@@ -9,14 +10,19 @@ import { Coordinates, Place, placeNullObject, ImageService, SelectionStateServic
 })
 export class PlaceComponent implements OnInit {
 
+  private selectedPlace: Coordinates;
+  private selectedCoordinatesSubscrption: Subscription;
+
   constructor(private imageService: ImageService, private selectionStateService: SelectionStateService) { }
 
   ngOnInit() {
-    this.selectedPlace = placeNullObject;
-    this.selectionStateService.selectedCoordinates.subscribe(newSelectedCoordinates => this.getPlace(newSelectedCoordinates));
+    this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
+      newSelectedCoordinates => this.getPlace(newSelectedCoordinates));
   }
 
-  private selectedPlace: Coordinates;
+  ngOnDestroy() {
+    this.selectedCoordinatesSubscrption.unsubscribe();
+  }
 
   private getPlace(coordinates: Coordinates) {
     this.selectedPlace = this.imageService.getPlace(coordinates);
