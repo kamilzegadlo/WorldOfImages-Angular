@@ -9,14 +9,20 @@ describe('ImageService', () => {
     });
   });
 
-  it('should be created', inject([ImageService], (service: ImageService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([ImageService], (service: ImageService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 
-  it('should return a mocked place', inject([ImageService], (service: ImageService) => {
-    let place=service.getPlace({x:13, y:14});
+  it(
+    'should return a mocked place',
+    inject([ImageService], (service: ImageService) => {
+      const place = service.getPlace({ x: 13, y: 14 });
 
-    expect(place.x).toBe(13);
-    expect(place.y).toBe(14);
-  }));
+      expect(place.x).toBe(13);
+      expect(place.y).toBe(14);
+    })
+  );
 });

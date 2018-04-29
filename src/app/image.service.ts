@@ -4,16 +4,14 @@ import { Coordinates, Place } from './barrel';
 
 @Injectable()
 export class ImageService {
-
-  constructor() { }
+  constructor() {}
 
   getPlace(coordinates: Coordinates): Place {
     return {
       name: 'test name',
-      x:coordinates.x,
-      y:coordinates.y,
+      x: coordinates.x,
+      y: coordinates.y,
       images: null
-    }
+    };
   }
-
 }

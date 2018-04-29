@@ -1,26 +1,34 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Coordinates, Place, ImageService, SelectionStateService } from '../barrel';
+import {
+  Coordinates,
+  Place,
+  ImageService,
+  SelectionStateService
+} from '../barrel';
 
 @Component({
-  selector: 'kz-place',
+  selector: 'app-place',
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent implements OnInit {
-
-  private selectedPlace: Coordinates;
+export class PlaceComponent implements OnInit, OnDestroy {
+  private selectedPlace: Place;
   private selectedCoordinatesSubscrption: Subscription;
 
-  constructor(private imageService: ImageService, private selectionStateService: SelectionStateService) { }
+  constructor(
+    private imageService: ImageService,
+    private selectionStateService: SelectionStateService
+  ) {}
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
-      newSelectedCoordinates => this.getPlace(newSelectedCoordinates));
+      newSelectedCoordinates => this.getPlace(newSelectedCoordinates)
+    );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.selectedCoordinatesSubscrption.unsubscribe();
   }
 

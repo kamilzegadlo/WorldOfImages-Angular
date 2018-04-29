@@ -1,18 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent, MapComponent, PlaceComponent, ImageService, SelectionStateService } from './barrel';
+import {
+  AppComponent,
+  MapComponent,
+  ImageComponent,
+  PlaceComponent,
+  ImageService,
+  SelectionStateService
+} from './barrel';
 
 @NgModule({
-  declarations: [
-    PlaceComponent,
-    MapComponent,
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [MapComponent, ImageComponent, PlaceComponent, AppComponent],
+  imports: [BrowserModule],
   providers: [ImageService, SelectionStateService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

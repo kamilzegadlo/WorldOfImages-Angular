@@ -1,6 +1,6 @@
 import { Coordinates } from './barrel';
 
 export interface Place extends Coordinates {
-    name: string;
-    images: File[];
-  }
+  name: string;
+  images: File[] | null;
+}

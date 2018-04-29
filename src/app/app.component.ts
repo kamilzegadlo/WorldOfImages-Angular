@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Coordinates, Place } from './barrel';
 
 @Component({
-  selector: 'kz-root',
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

@@ -1,21 +1,26 @@
 import { Input, Output, EventEmitter, Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 
-import { AppComponent, Coordinates, ImageService, MapComponent, PlaceComponent } from './barrel';
+import {
+  AppComponent,
+  Coordinates,
+  ImageService,
+  MapComponent,
+  PlaceComponent
+} from './barrel';
 
 describe('AppComponent', () => {
-
   @Component({
-    selector: 'kz-map',
+    selector: 'app-map',
     template: `<p>map</p>`
   })
   class MockMapComponent {
     @Output() selectedCoordinates = new EventEmitter();
-    MapClicked() {};
+    MapClicked() {}
   }
 
   @Component({
-    selector: 'kz-place',
+    selector: 'app-place',
     template: `<p>place</p>`
   })
   class MockPlaceComponent {
@@ -24,11 +29,8 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ImageService} ],
-      declarations: [
-        AppComponent, MockMapComponent, MockPlaceComponent
-      ],
+      providers: [{ provide: ImageService }],
+      declarations: [AppComponent, MockMapComponent, MockPlaceComponent]
     }).compileComponents();
   }));
 
@@ -48,6 +50,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Click on any place on the map!');
+    expect(compiled.querySelector('h1').textContent).toContain(
+      'Click on any place on the map!'
+    );
   }));
 });
