@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import {
   async,
   ComponentFixture,
@@ -29,7 +29,9 @@ describe('PlaceComponent', () => {
     selector: 'app-image',
     template: `<p>image</p>`
   })
-  class MockImageComponent {}
+  class MockImageComponent {
+    @Input() image: string;
+  }
 
   beforeEach(async(() => {
     const imageServiceMock: ImageServiceMock = {
