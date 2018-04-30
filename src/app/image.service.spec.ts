@@ -1,11 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ImageService } from './barrel';
 
 describe('ImageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ImageService]
+      providers: [ImageService, HttpClient],
+      imports: [HttpClientModule]
     });
   });
 
