@@ -19,7 +19,7 @@ describe('ImageService', () => {
     })
   );
 
-  it(
+  xit(
     'should return a mocked place',
     inject([ImageService], (service: ImageService) => {
       const place = service.getPlace({ x: 13, y: 14 });

@@ -1,7 +1,7 @@
-{{selectedPlace.name}} {{selectedPlace.x}} {{selectedPlace.y}}
+{{selectedPlace?.name}} {{selectedPlace?.x}} {{selectedPlace?.y}}
 
 <ul>
-    <li *ngFor="let image of selectedPlace.images">
+    <li *ngFor="let image of selectedPlace?.images">
         <app-image [image]="image"></app-image>
     </li>
 </ul>

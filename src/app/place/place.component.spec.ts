@@ -6,10 +6,13 @@ import {
   inject
 } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/observable';
+import { of } from 'rxjs/observable/of';
 
 import {
   Coordinates,
   ImageService,
+  Place,
   PlaceComponent,
   SelectionStateService
 } from '../barrel';
@@ -19,7 +22,7 @@ describe('PlaceComponent', () => {
   let fixture: ComponentFixture<PlaceComponent>;
 
   interface ImageServiceMock {
-    getPlace: jasmine.Spy;
+    getPlace(coordinates: Coordinates): Observable<Place>;
   }
   interface SelectionStateServiceMock {
     selectedCoordinates: BehaviorSubject<Coordinates>;
@@ -35,10 +38,17 @@ describe('PlaceComponent', () => {
 
   beforeEach(async(() => {
     const imageServiceMock: ImageServiceMock = {
-      getPlace: jasmine
-        .createSpy('getPlace')
-        .and.returnValue({ x: 100, y: 150 })
+      getPlace: (coordinates: Coordinates): Observable<Place> => {
+        if (coordinates.x === 11 && coordinates.y === 15) {
+          return of({ x: 100, y: 150 } as Place);
+        }
+        if (coordinates.x === 12 && coordinates.y === 14) {
+          return of({ x: 101, y: 151 } as Place);
+        }
+        return of({ x: 109, y: 159 } as Place);
+      }
     };
+
     const selectionStateServiceMock: SelectionStateServiceMock = {
       selectedCoordinates: new BehaviorSubject<Coordinates>({ x: 12, y: 14 })
     };
@@ -71,10 +81,8 @@ describe('PlaceComponent', () => {
         selectionStateServiceMock: SelectionStateServiceMock
       ) => {
         // assert
-        expect(imageServiceMock.getPlace.calls.count()).toBe(1);
-        const params = imageServiceMock.getPlace.calls.argsFor(0);
-        expect(params[0].x).toEqual(12);
-        expect(params[0].y).toEqual(14);
+        expect(101).toEqual(component.selectedPlace.x);
+        expect(151).toEqual(component.selectedPlace.y);
       }
     )
   );
@@ -97,10 +105,8 @@ describe('PlaceComponent', () => {
         selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
 
         // assert
-        expect(imageServiceMock.getPlace.calls.count()).toBe(2);
-        const params = imageServiceMock.getPlace.calls.argsFor(1);
-        expect(params[0].x).toEqual(selectedCoordinates.x);
-        expect(params[0].y).toEqual(selectedCoordinates.y);
+        expect(100).toEqual(component.selectedPlace.x);
+        expect(150).toEqual(component.selectedPlace.y);
       }
     )
   );

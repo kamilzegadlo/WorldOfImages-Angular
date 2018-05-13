@@ -14,8 +14,13 @@ import {
   styleUrls: ['./place.component.css']
 })
 export class PlaceComponent implements OnInit, OnDestroy {
-  private selectedPlace: Place;
+  private _selectedPlace: Place;
   private selectedCoordinatesSubscrption: Subscription;
+  private selectedPlaceSubscrption: Subscription;
+
+  get selectedPlace(): Place {
+    return this._selectedPlace;
+  }
 
   constructor(
     private imageService: ImageService,
@@ -30,9 +35,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.selectedCoordinatesSubscrption.unsubscribe();
+    this.selectedPlaceSubscrption.unsubscribe();
   }
 
   private getPlace(coordinates: Coordinates) {
-    this.selectedPlace = this.imageService.getPlace(coordinates);
+    this.selectedPlaceSubscrption = this.imageService
+      .getPlace(coordinates)
+      .subscribe(selectedPlace => (this._selectedPlace = selectedPlace));
   }
 }
