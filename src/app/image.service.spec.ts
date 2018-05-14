@@ -31,13 +31,15 @@ describe('ImageService', () => {
     'should return a mocked place',
     inject([ImageService], (service: ImageService) => {
       service.getPlace({ x: 13, y: 14 }).subscribe(place => {
-        //expect(place.x).toBe(13);
-        //expect(place.y).toEqual(14);
+        expect(place.x).toBe(13);
+        expect(place.y).toEqual(14);
       });
 
       let placeRequest = httpMock.expectOne('api/place');
-      placeRequest.flush({} as Place);
+      placeRequest.flush({ x: 13, y: 14 } as Place);
       httpMock.verify();
+
+      expect(placeRequest.request.method).toBe('GET');
     })
   );
 });
