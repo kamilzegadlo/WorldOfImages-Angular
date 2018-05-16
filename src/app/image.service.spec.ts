@@ -35,7 +35,7 @@ describe('ImageService', () => {
         expect(place.y).toEqual(14);
       });
 
-      let placeRequest = httpMock.expectOne('api/place');
+      const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
       placeRequest.flush({ x: 13, y: 14 } as Place);
       httpMock.verify();
 

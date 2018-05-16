@@ -12,6 +12,8 @@ export class ImageService {
   private placesUrl = 'api/place';
 
   getPlace(coordinates: Coordinates): Observable<Place> {
-    return this.http.get<Place>(this.placesUrl);
+    return this.http.get<Place>(this.placesUrl, {
+      params: { x: coordinates.x.toString(), y: coordinates.y.toString() }
+    });
   }
 }

@@ -1,8 +1,17 @@
-import { InMemoryDbService } from 'angular-in-memory-web-api';
+import {
+  InMemoryDbService,
+  RequestInfoUtilities,
+  ParsedRequestUrl
+} from 'angular-in-memory-web-api';
 
 import { Place } from './barrel';
 
 export class InMemoryDataService implements InMemoryDbService {
+  parseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
+    const parsed = utils.parseRequestUrl('api/place');
+    return parsed;
+  }
+
   createDb() {
     const place: Place = {
       name: 'test name',
