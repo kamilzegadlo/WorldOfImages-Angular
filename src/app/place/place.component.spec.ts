@@ -5,7 +5,7 @@ import {
   TestBed,
   inject
 } from '@angular/core/testing';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 
@@ -25,7 +25,7 @@ describe('PlaceComponent', () => {
     getPlace(coordinates: Coordinates): Observable<Place>;
   }
   interface SelectionStateServiceMock {
-    selectedCoordinates: BehaviorSubject<Coordinates>;
+    selectedCoordinates: Subject<Coordinates>;
   }
 
   @Component({
@@ -40,7 +40,7 @@ describe('PlaceComponent', () => {
     const imageServiceMock: ImageServiceMock = {
       getPlace: (coordinates: Coordinates): Observable<Place> => {
         if (coordinates.x === 11 && coordinates.y === 15) {
-          return of({ x: 100, y: 150 } as Place);
+          return of({ x: 100, y: 150, name: 'unit test name' } as Place);
         }
         if (coordinates.x === 12 && coordinates.y === 14) {
           return of({ x: 101, y: 151 } as Place);
@@ -50,7 +50,7 @@ describe('PlaceComponent', () => {
     };
 
     const selectionStateServiceMock: SelectionStateServiceMock = {
-      selectedCoordinates: new BehaviorSubject<Coordinates>({ x: 12, y: 14 })
+      selectedCoordinates: new Subject<Coordinates>()
     };
 
     TestBed.configureTestingModule({
@@ -72,8 +72,16 @@ describe('PlaceComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('When no selected place, should render message, and no place name', async(() => {
+    const compiled = fixture.debugElement.nativeElement;
+    expect(
+      compiled.querySelector('#noPlaceSelectedLabel').textContent
+    ).toContain('Click on any place on the map!');
+    expect(compiled.querySelector('#placeSelectedLabel')).toBeNull();
+  }));
+
   it(
-    'when got coordinates, image service should be called',
+    'on init, selected place should be empty',
     inject(
       [ImageService, SelectionStateService],
       (
@@ -81,8 +89,7 @@ describe('PlaceComponent', () => {
         selectionStateServiceMock: SelectionStateServiceMock
       ) => {
         // assert
-        expect(101).toEqual(component.selectedPlace.x);
-        expect(151).toEqual(component.selectedPlace.y);
+        expect(component.selectedPlace).toBeUndefined();
       }
     )
   );
@@ -107,6 +114,35 @@ describe('PlaceComponent', () => {
         // assert
         expect(100).toEqual(component.selectedPlace.x);
         expect(150).toEqual(component.selectedPlace.y);
+        expect('unit test name').toEqual(component.selectedPlace.name);
+      }
+    )
+  );
+
+  it(
+    'when received coordinates, label should be replaced with place data',
+    inject(
+      [ImageService, SelectionStateService],
+      (
+        imageServiceMock: ImageServiceMock,
+        selectionStateServiceMock: SelectionStateServiceMock
+      ) => {
+        // arrange
+        const selectedCoordinates: Coordinates = {
+          x: 11,
+          y: 15
+        };
+
+        // act
+        selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+        fixture.detectChanges();
+
+        // assert
+        const compiled = fixture.debugElement.nativeElement;
+        expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+        expect(
+          compiled.querySelector('#placeSelectedLabel').textContent
+        ).toContain('unit test name');
       }
     )
   );

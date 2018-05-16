@@ -1,7 +1,18 @@
-{{selectedPlace?.name}} {{selectedPlace?.x}} {{selectedPlace?.y}}
+<div *ngIf="selectedPlace;then placeSelected else noPlaceSelected"></div>
 
-<ul>
-    <li *ngFor="let image of selectedPlace?.images">
-        <app-image [image]="image"></app-image>
-    </li>
-</ul>
+<ng-template #placeSelected>
+    {{selectedPlace?.x}} {{selectedPlace?.y}}
+    <h2 id="placeSelectedLabel">
+        {{selectedPlace?.name}}
+    </h2>
+    <ul>
+        <li *ngFor="let image of selectedPlace?.images">
+            <app-image [image]="image"></app-image>
+        </li>
+    </ul>
+</ng-template>
+<ng-template #noPlaceSelected>
+    <h1 id="noPlaceSelectedLabel">
+        Click on any place on the map!
+    </h1>
+</ng-template>
