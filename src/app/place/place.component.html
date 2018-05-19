@@ -1,9 +1,9 @@
 <div *ngIf="selectedPlace;then placeSelected else noPlaceSelected"></div>
 
 <ng-template #placeSelected>
-    {{selectedPlace?.x}} {{selectedPlace?.y}}
+
     <h2 id="placeSelectedLabel">
-        {{selectedPlace?.name}}
+        {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
     </h2>
     <ul>
         <li *ngFor="let image of selectedPlace?.images">
