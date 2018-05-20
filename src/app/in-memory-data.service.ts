@@ -43,25 +43,28 @@ export class InMemoryDataService implements InMemoryDbService {
         yFromQuery !== undefined && yFromQuery.length > 0 ? yFromQuery[0] : -1
       );
 
-      const data = reqInfo.collection.filter(
+      let data = reqInfo.collection.filter(
         (place: Place) => place.x === x && place.y === y
       )[0];
 
-      const responseOptions: ResponseOptions = data
-        ? {
-            body: dataEncapsulation ? { data } : data,
-            status: STATUS.OK
-          }
-        : {
-            body: { error: `Place not found` },
-            status: STATUS.NOT_FOUND
-          };
+      let responseHttpStatus = STATUS.OK;
+
+      if (!data) {
+        data = { x: x, y: y, name: '' } as Place;
+        responseHttpStatus = STATUS.NO_CONTENT;
+      }
+
+      const responseOptions: ResponseOptions = {
+        body: dataEncapsulation ? { data } : data,
+        status: responseHttpStatus
+      };
 
       responseOptions.statusText = getStatusText(
         responseOptions.status as number
       );
       responseOptions.headers = reqInfo.headers;
       responseOptions.url = reqInfo.url;
+
       return responseOptions;
     });
   }
