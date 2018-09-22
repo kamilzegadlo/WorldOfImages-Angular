@@ -43,4 +43,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
       .getPlace(coordinates)
       .subscribe(selectedPlace => (this._selectedPlace = selectedPlace));
   }
+
+  savePlace() {
+    this.imageService
+      .savePlace(this._selectedPlace)
+      .subscribe(selectedPlace => (this._selectedPlace = selectedPlace));
+  }
 }

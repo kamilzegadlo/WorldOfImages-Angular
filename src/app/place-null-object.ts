@@ -4,5 +4,6 @@ export const placeNullObject: Place = {
   name: '',
   x: -1,
   y: -1,
+  isDefined: false,
   images: null
 };

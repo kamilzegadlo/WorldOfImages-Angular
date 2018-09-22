@@ -20,12 +20,25 @@ export class ImageService {
       .pipe(catchError<Place, Place>(this.getPlaceErrorHandling));
   }
 
+  savePlace(place: Place): Observable<Place> {
+    return this.http
+      .put(this.placesUrl, place)
+      .pipe(catchError<Place, Place>(this.savePlaceErrorHandling));
+  }
+
   getPlaceErrorHandling(
     err: any,
     caught: Observable<Place>
   ): Observable<Place> {
-    debugger;
     console.log('get place error handling');
+    return of(placeNullObject);
+  }
+
+  savePlaceErrorHandling(
+    err: any,
+    caught: Observable<Place>
+  ): Observable<Place> {
+    console.log('save place error handling');
     return of(placeNullObject);
   }
 }

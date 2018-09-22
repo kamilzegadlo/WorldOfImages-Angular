@@ -1,7 +1,21 @@
 <div *ngIf="selectedPlace;then placeSelected else noPlaceSelected"></div>
 
 <ng-template #placeSelected>
+    <div *ngIf="selectedPlace?.isDefined;then placeDefined else placeUndefinedYet"></div>
+</ng-template>
 
+<ng-template #noPlaceSelected>
+    <h1 id="noPlaceSelectedLabel">
+        Click on any place on the map!
+    </h1>
+</ng-template>
+
+<ng-template #placeUndefinedYet>
+    <input id="newPlaceName" [(ngModel)]="_selectedPlace.name"> (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
+    <input id="saveNewPlace" type="button" value="save" (click)="savePlace()">
+</ng-template>
+
+<ng-template #placeDefined>
     <h2 id="placeSelectedLabel">
         {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
     </h2>
@@ -10,9 +24,4 @@
             <app-image [image]="image"></app-image>
         </li>
     </ul>
-</ng-template>
-<ng-template #noPlaceSelected>
-    <h1 id="noPlaceSelectedLabel">
-        Click on any place on the map!
-    </h1>
 </ng-template>
