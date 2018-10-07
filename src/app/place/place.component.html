@@ -19,6 +19,7 @@
     <h2 id="placeSelectedLabel">
         {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
     </h2>
+    <input type="file" (change)="onFileChanged($event)">
     <ul>
         <li *ngFor="let image of selectedPlace?.images">
             <app-image [image]="image"></app-image>

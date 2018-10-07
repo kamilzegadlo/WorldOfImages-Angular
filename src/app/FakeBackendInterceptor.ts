@@ -96,12 +96,54 @@ export class FakeBackendInterceptor implements HttpInterceptor {
               return Observable.throw('This place is already defined');
             }
 
+            newPlace.isDefined = true;
+
             places.push(newPlace);
             sessionStorage.setItem('places', JSON.stringify(places));
 
             // respond 200 OK
             return Observable.of(
               new HttpResponse({ status: 200, body: newPlace })
+            );
+          }
+
+          //save image
+          if (request.url.endsWith('api/image') && request.method === 'PUT') {
+            const newImage = request.body;
+
+            const placesFound = places.filter(place => {
+              return (
+                place.x == newImage.coordinates.x &&
+                place.y == newImage.coordinates.y
+              );
+            });
+            if (!placesFound || placesFound.length === 0) {
+              return Observable.throw('Place not found!');
+            }
+            if (placesFound.length > 1) {
+              return Observable.throw(
+                'More than one place with coordinates found!'
+              );
+            }
+            const place = placesFound[0];
+            const reader = new FileReader();
+            reader.addEventListener(
+              'load',
+              function() {
+                if (!place.images || place.images.length === 0) {
+                  place.images = [reader.result];
+                } else {
+                  place.images.push(reader.result);
+                }
+                sessionStorage.setItem('places', JSON.stringify(places));
+              },
+              false
+            );
+
+            reader.readAsDataURL(newImage.image);
+
+            return Observable.of(
+              new HttpResponse({ status: 200, body: place })
             );
           }
 

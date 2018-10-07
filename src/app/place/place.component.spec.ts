@@ -6,6 +6,7 @@ import {
   inject
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/observable';
@@ -26,6 +27,10 @@ describe('PlaceComponent', () => {
   interface ImageServiceMock {
     getPlace(coordinates: Coordinates): Observable<Place>;
     savePlace(place: Place): Observable<Place>;
+    saveImage(
+      image: any,
+      coordinates: Coordinates
+    ): Observable<HttpEvent<Object>>;
   }
   interface SelectionStateServiceMock {
     selectedCoordinates: Subject<Coordinates>;
@@ -60,14 +65,53 @@ describe('PlaceComponent', () => {
         return of({ x: 109, y: 159, isDefined: true } as Place);
       },
       savePlace: (place: Place): Observable<Place> => {
+        if (place.x === 14 && place.y === 10) {
+          const p: Place = {
+            isDefined: true,
+            x: 999,
+            y: 998,
+            name: 'save test'
+          };
+
+          return of(p);
+        }
         const p: Place = {
           isDefined: true,
-          x: 999,
-          y: 998,
-          name: 'save test'
+          x: 4,
+          y: 5,
+          name: 'error'
         };
 
         return of(p);
+      },
+      saveImage: (
+        image: File,
+        coordinates: Coordinates
+      ): Observable<HttpEvent<Object>> => {
+        if (
+          image.name === 'fileName' &&
+          coordinates.x === 14 &&
+          coordinates.y === 10
+        ) {
+          const place: Place = {
+            isDefined: true,
+            x: 112,
+            y: 113,
+            name: 'save test'
+          };
+          const httpResponse = new HttpResponse({ body: place });
+
+          return of(httpResponse);
+        }
+        const place: Place = {
+          isDefined: true,
+          x: 1,
+          y: 2,
+          name: 'error'
+        };
+        const httpResponse = new HttpResponse({ body: place });
+
+        return of(httpResponse);
       }
     };
 
@@ -209,6 +253,29 @@ describe('PlaceComponent', () => {
 
       expect(999).toEqual(component.selectedPlace.x);
       expect(998).toEqual(component.selectedPlace.y);
+      expect('save test').toEqual(component.selectedPlace.name);
+    }
+  ));
+
+  it('when upload image, image service should be called', inject(
+    [ImageService, SelectionStateService],
+    (
+      imageServiceMock: ImageServiceMock,
+      selectionStateServiceMock: SelectionStateServiceMock
+    ) => {
+      const selectedCoordinates: Coordinates = {
+        x: 14,
+        y: 10
+      };
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+
+      component.onFileChanged({
+        target: { files: [new File([], 'fileName')] }
+      });
+
+      expect(112).toEqual(component.selectedPlace.x);
+      expect(113).toEqual(component.selectedPlace.y);
       expect('save test').toEqual(component.selectedPlace.name);
     }
   ));

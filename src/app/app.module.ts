@@ -18,7 +18,11 @@ import { fakeBackendProvider } from './FakeBackendInterceptor';
 @NgModule({
   declarations: [MapComponent, ImageComponent, PlaceComponent, AppComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule],
-  providers: [ImageService, SelectionStateService, fakeBackendProvider],
+  providers: [
+    ImageService,
+    SelectionStateService,
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

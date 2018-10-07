@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { HttpEventType } from '@angular/common/http';
 
 import {
   Coordinates,
@@ -47,6 +48,25 @@ export class PlaceComponent implements OnInit, OnDestroy {
   savePlace() {
     this.imageService
       .savePlace(this._selectedPlace)
-      .subscribe(selectedPlace => (this._selectedPlace = selectedPlace));
+      .subscribe(selectedPlace => {
+        this._selectedPlace = selectedPlace;
+      });
+  }
+
+  onFileChanged(change: any) {
+    this.imageService
+      .saveImage(change.target.files[0], this._selectedPlace)
+      .subscribe(httpResponse => {
+        if (httpResponse.type === HttpEventType.UploadProgress) {
+          // {
+          // loaded:11, // Number of bytes uploaded or downloaded.
+          // total :11 // Total number of bytes to upload or download
+          // }
+        }
+
+        if (httpResponse.type === HttpEventType.Response && httpResponse.body) {
+          this._selectedPlace = <Place>httpResponse.body;
+        }
+      });
   }
 }
