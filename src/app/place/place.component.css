@@ -1,0 +1,9 @@
+#imageChooser{
+  display: none;
+}
+
+@media print {
+  #imageChooser {
+    display: none;
+  }
+}
