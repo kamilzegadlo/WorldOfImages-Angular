@@ -12,3 +12,6 @@ Installation:
 To run unit tests: ng test.
 
 
+currently it is just front end. There is a fakebackend.
+
+If i find time I will try to create real backend with .net core and try to write the same with react and vue.
