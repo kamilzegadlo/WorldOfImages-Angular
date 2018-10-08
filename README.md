@@ -9,7 +9,7 @@ Installation:
 3. ng serve
 4. browse lokalhost:4200
 
-To run unit tests: ng test.
+To run unit tests: ng test --code-coverage.
 
 
 currently it is just front end. There is a fakebackend.
