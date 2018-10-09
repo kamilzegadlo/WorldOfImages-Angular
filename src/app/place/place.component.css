@@ -57,7 +57,7 @@ html {
   box-sizing: border-box;
 }
 
-.image__cell.is-collapsed .image--basic {
+.image__cell .image--basic {
   cursor: pointer;
 }
 

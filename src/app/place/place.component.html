@@ -30,16 +30,15 @@
   <input id="imageChooser" type="file" (change)="onFileChanged($event)" accept=".jpg, .jpeg, .png, .gif, .bmp">
 
   <section class="image-grid">
-    <div class="image__cell is-collapsed" *ngFor="let image of selectedPlace?.images; let i = index">
-      {{i}}
+    <div class="image__cell" [ngClass]="{'is-expanded': expandedIndex==i, 'is-collapsed': expandedIndex!=i}" *ngFor="let image of selectedPlace?.images; let i = index">
       <div class="image--basic">
-        <a href="#expand-jump-{{i}}">
+        <a (click)="expandIndex(i)">
           <app-image id="expand-jump-{{i}}" [class]="'basic__img'" [image]="image"></app-image>
         </a>
         <div class="arrow--up"></div>
       </div>
       <div class="image--expand">
-        <a href="#close-jump-{{i}}" class="expand__close"></a>
+        <a class="expand__close" (click)="collapseIndex()"></a>
         big
         <app-image [class]="'image--large'" [image]="image"></app-image>
       </div>
