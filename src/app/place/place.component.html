@@ -28,9 +28,24 @@
     <span>Choose an image&hellip;</span>
   </label>
   <input id="imageChooser" type="file" (change)="onFileChanged($event)" accept=".jpg, .jpeg, .png, .gif, .bmp">
-  <ul>
-    <li *ngFor="let image of selectedPlace?.images">
-      <app-image [image]="image"></app-image>
-    </li>
-  </ul>
+
+  <section class="image-grid">
+    <div class="image__cell is-collapsed" *ngFor="let image of selectedPlace?.images; let i = index">
+      {{i}}
+      <div class="image--basic">
+        <a href="#expand-jump-{{i}}">
+          <app-image id="expand-jump-{{i}}" [class]="'basic__img'" [image]="image"></app-image>
+        </a>
+        <div class="arrow--up"></div>
+      </div>
+      <div class="image--expand">
+        <a href="#close-jump-{{i}}" class="expand__close"></a>
+        big
+        <app-image [class]="'image--large'" [image]="image"></app-image>
+      </div>
+    </div>
+  </section>
+
+
+
 </ng-template>
