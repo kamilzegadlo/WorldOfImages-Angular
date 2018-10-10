@@ -35,11 +35,10 @@
         <a (click)="expandIndex(i)">
           <app-image id="expand-jump-{{i}}" [class]="'basic__img'" [image]="image"></app-image>
         </a>
-        <div class="arrow--up"></div>
       </div>
+      <div class="arrow--up"></div>
       <div class="image--expand">
         <a class="expand__close" (click)="collapseIndex()"></a>
-        big
         <app-image [class]="'image--large'" [image]="image"></app-image>
       </div>
     </div>
