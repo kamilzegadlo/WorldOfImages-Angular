@@ -2,6 +2,10 @@
   display: none;
 }
 
+#imageChooserIcon{
+  cursor:pointer;
+}
+
 @media print {
   #imageChooser {
     display: none;

@@ -77,7 +77,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 body: {
                   x: x,
                   y: y,
-                  name: 'This place was not visited yet!',
+                  name: 'New name',
                   isDefined: false
                 }
               })
