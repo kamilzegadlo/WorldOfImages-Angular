@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   AppComponent,
@@ -17,7 +18,7 @@ import { fakeBackendProvider } from './FakeBackendInterceptor';
 
 @NgModule({
   declarations: [MapComponent, ImageComponent, PlaceComponent, AppComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     ImageService,
     SelectionStateService,
