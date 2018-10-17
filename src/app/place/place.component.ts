@@ -43,7 +43,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private selectedCoordinatesSubscrption: Subscription;
   private selectedPlaceSubscrption: Subscription;
   private _expandedIndex: number | undefined;
-  private _userMessage: UserMessage;
+  private _userMessage: UserMessage | undefined = undefined;
   MessageType=MessageType;
 
   expandIndex(i:number | undefined){
