@@ -64,7 +64,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     return this._expandedIndex;
   }
 
-  get userMessage(): UserMessage {
+  get userMessage(): UserMessage | undefined {
     return this._userMessage;
   }
 
@@ -108,6 +108,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   onFileChanged(change: any) {
+   debugger;
     this.imageService
       .saveImage(change.target.files[0], this._selectedPlace)
       .subscribe(httpResponse => {
