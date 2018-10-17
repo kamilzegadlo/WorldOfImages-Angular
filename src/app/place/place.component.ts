@@ -108,25 +108,27 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   onFileChanged(change: any) {
-   debugger;
-    this.imageService
-      .saveImage(change.target.files[0], this._selectedPlace)
-      .subscribe(httpResponse => {
-        if (httpResponse.type === HttpEventType.UploadProgress) {
-          // {
-          // loaded:11, // Number of bytes uploaded or downloaded.
-          // total :11 // Total number of bytes to upload or download
-          // }
-        }
+    if(change.target.files.length>0)
+    {
+      this.imageService
+        .saveImage(change.target.files[0], this._selectedPlace)
+        .subscribe(httpResponse => {
+          if (httpResponse.type === HttpEventType.UploadProgress) {
+            // {
+            // loaded:11, // Number of bytes uploaded or downloaded.
+            // total :11 // Total number of bytes to upload or download
+            // }
+          }
 
-        if (httpResponse.type === HttpEventType.Response && httpResponse.body) {
-          this._selectedPlace = <Place>httpResponse.body;
-          this._userMessage = {
-            message:"Your picture has been added to this place!",
-            messageType:MessageType.Success
-          };
-          this.hideUserMessage();
-        }
-      });
+          if (httpResponse.type === HttpEventType.Response && httpResponse.body) {
+            this._selectedPlace = <Place>httpResponse.body;
+            this._userMessage = {
+              message:"Your picture has been added to this place!",
+              messageType:MessageType.Success
+            };
+            this.hideUserMessage();
+          }
+        });
+    }
   }
 }

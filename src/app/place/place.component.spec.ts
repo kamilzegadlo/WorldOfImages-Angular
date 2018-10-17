@@ -279,4 +279,27 @@ describe('PlaceComponent', () => {
       expect('save test').toEqual(component.selectedPlace.name);
     }
   ));
+
+  it('when upload image, but image not specified the image service should not be called', inject(
+    [ImageService, SelectionStateService],
+    (
+      imageServiceMock: ImageServiceMock,
+      selectionStateServiceMock: SelectionStateServiceMock
+    ) => {
+      const selectedCoordinates: Coordinates = {
+        x: 14,
+        y: 10
+      };
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+
+      component.onFileChanged({
+        target: { files: [] }
+      });
+
+      expect(14).toEqual(component.selectedPlace.x);
+      expect(10).toEqual(component.selectedPlace.y);
+      expect('test').toEqual(component.selectedPlace.name);
+    }
+  ));
 });
