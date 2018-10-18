@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { HttpEventType } from '@angular/common/http';
 import {
   trigger,
   state,
@@ -17,6 +16,7 @@ import {
   Coordinates,
   Place,
   ImageService,
+  MultiFileUploader,
   SelectionStateService,
   UserMessage,
   MessageType
@@ -30,7 +30,7 @@ import {
     trigger('userMessageAnimation', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('1s', style({ opacity: 1 })),
+        animate('0s', style({ opacity: 1 })),
       ]),
       transition(':leave', [
         animate('15s', style({ opacity: 0 }))
@@ -70,7 +70,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private imageService: ImageService,
-    private selectionStateService: SelectionStateService
+    private selectionStateService: SelectionStateService,
+    private multiFileUploader: MultiFileUploader
   ) {}
 
   ngOnInit() {
@@ -103,32 +104,24 @@ export class PlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  hideUserMessage() {
-    Observable.timer(1500).subscribe(()=>this._userMessage=undefined);
+  private hideUserMessage() {
+    Observable.timer(0).subscribe(()=>this._userMessage=undefined);
+  }
+
+  private onSuccessImageLoad(place: Place){
+      this._selectedPlace = place;
+      this._userMessage = {
+        message:"Your picture has been added to this place!",
+        messageType:MessageType.Success
+      };
+      this.hideUserMessage();
   }
 
   onFileChanged(change: any) {
     if(change.target.files.length>0)
     {
-      this.imageService
-        .saveImage(change.target.files[0], this._selectedPlace)
-        .subscribe(httpResponse => {
-          if (httpResponse.type === HttpEventType.UploadProgress) {
-            // {
-            // loaded:11, // Number of bytes uploaded or downloaded.
-            // total :11 // Total number of bytes to upload or download
-            // }
-          }
-
-          if (httpResponse.type === HttpEventType.Response && httpResponse.body) {
-            this._selectedPlace = <Place>httpResponse.body;
-            this._userMessage = {
-              message:"Your picture has been added to this place!",
-              messageType:MessageType.Success
-            };
-            this.hideUserMessage();
-          }
-        });
+      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService, this.onSuccessImageLoad.bind(this));
     }
   }
+
 }

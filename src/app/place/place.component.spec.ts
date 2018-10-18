@@ -17,7 +17,9 @@ import {
   ImageService,
   Place,
   PlaceComponent,
-  SelectionStateService
+  SelectionStateService,
+  MultiFileUploader,
+  MessageType
 } from '../barrel';
 
 describe('PlaceComponent', () => {
@@ -27,13 +29,13 @@ describe('PlaceComponent', () => {
   interface ImageServiceMock {
     getPlace(coordinates: Coordinates): Observable<Place>;
     savePlace(place: Place): Observable<Place>;
-    saveImage(
-      image: any,
-      coordinates: Coordinates
-    ): Observable<HttpEvent<Object>>;
   }
   interface SelectionStateServiceMock {
     selectedCoordinates: Subject<Coordinates>;
+  }
+
+  interface MultiFileUploaderMock {
+    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void);
   }
 
   @Component({
@@ -83,35 +85,6 @@ describe('PlaceComponent', () => {
         };
 
         return of(p);
-      },
-      saveImage: (
-        image: File,
-        coordinates: Coordinates
-      ): Observable<HttpEvent<Object>> => {
-        if (
-          image.name === 'fileName' &&
-          coordinates.x === 14 &&
-          coordinates.y === 10
-        ) {
-          const place: Place = {
-            isDefined: true,
-            x: 112,
-            y: 113,
-            name: 'save test'
-          };
-          const httpResponse = new HttpResponse({ body: place });
-
-          return of(httpResponse);
-        }
-        const place: Place = {
-          isDefined: true,
-          x: 1,
-          y: 2,
-          name: 'error'
-        };
-        const httpResponse = new HttpResponse({ body: place });
-
-        return of(httpResponse);
       }
     };
 
@@ -119,11 +92,19 @@ describe('PlaceComponent', () => {
       selectedCoordinates: new Subject<Coordinates>()
     };
 
+    const multiFileUploaderMock: MultiFileUploaderMock{
+      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void){
+        place.images=['testimage'];
+        onSuccessImageLoad(place);
+      }
+    }
+
     TestBed.configureTestingModule({
       imports: [FormsModule],
       providers: [
         { provide: ImageService, useValue: imageServiceMock },
-        { provide: SelectionStateService, useValue: selectionStateServiceMock }
+        { provide: SelectionStateService, useValue: selectionStateServiceMock },
+        { provide: MultiFileUploader, useValue: multiFileUploaderMock }
       ],
       declarations: [MockImageComponent, PlaceComponent]
     }).compileComponents();
@@ -257,11 +238,12 @@ describe('PlaceComponent', () => {
     }
   ));
 
-  it('when upload image, image service should be called', inject(
-    [ImageService, SelectionStateService],
+  it('when upload image, MultiFileUploader should be called', inject(
+    [ImageService, SelectionStateService, MultiFileUploader],
     (
       imageServiceMock: ImageServiceMock,
-      selectionStateServiceMock: SelectionStateServiceMock
+      selectionStateServiceMock: SelectionStateServiceMock,
+      multiFileUploaderMock: MultiFileUploaderMock
     ) => {
       const selectedCoordinates: Coordinates = {
         x: 14,
@@ -274,13 +256,13 @@ describe('PlaceComponent', () => {
         target: { files: [new File([], 'fileName')] }
       });
 
-      expect(112).toEqual(component.selectedPlace.x);
-      expect(113).toEqual(component.selectedPlace.y);
-      expect('save test').toEqual(component.selectedPlace.name);
+      expect(component.selectedPlace.images.length).toEqual(1);
+      expect(component.userMessage.message).toEqual("Your picture has been added to this place!");
+      expect(component.userMessage.messageType).toEqual(MessageType.Success);
     }
   ));
 
-  it('when upload image, but image not specified the image service should not be called', inject(
+  it('when upload image, but image not specified the MultiFileUploader should not be called', inject(
     [ImageService, SelectionStateService],
     (
       imageServiceMock: ImageServiceMock,
@@ -297,9 +279,8 @@ describe('PlaceComponent', () => {
         target: { files: [] }
       });
 
-      expect(14).toEqual(component.selectedPlace.x);
-      expect(10).toEqual(component.selectedPlace.y);
-      expect('test').toEqual(component.selectedPlace.name);
+      expect(component.selectedPlace.images).not.toBeDefined();
+      expect(component.userMessage).not.toBeDefined();
     }
   ));
 });

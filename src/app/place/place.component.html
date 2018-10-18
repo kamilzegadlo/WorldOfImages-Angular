@@ -32,7 +32,7 @@
     </figure>
     <span>Choose an image&hellip;</span>
   </label>
-  <input id="imageChooser" type="file" (change)="onFileChanged($event)" accept=".jpg, .jpeg, .png, .gif, .bmp">
+  <input id="imageChooser" type="file" (change)="onFileChanged($event)" accept=".jpg, .jpeg, .png, .gif, .bmp" multiple>
 
   <section class="image-grid">
     <div class="image__cell" [ngClass]="{'is-expanded': expandedIndex==i, 'is-collapsed': expandedIndex!=i}" *ngFor="let image of selectedPlace?.images; let i = index">

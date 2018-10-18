@@ -11,6 +11,7 @@ import {
   ImageComponent,
   PlaceComponent,
   ImageService,
+  MultiFileUploader,
   SelectionStateService
 } from './barrel';
 
@@ -22,6 +23,7 @@ import { fakeBackendProvider } from './FakeBackendInterceptor';
   providers: [
     ImageService,
     SelectionStateService,
+    MultiFileUploader,
     fakeBackendProvider
   ],
   bootstrap: [AppComponent]
