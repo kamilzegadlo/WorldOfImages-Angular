@@ -39,27 +39,10 @@ html {
   height: 170px
 }
 
-.basic__img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
-}
-
-
 .image__cell.is-collapsed .arrow--up {
   display: block;
   height: 10px;
   width: 100%;
-}
-
-.image--large {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  padding: 40px;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
 
 .image__cell .image--basic {
