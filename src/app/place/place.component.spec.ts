@@ -6,7 +6,7 @@ import {
   inject
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
-import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpResponse, HttpClient, HttpHandler } from '@angular/common/http';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/observable';
@@ -19,23 +19,20 @@ import {
   PlaceComponent,
   SelectionStateService,
   MultiFileUploader,
-  MessageType
+  MessageType,
+  ImageServiceStub
 } from '../barrel';
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;
   let fixture: ComponentFixture<PlaceComponent>;
 
-  interface ImageServiceMock {
-    getPlace(coordinates: Coordinates): Observable<Place>;
-    savePlace(place: Place): Observable<Place>;
-  }
   interface SelectionStateServiceMock {
     selectedCoordinates: Subject<Coordinates>;
   }
 
   interface MultiFileUploaderMock {
-    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void);
+    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void) : void;
   }
 
   @Component({
@@ -48,51 +45,12 @@ describe('PlaceComponent', () => {
   }
 
   beforeEach(async(() => {
-    const imageServiceMock: ImageServiceMock = {
-      getPlace: (coordinates: Coordinates): Observable<Place> => {
-        if (coordinates.x === 11 && coordinates.y === 15) {
-          return of({
-            x: 100,
-            y: 150,
-            name: 'unit test name',
-            isDefined: true
-          } as Place);
-        }
-        if (coordinates.x === 12 && coordinates.y === 14) {
-          return of({ x: 101, y: 151, isDefined: true } as Place);
-        }
-        if (coordinates.x === 14 && coordinates.y === 10) {
-          return of({ x: 14, y: 10, isDefined: false, name: 'test' } as Place);
-        }
-        return of({ x: 109, y: 159, isDefined: true } as Place);
-      },
-      savePlace: (place: Place): Observable<Place> => {
-        if (place.x === 14 && place.y === 10) {
-          const p: Place = {
-            isDefined: true,
-            x: 999,
-            y: 998,
-            name: 'save test'
-          };
-
-          return of(p);
-        }
-        const p: Place = {
-          isDefined: true,
-          x: 4,
-          y: 5,
-          name: 'error'
-        };
-
-        return of(p);
-      }
-    };
 
     const selectionStateServiceMock: SelectionStateServiceMock = {
       selectedCoordinates: new Subject<Coordinates>()
     };
 
-    const multiFileUploaderMock: MultiFileUploaderMock{
+    const multiFileUploaderMock: MultiFileUploaderMock = {
       upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void){
         place.images=['testimage'];
         onSuccessImageLoad(place);
@@ -102,7 +60,9 @@ describe('PlaceComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       providers: [
-        { provide: ImageService, useValue: imageServiceMock },
+        HttpClient,
+        HttpHandler,
+        { provide: ImageService, useClass: ImageServiceStub },
         { provide: SelectionStateService, useValue: selectionStateServiceMock },
         { provide: MultiFileUploader, useValue: multiFileUploaderMock }
       ],
@@ -132,7 +92,7 @@ describe('PlaceComponent', () => {
   it('on init, selected place should be empty', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       // assert
@@ -143,7 +103,7 @@ describe('PlaceComponent', () => {
   it('when received coordinates, image service should be called', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       // arrange
@@ -165,7 +125,7 @@ describe('PlaceComponent', () => {
   it('when received coordinates of defined place, label should be replaced with place data', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       // arrange
@@ -191,7 +151,7 @@ describe('PlaceComponent', () => {
   it('when received coordinatesof undefined place, input should be visible and enable', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       // arrange
@@ -219,7 +179,7 @@ describe('PlaceComponent', () => {
   it('when click save, image service should be called', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       // arrange
@@ -241,7 +201,7 @@ describe('PlaceComponent', () => {
   it('when upload image, MultiFileUploader should be called', inject(
     [ImageService, SelectionStateService, MultiFileUploader],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock,
       multiFileUploaderMock: MultiFileUploaderMock
     ) => {
@@ -256,16 +216,25 @@ describe('PlaceComponent', () => {
         target: { files: [new File([], 'fileName')] }
       });
 
-      expect(component.selectedPlace.images.length).toEqual(1);
-      expect(component.userMessage.message).toEqual("Your picture has been added to this place!");
-      expect(component.userMessage.messageType).toEqual(MessageType.Success);
+      if(component && component.selectedPlace && component.selectedPlace.images){
+          expect(component.selectedPlace.images.length).toEqual(1);
+      } else {
+        fail('component && component.selectedPlace && component.selectedPlace.images should be defined')
+      }
+      if(component.userMessage){
+        expect(component.userMessage.message).toEqual("Your picture has been added to this place!");
+        expect(component.userMessage.messageType).toEqual(MessageType.Success);
+      }
+      else{
+        fail('component.userMessage')
+      }
     }
   ));
 
   it('when upload image, but image not specified the MultiFileUploader should not be called', inject(
     [ImageService, SelectionStateService],
     (
-      imageServiceMock: ImageServiceMock,
+      imageServiceStub: ImageServiceStub,
       selectionStateServiceMock: SelectionStateServiceMock
     ) => {
       const selectedCoordinates: Coordinates = {

@@ -32,7 +32,7 @@ export class ImageService {
       .pipe(catchError<Place, Place>(this.savePlaceErrorHandling));
   }
 
-  getPlaceErrorHandling(
+  private getPlaceErrorHandling(
     err: any,
     caught: Observable<Place>
   ): Observable<Place> {
@@ -40,7 +40,7 @@ export class ImageService {
     return of(placeNullObject);
   }
 
-  savePlaceErrorHandling(
+  private savePlaceErrorHandling(
     err: any,
     caught: Observable<Place>
   ): Observable<Place> {
