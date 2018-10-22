@@ -5,6 +5,7 @@ import {
   style,
   animate,
   transition,
+  sequence,
   // ...
 } from '@angular/animations';
 
@@ -30,11 +31,12 @@ import {
     trigger('userMessageAnimation', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('0s', style({ opacity: 1 })),
+        animate('0s', style({ opacity: 1 }))
       ]),
-      transition(':leave', [
-        animate('15s', style({ opacity: 0 }))
-      ])
+      transition(':leave', sequence([
+        animate('15s', style({ opacity: 0 })),
+        animate('2s', style({ height: '0px' })),
+      ]))
     ])
   ]
 })
