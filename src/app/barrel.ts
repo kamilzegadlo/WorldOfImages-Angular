@@ -1,5 +1,6 @@
 export * from './coordinates';
 export * from './place';
+export * from './getPlaceResponse';
 export * from './messageType';
 export * from './userMessage';
 export * from './place-null-object';

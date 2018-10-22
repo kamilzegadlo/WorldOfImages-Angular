@@ -7,26 +7,29 @@ import {
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 
-import { Coordinates, Place, ImageService } from './barrel';
+import { Coordinates, Place, GetPlaceResponse, ImageService } from './barrel';
 
 export class ImageServiceStub extends ImageService {
 
-  getPlace(coordinates: Coordinates): Observable<Place> {
+  getPlace(coordinates: Coordinates): Observable<GetPlaceResponse> {
     if (coordinates.x === 11 && coordinates.y === 15) {
-      return of({
+      return of({isSuccess: true, place: {
         x: 100,
         y: 150,
         name: 'unit test name',
         isDefined: true
-      } as Place);
+      } as Place} as GetPlaceResponse);
     }
     if (coordinates.x === 12 && coordinates.y === 14) {
-      return of({ x: 101, y: 151, isDefined: true } as Place);
+      return of({ isSuccess: true, place:{ x: 101, y: 151, isDefined: true } as Place} as GetPlaceResponse);
     }
     if (coordinates.x === 14 && coordinates.y === 10) {
-      return of({ x: 14, y: 10, isDefined: false, name: 'test' } as Place);
+      return of({isSuccess:true, place: { x: 14, y: 10, isDefined: false, name: 'test' } as Place} as GetPlaceResponse);
     }
-    return of({ x: 109, y: 159, isDefined: true } as Place);
+    if (coordinates.x > 900 && coordinates.y > 600) {
+      return of({isSuccess:false, errorMessage: "There was a unit test error!"} as GetPlaceResponse);
+    }
+    return of({isSuccess: true, place: { x: 109, y: 159, isDefined: true } as Place} as GetPlaceResponse);
   }
 
   savePlace(place: Place): Observable<Place> {

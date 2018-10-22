@@ -15,7 +15,7 @@ import {
   SelectionStateService
 } from './barrel';
 
-import { fakeBackendProvider } from './FakeBackendInterceptor';
+import { fakeBackendProvider } from './fakeBackendInterceptor';
 
 @NgModule({
   declarations: [MapComponent, ImageComponent, PlaceComponent, AppComponent],

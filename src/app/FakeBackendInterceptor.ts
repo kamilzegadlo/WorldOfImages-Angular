@@ -68,18 +68,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             if (place) {
               return Observable.of(
-                new HttpResponse({ status: 200, body: place })
+                new HttpResponse({ status: 200, body: {isSuccess: true, place: place} })
               );
             }
             return Observable.of(
               new HttpResponse({
                 status: 204,
-                body: {
+                body: {isSuccess: true, place:{
                   x: x,
                   y: y,
                   name: 'New name',
                   isDefined: false
-                }
+                }}
               })
             );
           }

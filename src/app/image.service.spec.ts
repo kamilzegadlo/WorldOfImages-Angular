@@ -27,16 +27,41 @@ describe('ImageService', () => {
     })
   );
 
-  it(
-    'should return a mocked place',
+  it('should return a mocked place',
     inject([ImageService], (service: ImageService) => {
-      service.getPlace({ x: 13, y: 14 }).subscribe(place => {
-        expect(place.x).toBe(13);
-        expect(place.y).toEqual(14);
+      service.getPlace({ x: 13, y: 14 }).subscribe(getPlaceResponse => {
+        if(getPlaceResponse && getPlaceResponse.place)
+        {
+          expect(getPlaceResponse.place.x).toBe(13);
+          expect(getPlaceResponse.place.y).toEqual(14);
+        } else{
+          fail("getPlaceResponse or getPlaceResponse.place undefined!");
+        }
       });
 
       const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
-      placeRequest.flush({ x: 13, y: 14 } as Place);
+      placeRequest.flush({isSuccess: true, place: { x: 13, y: 14 } as Place});
+      httpMock.verify();
+
+      expect(placeRequest.request.method).toBe('GET');
+    })
+  );
+
+  it('if error, correct isSuccess and errorMessage should be set',
+    inject([ImageService], (service: ImageService) => {
+      service.getPlace({ x: 13, y: 14 }).subscribe(getPlaceResponse => {
+        if(getPlaceResponse)
+        {
+          expect(getPlaceResponse.isSuccess).toBe(false);
+          expect(getPlaceResponse.errorMessage).toEqual('There was an error! Try again!');
+          expect(getPlaceResponse.place).not.toBeDefined();
+        } else{
+          fail("getPlaceResponse undefined!");
+        }
+      });
+
+      const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
+      placeRequest.flush('invalid request', {status: 404, statusText: 'Bad Request'});
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('GET');

@@ -90,7 +90,17 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private getPlace(coordinates: Coordinates) {
     this.selectedPlaceSubscrption = this.imageService
       .getPlace(coordinates)
-      .subscribe(selectedPlace => (this._selectedPlace = selectedPlace));
+      .subscribe(getPlaceResponse => {
+        if(getPlaceResponse.isSuccess){
+          this._selectedPlace = <Place>getPlaceResponse.place
+        } else {
+          this._userMessage = {
+            message:<string>getPlaceResponse.errorMessage,
+            messageType:MessageType.Error
+          };
+          this.hideUserMessage();
+        }
+      });
   }
 
   savePlace() {

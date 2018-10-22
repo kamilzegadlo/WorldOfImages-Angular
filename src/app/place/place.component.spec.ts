@@ -148,7 +148,7 @@ describe('PlaceComponent', () => {
     }
   ));
 
-  it('when received coordinatesof undefined place, input should be visible and enable', inject(
+  it('when received coordinates of undefined place, input should be visible and enable', inject(
     [ImageService, SelectionStateService],
     (
       imageServiceStub: ImageServiceStub,
@@ -250,6 +250,32 @@ describe('PlaceComponent', () => {
 
       expect(component.selectedPlace.images).not.toBeDefined();
       expect(component.userMessage).not.toBeDefined();
+    }
+  ));
+
+    it('when error occured during retrieving a place, error message should be displayed', inject(
+    [ImageService, SelectionStateService],
+    (
+      imageServiceStub: ImageServiceStub,
+      selectionStateServiceMock: SelectionStateServiceMock
+    ) => {
+      // arrange
+      const selectedCoordinates: Coordinates = {
+        x: 901,
+        y: 601
+      };
+
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+
+      // assert
+      if(component.userMessage)
+      {
+        expect('There was a unit test error!').toEqual(component.userMessage.message);
+        expect(MessageType.Error).toEqual(component.userMessage.messageType);
+      } else {
+        fail("component.userMessage undefined!");
+      }
     }
   ));
 });

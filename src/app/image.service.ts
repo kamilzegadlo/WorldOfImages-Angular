@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Coordinates, Place, placeNullObject } from './barrel';
+import { Coordinates, Place, GetPlaceResponse, placeNullObject } from './barrel';
 
 @Injectable()
 export class ImageService {
@@ -18,12 +18,12 @@ export class ImageService {
   private placesUrl = 'api/place';
   private imageUrl = 'api/image';
 
-  getPlace(coordinates: Coordinates): Observable<Place> {
+  getPlace(coordinates: Coordinates): Observable<GetPlaceResponse> {
     return this.http
-      .get<Place>(this.placesUrl, {
+      .get<GetPlaceResponse>(this.placesUrl, {
         params: { x: coordinates.x.toString(), y: coordinates.y.toString() }
       })
-      .pipe(catchError<Place, Place>(this.getPlaceErrorHandling));
+      .pipe(catchError<GetPlaceResponse, GetPlaceResponse>(this.getPlaceErrorHandling));
   }
 
   savePlace(place: Place): Observable<Place> {
@@ -34,10 +34,9 @@ export class ImageService {
 
   private getPlaceErrorHandling(
     err: any,
-    caught: Observable<Place>
-  ): Observable<Place> {
-    console.log('get place error handling');
-    return of(placeNullObject);
+    caught: Observable<GetPlaceResponse>
+  ): Observable<GetPlaceResponse> {
+    return of(<GetPlaceResponse>{isSuccess: false, errorMessage: 'There was an error! Try again!'});
   }
 
   private savePlaceErrorHandling(
