@@ -106,13 +106,21 @@ export class PlaceComponent implements OnInit, OnDestroy {
   savePlace() {
     this.imageService
       .savePlace(this._selectedPlace)
-      .subscribe(selectedPlace => {
-        this._selectedPlace = selectedPlace;
-        this._userMessage = {
-          message: "You have named this place!",
-          messageType: MessageType.Success
-        };
-        this.hideUserMessage();
+      .subscribe(savePlaceResponse => {
+        if (savePlaceResponse.isSuccess) {
+          this._selectedPlace = <Place>savePlaceResponse.responseObject;
+          this._userMessage = {
+            message: "You have named this place!",
+            messageType: MessageType.Success
+          };
+          this.hideUserMessage();
+        } else {
+          this._userMessage = {
+            message: <string>savePlaceResponse.errorMessage,
+            messageType: MessageType.Error
+          };
+          this.hideUserMessage();
+        }
       });
   }
 

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Coordinates, Place, BackEndResponse, placeNullObject } from './barrel';
+import { Coordinates, Place, BackendResponse, placeNullObject } from './barrel';
 
 @Injectable()
 export class ImageService {
@@ -18,33 +18,32 @@ export class ImageService {
   private placesUrl = 'api/place';
   private imageUrl = 'api/image';
 
-  getPlace(coordinates: Coordinates): Observable<BackEndResponse<Place>> {
+  getPlace(coordinates: Coordinates): Observable<BackendResponse<Place>> {
     return this.http
-      .get<BackEndResponse<Place>>(this.placesUrl, {
+      .get<BackendResponse<Place>>(this.placesUrl, {
         params: { x: coordinates.x.toString(), y: coordinates.y.toString() }
       })
-      .pipe(catchError<BackEndResponse<Place>, BackEndResponse<Place>>(this.getPlaceErrorHandling));
+      .pipe(catchError<BackendResponse<Place>, BackendResponse<Place>>(this.getPlaceErrorHandling));
   }
 
-  savePlace(place: Place): Observable<Place> {
+  savePlace(place: Place): Observable<BackendResponse<Place>> {
     return this.http
       .put(this.placesUrl, place)
-      .pipe(catchError<Place, Place>(this.savePlaceErrorHandling));
+      .pipe(catchError<BackendResponse<Place>, BackendResponse<Place>>(this.savePlaceErrorHandling));
   }
 
   private getPlaceErrorHandling(
     err: any,
-    caught: Observable<BackEndResponse<Place>>
-  ): Observable<BackEndResponse<Place>> {
-    return of(<BackEndResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error! Try again!' });
+    caught: Observable<BackendResponse<Place>>
+  ): Observable<BackendResponse<Place>> {
+    return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error! Try again!' });
   }
 
   private savePlaceErrorHandling(
     err: any,
-    caught: Observable<Place>
-  ): Observable<Place> {
-    console.log('save place error handling');
-    return of(placeNullObject);
+    caught: Observable<BackendResponse<Place>>
+  ): Observable<BackendResponse<Place>> {
+    return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error during saving! Try again!' });
   }
 
   saveImage(

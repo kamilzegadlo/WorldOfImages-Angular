@@ -89,7 +89,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           // create place
           if (request.url.endsWith('api/place') && request.method === 'PUT') {
             const newPlace = request.body;
-
             // validation
             const duplicatePlace = places.filter(place => {
               return place.x === newPlace.x && place.y === newPlace.y;
@@ -105,7 +104,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // respond 200 OK
             return Observable.of(
-              new HttpResponse({ status: 200, body: newPlace })
+              new HttpResponse({
+                status: 200, body: {
+                  isSuccess: true,
+                  responseObject: newPlace
+                }
+              })
             );
           }
 

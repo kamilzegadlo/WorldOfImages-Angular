@@ -188,7 +188,6 @@ describe('PlaceComponent', () => {
       };
       // act
       selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
-
       component.savePlace();
 
       expect(999).toEqual(component.selectedPlace.x);
@@ -270,6 +269,30 @@ describe('PlaceComponent', () => {
       // assert
       if (component.userMessage) {
         expect('There was a unit test error!').toEqual(component.userMessage.message);
+        expect(MessageType.Error).toEqual(component.userMessage.messageType);
+      } else {
+        fail("component.userMessage undefined!");
+      }
+    }
+  ));
+
+  it('when error occured during saving a place, error message should be displayed', inject(
+    [ImageService, SelectionStateService],
+    (
+      imageServiceStub: ImageServiceStub,
+      selectionStateServiceMock: SelectionStateServiceMock
+    ) => {
+      // arrange
+      const selectedCoordinates: Coordinates = {
+        x: 902,
+        y: 602,
+      };
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+      component.savePlace();
+
+      if (component.userMessage) {
+        expect('There was a unit test error during saving!').toEqual(component.userMessage.message);
         expect(MessageType.Error).toEqual(component.userMessage.messageType);
       } else {
         fail("component.userMessage undefined!");

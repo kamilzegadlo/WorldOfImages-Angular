@@ -1,4 +1,4 @@
-export interface BackEndResponse<T> {
+export interface BackendResponse<T> {
   isSuccess: boolean;
   responseObject?: T;
   errorMessage?: string;

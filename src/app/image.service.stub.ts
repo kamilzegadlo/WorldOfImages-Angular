@@ -7,11 +7,11 @@ import {
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 
-import { Coordinates, Place, BackEndResponse, ImageService } from './barrel';
+import { Coordinates, Place, BackendResponse, ImageService } from './barrel';
 
 export class ImageServiceStub extends ImageService {
 
-  getPlace(coordinates: Coordinates): Observable<BackEndResponse<Place>> {
+  getPlace(coordinates: Coordinates): Observable<BackendResponse<Place>> {
     if (coordinates.x === 11 && coordinates.y === 15) {
       return of({
         isSuccess: true, responseObject: {
@@ -20,39 +20,49 @@ export class ImageServiceStub extends ImageService {
           name: 'unit test name',
           isDefined: true
         } as Place
-      } as BackEndResponse<Place>);
+      } as BackendResponse<Place>);
     }
     if (coordinates.x === 12 && coordinates.y === 14) {
-      return of({ isSuccess: true, responseObject: { x: 101, y: 151, isDefined: true } as Place } as BackEndResponse<Place>);
+      return of({ isSuccess: true, responseObject: { x: 101, y: 151, isDefined: true } as Place } as BackendResponse<Place>);
     }
     if (coordinates.x === 14 && coordinates.y === 10) {
-      return of({ isSuccess: true, responseObject: { x: 14, y: 10, isDefined: false, name: 'test' } as Place } as BackEndResponse<Place>);
+      return of({ isSuccess: true, responseObject: { x: 14, y: 10, isDefined: false, name: 'test' } as Place } as BackendResponse<Place>);
     }
-    if (coordinates.x > 900 && coordinates.y > 600) {
-      return of({ isSuccess: false, errorMessage: "There was a unit test error!" } as BackEndResponse<Place>);
+    if (coordinates.x === 901 && coordinates.y === 601) {
+      return of({ isSuccess: false, errorMessage: "There was a unit test error!" } as BackendResponse<Place>);
     }
-    return of({ isSuccess: true, responseObject: { x: 109, y: 159, isDefined: true } as Place } as BackEndResponse<Place>);
+    if (coordinates.x === 902 && coordinates.y === 602) {
+      return of({ isSuccess: true, responseObject: { x: 902, y: 602, isDefined: true } as Place } as BackendResponse<Place>);
+    }
+    return of({ isSuccess: true, responseObject: { x: 109, y: 159, isDefined: true } as Place } as BackendResponse<Place>);
   }
 
-  savePlace(place: Place): Observable<Place> {
+  savePlace(place: Place): Observable<BackendResponse<Place>> {
+    debugger;
     if (place.x === 14 && place.y === 10) {
-      const p: Place = {
-        isDefined: true,
-        x: 999,
-        y: 998,
-        name: 'save test'
-      };
-
-      return of(p);
+      return of({
+        isSuccess: true,
+        responseObject: {
+          isDefined: true,
+          x: 999,
+          y: 998,
+          name: 'save test'
+        }
+      } as BackendResponse<Place>);
     }
-    const p: Place = {
-      isDefined: true,
-      x: 4,
-      y: 5,
-      name: 'error'
-    };
+    if (place.x === 902 && place.y === 602) {
+      return of({ isSuccess: false, errorMessage: "There was a unit test error during saving!" });
+    }
 
-    return of(p);
+    return of({
+      isSuccess: true,
+      responseObject: {
+        isDefined: true,
+        x: 4,
+        y: 5,
+        name: 'error'
+      }
+    });
   }
 
   saveImage(
@@ -91,6 +101,7 @@ export class ImageServiceStub extends ImageService {
 
       return of(httpResponse);
     }
+
     const place: Place = {
       isDefined: true,
       x: 1,
