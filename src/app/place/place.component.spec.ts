@@ -32,7 +32,7 @@ describe('PlaceComponent', () => {
   }
 
   interface MultiFileUploaderMock {
-    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void) : void;
+    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void): void;
   }
 
   @Component({
@@ -45,14 +45,13 @@ describe('PlaceComponent', () => {
   }
 
   beforeEach(async(() => {
-
     const selectionStateServiceMock: SelectionStateServiceMock = {
       selectedCoordinates: new Subject<Coordinates>()
     };
 
     const multiFileUploaderMock: MultiFileUploaderMock = {
-      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place)=> void){
-        place.images=['testimage'];
+      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void) {
+        place.images = ['testimage'];
         onSuccessImageLoad(place);
       }
     }
@@ -216,16 +215,16 @@ describe('PlaceComponent', () => {
         target: { files: [new File([], 'fileName')] }
       });
 
-      if(component && component.selectedPlace && component.selectedPlace.images){
-          expect(component.selectedPlace.images.length).toEqual(1);
+      if (component && component.selectedPlace && component.selectedPlace.images) {
+        expect(component.selectedPlace.images.length).toEqual(1);
       } else {
         fail('component && component.selectedPlace && component.selectedPlace.images should be defined')
       }
-      if(component.userMessage){
+      if (component.userMessage) {
         expect(component.userMessage.message).toEqual("Your picture has been added to this place!");
         expect(component.userMessage.messageType).toEqual(MessageType.Success);
       }
-      else{
+      else {
         fail('component.userMessage')
       }
     }
@@ -253,7 +252,7 @@ describe('PlaceComponent', () => {
     }
   ));
 
-    it('when error occured during retrieving a place, error message should be displayed', inject(
+  it('when error occured during retrieving a place, error message should be displayed', inject(
     [ImageService, SelectionStateService],
     (
       imageServiceStub: ImageServiceStub,
@@ -269,8 +268,7 @@ describe('PlaceComponent', () => {
       selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
 
       // assert
-      if(component.userMessage)
-      {
+      if (component.userMessage) {
         expect('There was a unit test error!').toEqual(component.userMessage.message);
         expect(MessageType.Error).toEqual(component.userMessage.messageType);
       } else {

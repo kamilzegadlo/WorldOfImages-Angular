@@ -19,7 +19,7 @@ import { Place } from './barrel';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor() { }
 
   intercept(
     request: HttpRequest<any>,
@@ -68,18 +68,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             if (place) {
               return Observable.of(
-                new HttpResponse({ status: 200, body: {isSuccess: true, place: place} })
+                new HttpResponse({ status: 200, body: { isSuccess: true, responseObject: place } })
               );
             }
             return Observable.of(
               new HttpResponse({
                 status: 204,
-                body: {isSuccess: true, place:{
-                  x: x,
-                  y: y,
-                  name: 'New name',
-                  isDefined: false
-                }}
+                body: {
+                  isSuccess: true, responseObject: {
+                    x: x,
+                    y: y,
+                    name: 'New name',
+                    isDefined: false
+                  }
+                }
               })
             );
           }
@@ -129,7 +131,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const reader = new FileReader();
             reader.addEventListener(
               'load',
-              function() {
+              function () {
                 if (!place.images || place.images.length === 0) {
                   place.images = [reader.result];
                 } else {

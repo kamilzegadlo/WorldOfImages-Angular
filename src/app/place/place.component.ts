@@ -46,16 +46,16 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private selectedPlaceSubscrption: Subscription;
   private _expandedIndex: number | undefined;
   private _userMessage: UserMessage | undefined = undefined;
-  MessageType=MessageType;
+  MessageType = MessageType;
 
-  expandIndex(i:number | undefined){
-    if(this._expandedIndex===i)
+  expandIndex(i: number | undefined) {
+    if (this._expandedIndex === i)
       this.collapseIndex();
     else
-      this._expandedIndex=i;
+      this._expandedIndex = i;
   }
-  collapseIndex(){
-    this._expandedIndex=undefined;
+  collapseIndex() {
+    this._expandedIndex = undefined;
   }
 
   get selectedPlace(): Place {
@@ -74,7 +74,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private imageService: ImageService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
@@ -91,12 +91,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.selectedPlaceSubscrption = this.imageService
       .getPlace(coordinates)
       .subscribe(getPlaceResponse => {
-        if(getPlaceResponse.isSuccess){
-          this._selectedPlace = <Place>getPlaceResponse.place
+        if (getPlaceResponse.isSuccess) {
+          this._selectedPlace = <Place>getPlaceResponse.responseObject
         } else {
           this._userMessage = {
-            message:<string>getPlaceResponse.errorMessage,
-            messageType:MessageType.Error
+            message: <string>getPlaceResponse.errorMessage,
+            messageType: MessageType.Error
           };
           this.hideUserMessage();
         }
@@ -109,29 +109,28 @@ export class PlaceComponent implements OnInit, OnDestroy {
       .subscribe(selectedPlace => {
         this._selectedPlace = selectedPlace;
         this._userMessage = {
-          message:"You have named this place!",
-          messageType:MessageType.Success
+          message: "You have named this place!",
+          messageType: MessageType.Success
         };
         this.hideUserMessage();
       });
   }
 
   private hideUserMessage() {
-    Observable.timer(0).subscribe(()=>this._userMessage=undefined);
+    Observable.timer(0).subscribe(() => this._userMessage = undefined);
   }
 
-  private onSuccessImageLoad(place: Place){
-      this._selectedPlace = place;
-      this._userMessage = {
-        message:"Your picture has been added to this place!",
-        messageType:MessageType.Success
-      };
-      this.hideUserMessage();
+  private onSuccessImageLoad(place: Place) {
+    this._selectedPlace = place;
+    this._userMessage = {
+      message: "Your picture has been added to this place!",
+      messageType: MessageType.Success
+    };
+    this.hideUserMessage();
   }
 
   onFileChanged(change: any) {
-    if(change.target.files.length>0)
-    {
+    if (change.target.files.length > 0) {
       this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService, this.onSuccessImageLoad.bind(this));
     }
   }
