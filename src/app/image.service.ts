@@ -3,7 +3,8 @@ import {
   HttpClient,
   HttpHeaders,
   HttpResponse,
-  HttpEvent
+  HttpEvent,
+  HttpEventType
 } from '@angular/common/http';
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
@@ -41,7 +42,7 @@ export class ImageService {
   saveImage(
     image: File,
     coordinates: Coordinates
-  ): Observable<HttpEvent<Object>> {
+  ): Observable<BackendResponse<Place>> {
     return this.http.put(
       this.imageUrl,
       {
@@ -50,11 +51,11 @@ export class ImageService {
           y: coordinates.y.toString()
         },
         image: image
-      },
-      {
-        reportProgress: true,
-        observe: 'events'
       }
-    );
+    ).pipe(map((place: Place) => {
+      return <BackendResponse<Place>>{ isSuccess: true, responseObject: place };
+    }), catchError(() => {
+      return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error uploading an image! Try again!' });
+    }));
   }
 }

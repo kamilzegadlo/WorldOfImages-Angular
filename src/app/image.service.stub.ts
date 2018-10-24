@@ -34,11 +34,13 @@ export class ImageServiceStub extends ImageService {
     if (coordinates.x === 902 && coordinates.y === 602) {
       return of({ isSuccess: true, responseObject: { x: 902, y: 602, isDefined: true } as Place } as BackendResponse<Place>);
     }
+    if (coordinates.x === 15 && coordinates.y === 11) {
+      return of({ isSuccess: true, responseObject: { x: 15, y: 11, isDefined: false, name: 'test' } as Place } as BackendResponse<Place>);
+    }
     return of({ isSuccess: true, responseObject: { x: 109, y: 159, isDefined: true } as Place } as BackendResponse<Place>);
   }
 
   savePlace(place: Place): Observable<BackendResponse<Place>> {
-    debugger;
     if (place.x === 14 && place.y === 10) {
       return of({
         isSuccess: true,
@@ -68,7 +70,7 @@ export class ImageServiceStub extends ImageService {
   saveImage(
     image: File,
     coordinates: Coordinates
-  ): Observable<HttpEvent<Object>> {
+  ): Observable<BackendResponse<Place>> {
     if (
       image.name === 'fileName1' &&
       coordinates.x === 100 &&
@@ -81,9 +83,8 @@ export class ImageServiceStub extends ImageService {
         name: 'save test1',
         images: ['image']
       };
-      const httpResponse = new HttpResponse({ body: place });
 
-      return of(httpResponse);
+      return of({ isSuccess: true, responseObject: place });
     }
     if (
       image.name === 'fileName2' &&
@@ -97,9 +98,32 @@ export class ImageServiceStub extends ImageService {
         name: 'save test2',
         images: ['image']
       };
-      const httpResponse = new HttpResponse({ body: place });
 
-      return of(httpResponse);
+      return of({ isSuccess: true, responseObject: place });
+    }
+
+    if (
+      image.name === 'fileName1' &&
+      coordinates.x === 101 &&
+      coordinates.y === 201
+    ) {
+      return of({ isSuccess: false, errorMessage: 'error message' });
+    }
+
+    if (
+      image.name === 'fileName2' &&
+      coordinates.x === 101 &&
+      coordinates.y === 201
+    ) {
+      const place: Place = {
+        isDefined: true,
+        x: 112,
+        y: 113,
+        name: 'save test1',
+        images: ['image']
+      };
+
+      return of({ isSuccess: true, responseObject: place });
     }
 
     const place: Place = {
@@ -108,9 +132,8 @@ export class ImageServiceStub extends ImageService {
       y: 2,
       name: 'error'
     };
-    const httpResponse = new HttpResponse({ body: place });
 
-    return of(httpResponse);
+    return of({ isSuccess: true, responseObject: place });
   }
 
 };

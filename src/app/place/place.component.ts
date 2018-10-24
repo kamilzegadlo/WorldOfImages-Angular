@@ -137,9 +137,19 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.hideUserMessage();
   }
 
+  private onFailureImageLoad() {
+    debugger;
+    this._userMessage = {
+      message: "Error while uploading your image. Try again.",
+      messageType: MessageType.Error
+    };
+    this.hideUserMessage();
+  }
+
   onFileChanged(change: any) {
+    debugger;
     if (change.target.files.length > 0) {
-      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService, this.onSuccessImageLoad.bind(this));
+      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService, this.onSuccessImageLoad.bind(this), this.onFailureImageLoad.bind(this));
     }
   }
 

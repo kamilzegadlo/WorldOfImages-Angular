@@ -104,4 +104,44 @@ describe('ImageService', () => {
       expect(placeRequest.request.method).toBe('PUT');
     })
   );
+
+  it('upload image should return a mocked place',
+    inject([ImageService], (service: ImageService) => {
+      service.saveImage(new File([], 'fileName'), { x: 14, y: 15 }).subscribe(saveImageResponse => {
+        if (saveImageResponse && saveImageResponse.responseObject) {
+          expect(saveImageResponse.responseObject.x).toBe(16);
+          expect(saveImageResponse.responseObject.y).toEqual(17);
+        } else {
+          fail("saveImageResponse or saveImageResponse.responseObject undefined!");
+        }
+      });
+
+      const placeRequest = httpMock.expectOne('api/image');
+      placeRequest.flush({ x: 16, y: 17 });
+      httpMock.verify();
+
+      expect(placeRequest.request.method).toBe('PUT');
+    })
+  );
+
+  it('upload image, if error, correct isSuccess and errorMessage should be set',
+    inject([ImageService], (service: ImageService) => {
+      service.saveImage(new File([], 'fileName'), { x: 14, y: 15 }).subscribe(saveImageResponse => {
+        if (saveImageResponse) {
+          expect(saveImageResponse.isSuccess).toBe(false);
+          expect(saveImageResponse.errorMessage).toEqual('There was an error uploading an image! Try again!');
+          expect(saveImageResponse.responseObject).not.toBeDefined();
+        } else {
+          fail("saveImageResponse undefined!");
+        }
+      });
+
+      const placeRequest = httpMock.expectOne('api/image');
+      placeRequest.flush('invalid request', { status: 404, statusText: 'Bad Request' });
+      httpMock.verify();
+
+      expect(placeRequest.request.method).toBe('PUT');
+    })
+  );
+
 });

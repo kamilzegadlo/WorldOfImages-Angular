@@ -32,7 +32,7 @@ describe('PlaceComponent', () => {
   }
 
   interface MultiFileUploaderMock {
-    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void): void;
+    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void): void;
   }
 
   @Component({
@@ -50,9 +50,16 @@ describe('PlaceComponent', () => {
     };
 
     const multiFileUploaderMock: MultiFileUploaderMock = {
-      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void) {
-        place.images = ['testimage'];
-        onSuccessImageLoad(place);
+      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void) {
+        debugger;
+        if (place.x == 14 && place.y === 10) {
+          place.images = ['testimage'];
+          onSuccessImageLoad(place);
+        }
+        if (place.x === 15 && place.y === 11) {
+          onFailureImageLoad();
+        }
+
       }
     }
 
@@ -296,6 +303,40 @@ describe('PlaceComponent', () => {
         expect(MessageType.Error).toEqual(component.userMessage.messageType);
       } else {
         fail("component.userMessage undefined!");
+      }
+    }
+  ));
+
+  it('when upload image and MultiFileUploader returns error', inject(
+    [ImageService, SelectionStateService, MultiFileUploader],
+    (
+      imageServiceStub: ImageServiceStub,
+      selectionStateServiceMock: SelectionStateServiceMock,
+      multiFileUploaderMock: MultiFileUploaderMock
+    ) => {
+      const selectedCoordinates: Coordinates = {
+        x: 15,
+        y: 11
+      };
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+
+      debugger;
+      component.onFileChanged({
+        target: { files: [new File([], 'fileName')] }
+      });
+
+      if (component && component.selectedPlace) {
+        expect(component.selectedPlace.images).not.toBeDefined();
+      } else {
+        fail('component && component.selectedPlace should be defined')
+      }
+      if (component.userMessage) {
+        expect(component.userMessage.message).toEqual("Error while uploading your image. Try again.");
+        expect(component.userMessage.messageType).toEqual(MessageType.Error);
+      }
+      else {
+        fail('component.userMessage')
       }
     }
   ));
