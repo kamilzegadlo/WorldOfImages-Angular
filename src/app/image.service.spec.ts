@@ -39,7 +39,7 @@ describe('ImageService', () => {
       });
 
       const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
-      placeRequest.flush({ isSuccess: true, responseObject: { x: 13, y: 14 } });
+      placeRequest.flush({ x: 13, y: 14 });
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('GET');
@@ -78,7 +78,7 @@ describe('ImageService', () => {
       });
 
       const placeRequest = httpMock.expectOne('api/place');
-      placeRequest.flush({ isSuccess: true, responseObject: { x: 16, y: 17 } });
+      placeRequest.flush({ x: 16, y: 17 });
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('PUT');

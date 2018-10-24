@@ -20,30 +20,29 @@ export class ImageService {
 
   getPlace(coordinates: Coordinates): Observable<BackendResponse<Place>> {
     return this.http
-      .get<BackendResponse<Place>>(this.placesUrl, {
+      .get<Place>(this.placesUrl, {
         params: { x: coordinates.x.toString(), y: coordinates.y.toString() }
-      })
-      .pipe(catchError<BackendResponse<Place>, BackendResponse<Place>>(this.getPlaceErrorHandling));
+      }).pipe(map((place: Place) => {
+        return <BackendResponse<Place>>{ isSuccess: true, responseObject: place };
+      }), catchError(() => {
+        return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error! Try again!' });
+      }))
   }
 
   savePlace(place: Place): Observable<BackendResponse<Place>> {
-    return this.http
-      .put(this.placesUrl, place)
-      .pipe(catchError<BackendResponse<Place>, BackendResponse<Place>>(this.savePlaceErrorHandling));
+    return this.http.put<Place>(this.placesUrl, place)
+      .pipe(map((place: Place) => {
+        return <BackendResponse<Place>>{ isSuccess: true, responseObject: place };
+      }), catchError(() => {
+        return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error during saving! Try again!' });
+      }))
   }
 
   private getPlaceErrorHandling(
     err: any,
-    caught: Observable<BackendResponse<Place>>
+    caught: Observable<Place>
   ): Observable<BackendResponse<Place>> {
     return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error! Try again!' });
-  }
-
-  private savePlaceErrorHandling(
-    err: any,
-    caught: Observable<BackendResponse<Place>>
-  ): Observable<BackendResponse<Place>> {
-    return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error during saving! Try again!' });
   }
 
   saveImage(
