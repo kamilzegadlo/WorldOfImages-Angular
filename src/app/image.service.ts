@@ -38,13 +38,6 @@ export class ImageService {
       }))
   }
 
-  private getPlaceErrorHandling(
-    err: any,
-    caught: Observable<Place>
-  ): Observable<BackendResponse<Place>> {
-    return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error! Try again!' });
-  }
-
   saveImage(
     image: File,
     coordinates: Coordinates
