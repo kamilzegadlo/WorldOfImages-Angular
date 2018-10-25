@@ -23,33 +23,28 @@ export class ImageServiceStub extends ImageService {
       } as BackendResponse<Place>);
     }
     if (coordinates.x === 12 && coordinates.y === 14) {
-      return of({ isSuccess: true, responseObject: { x: 101, y: 151, isDefined: true } as Place } as BackendResponse<Place>);
+      return of({ isSuccess: true, responseObject: new Place(101, 151, 'test', true) } as BackendResponse<Place>);
     }
     if (coordinates.x === 14 && coordinates.y === 10) {
-      return of({ isSuccess: true, responseObject: { x: 14, y: 10, isDefined: false, name: 'test' } as Place } as BackendResponse<Place>);
+      return of({ isSuccess: true, responseObject: new Place(14, 10, 'test', false) } as BackendResponse<Place>);
     }
     if (coordinates.x === 901 && coordinates.y === 601) {
       return of({ isSuccess: false, errorMessage: "There was a unit test error!" } as BackendResponse<Place>);
     }
     if (coordinates.x === 902 && coordinates.y === 602) {
-      return of({ isSuccess: true, responseObject: { x: 902, y: 602, isDefined: true } as Place } as BackendResponse<Place>);
+      return of({ isSuccess: true, responseObject: new Place(902, 602, 'test', true) } as BackendResponse<Place>);
     }
     if (coordinates.x === 15 && coordinates.y === 11) {
-      return of({ isSuccess: true, responseObject: { x: 15, y: 11, isDefined: false, name: 'test' } as Place } as BackendResponse<Place>);
+      return of({ isSuccess: true, responseObject: new Place(15, 11, 'test', false) } as BackendResponse<Place>);
     }
-    return of({ isSuccess: true, responseObject: { x: 109, y: 159, isDefined: true } as Place } as BackendResponse<Place>);
+    return of({ isSuccess: true, responseObject: new Place(109, 159, 'test', true) } as BackendResponse<Place>);
   }
 
   savePlace(place: Place): Observable<BackendResponse<Place>> {
     if (place.x === 14 && place.y === 10) {
       return of({
         isSuccess: true,
-        responseObject: {
-          isDefined: true,
-          x: 999,
-          y: 998,
-          name: 'save test'
-        }
+        responseObject: new Place(999, 998, 'save test', true)
       } as BackendResponse<Place>);
     }
     if (place.x === 902 && place.y === 602) {
@@ -58,48 +53,27 @@ export class ImageServiceStub extends ImageService {
 
     return of({
       isSuccess: true,
-      responseObject: {
-        isDefined: true,
-        x: 4,
-        y: 5,
-        name: 'error'
-      }
+      responseObject: new Place(4, 5, 'error', true)
     });
   }
 
   saveImage(
     image: File,
     coordinates: Coordinates
-  ): Observable<BackendResponse<Place>> {
+  ): Observable<Boolean> {
     if (
       image.name === 'fileName1' &&
       coordinates.x === 100 &&
       coordinates.y === 200
     ) {
-      const place: Place = {
-        isDefined: true,
-        x: 112,
-        y: 113,
-        name: 'save test1',
-        images: ['image']
-      };
-
-      return of({ isSuccess: true, responseObject: place });
+      return of(false);
     }
     if (
       image.name === 'fileName2' &&
       coordinates.x === 100 &&
       coordinates.y === 200
     ) {
-      const place: Place = {
-        isDefined: true,
-        x: 212,
-        y: 213,
-        name: 'save test2',
-        images: ['image']
-      };
-
-      return of({ isSuccess: true, responseObject: place });
+      return of(false);
     }
 
     if (
@@ -107,7 +81,7 @@ export class ImageServiceStub extends ImageService {
       coordinates.x === 101 &&
       coordinates.y === 201
     ) {
-      return of({ isSuccess: false, errorMessage: 'error message' });
+      return of(true);
     }
 
     if (
@@ -115,25 +89,11 @@ export class ImageServiceStub extends ImageService {
       coordinates.x === 101 &&
       coordinates.y === 201
     ) {
-      const place: Place = {
-        isDefined: true,
-        x: 112,
-        y: 113,
-        name: 'save test1',
-        images: ['image']
-      };
-
-      return of({ isSuccess: true, responseObject: place });
+      return of(false);
     }
 
-    const place: Place = {
-      isDefined: true,
-      x: 1,
-      y: 2,
-      name: 'error'
-    };
 
-    return of({ isSuccess: true, responseObject: place });
+    return of(false);
   }
 
 };

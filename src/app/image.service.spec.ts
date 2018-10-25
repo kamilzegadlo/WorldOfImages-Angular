@@ -39,7 +39,7 @@ describe('ImageService', () => {
       });
 
       const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
-      placeRequest.flush({ x: 13, y: 14 });
+      placeRequest.flush(new Place(13, 14, '', true));
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('GET');
@@ -68,7 +68,7 @@ describe('ImageService', () => {
 
   it('save place should return a mocked place',
     inject([ImageService], (service: ImageService) => {
-      service.savePlace({ x: 14, y: 15, isDefined: false, name: 'newName' }).subscribe(savePlaceResponse => {
+      service.savePlace(new Place(14, 15, 'newName', false)).subscribe(savePlaceResponse => {
         if (savePlaceResponse && savePlaceResponse.responseObject) {
           expect(savePlaceResponse.responseObject.x).toBe(16);
           expect(savePlaceResponse.responseObject.y).toEqual(17);
@@ -78,7 +78,7 @@ describe('ImageService', () => {
       });
 
       const placeRequest = httpMock.expectOne('api/place');
-      placeRequest.flush({ x: 16, y: 17 });
+      placeRequest.flush(new Place(16, 17, 'newName', false));
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('PUT');
@@ -87,7 +87,7 @@ describe('ImageService', () => {
 
   it('save place, if error, correct isSuccess and errorMessage should be set',
     inject([ImageService], (service: ImageService) => {
-      service.savePlace({ x: 14, y: 15, isDefined: false, name: 'newName' }).subscribe(savePlaceResponse => {
+      service.savePlace(new Place(14, 15, 'newName', false)).subscribe(savePlaceResponse => {
         if (savePlaceResponse) {
           expect(savePlaceResponse.isSuccess).toBe(false);
           expect(savePlaceResponse.errorMessage).toEqual('There was an error during saving! Try again!');
@@ -105,19 +105,14 @@ describe('ImageService', () => {
     })
   );
 
-  it('upload image should return a mocked place',
+  it('upload image should return false in success',
     inject([ImageService], (service: ImageService) => {
       service.saveImage(new File([], 'fileName'), { x: 14, y: 15 }).subscribe(saveImageResponse => {
-        if (saveImageResponse && saveImageResponse.responseObject) {
-          expect(saveImageResponse.responseObject.x).toBe(16);
-          expect(saveImageResponse.responseObject.y).toEqual(17);
-        } else {
-          fail("saveImageResponse or saveImageResponse.responseObject undefined!");
-        }
+        expect(saveImageResponse).toBe(false);
       });
 
       const placeRequest = httpMock.expectOne('api/image');
-      placeRequest.flush({ x: 16, y: 17 });
+      placeRequest.flush('');
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('PUT');
@@ -128,9 +123,7 @@ describe('ImageService', () => {
     inject([ImageService], (service: ImageService) => {
       service.saveImage(new File([], 'fileName'), { x: 14, y: 15 }).subscribe(saveImageResponse => {
         if (saveImageResponse) {
-          expect(saveImageResponse.isSuccess).toBe(false);
-          expect(saveImageResponse.errorMessage).toEqual('There was an error uploading an image! Try again!');
-          expect(saveImageResponse.responseObject).not.toBeDefined();
+          expect(saveImageResponse).toBe(true);
         } else {
           fail("saveImageResponse undefined!");
         }

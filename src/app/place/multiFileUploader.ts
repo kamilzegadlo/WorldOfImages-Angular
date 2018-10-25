@@ -10,12 +10,15 @@ export class MultiFileUploader {
   private images: File[];
   private place: Place;
   private imageService: ImageService;
-  private onSuccessImageLoad: (place: Place) => void;
+  private onSuccessImageLoad: (image: string) => void;
   private onFailureImageLoad: () => void;
+  private reader: FileReader;
 
-  constructor() { }
+  constructor() {
+    this.reader = new FileReader();
+  }
 
-  upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void) {
+  upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void) {
     this.imageIndex = 0;
     this.images = images;
     this.place = place;
@@ -25,19 +28,31 @@ export class MultiFileUploader {
 
     this.imageService
       .saveImage(this.images[this.imageIndex], this.place)
-      .subscribe(this.HandleSaveImageResponse.bind(this));;
+      .subscribe(this.HandleSaveImageResponse.bind(this));
   }
 
-  private HandleSaveImageResponse(backendResponse: BackendResponse<Place>) {
-    if (backendResponse.isSuccess) {
-      this.onSuccessImageLoad(<Place>backendResponse.responseObject);
+  private HandleSaveImageResponse(output: boolean) {
+    if (!output) {
+      this.reader.onload = this.readingImageFinished.bind(this);
+      this.reader.readAsDataURL(this.images[this.imageIndex]);
     }
     else {
       this.onFailureImageLoad();
+
+      if (this.imageIndex < this.images.length - 1)
+        this.imageService
+          .saveImage(this.images[++this.imageIndex], this.place)
+          .subscribe(this.HandleSaveImageResponse.bind(this));
     }
+  }
+
+  private readingImageFinished() {
+    this.onSuccessImageLoad(this.reader.result);
+
     if (this.imageIndex < this.images.length - 1)
       this.imageService
         .saveImage(this.images[++this.imageIndex], this.place)
         .subscribe(this.HandleSaveImageResponse.bind(this));
   }
+
 }

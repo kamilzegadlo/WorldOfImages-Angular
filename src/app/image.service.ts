@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Coordinates, Place, BackendResponse, placeNullObject } from './barrel';
+import { Coordinates, Place, BackendResponse } from './barrel';
 
 @Injectable()
 export class ImageService {
@@ -42,7 +42,7 @@ export class ImageService {
   saveImage(
     image: File,
     coordinates: Coordinates
-  ): Observable<BackendResponse<Place>> {
+  ): Observable<Boolean> {
     return this.http.put(
       this.imageUrl,
       {
@@ -52,10 +52,10 @@ export class ImageService {
         },
         image: image
       }
-    ).pipe(map((place: Place) => {
-      return <BackendResponse<Place>>{ isSuccess: true, responseObject: place };
+    ).pipe(map(() => {
+      return false;
     }), catchError(() => {
-      return of(<BackendResponse<Place>>{ isSuccess: false, errorMessage: 'There was an error uploading an image! Try again!' });
+      return of(true);
     }));
   }
 }

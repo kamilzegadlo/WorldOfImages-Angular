@@ -32,7 +32,7 @@ describe('PlaceComponent', () => {
   }
 
   interface MultiFileUploaderMock {
-    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void): void;
+    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void): void;
   }
 
   @Component({
@@ -50,10 +50,9 @@ describe('PlaceComponent', () => {
     };
 
     const multiFileUploaderMock: MultiFileUploaderMock = {
-      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void) {
+      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void) {
         if (place.x == 14 && place.y === 10) {
-          place.images = ['testimage'];
-          onSuccessImageLoad(place);
+          onSuccessImageLoad('testimage');
         }
         if (place.x === 15 && place.y === 11) {
           onFailureImageLoad();

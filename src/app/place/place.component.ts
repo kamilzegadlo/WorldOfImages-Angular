@@ -128,8 +128,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
     Observable.timer(0).subscribe(() => this._userMessage = undefined);
   }
 
-  private onSuccessImageLoad(place: Place) {
-    this._selectedPlace = place;
+  private onSuccessImageLoad(image: string) {
+    this._selectedPlace.addImage(image);
+
     this._userMessage = {
       message: "Your picture has been added to this place!",
       messageType: MessageType.Success
