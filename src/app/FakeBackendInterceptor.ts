@@ -98,7 +98,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             newPlace.isDefined = true;
 
             places.push(newPlace);
-            sessionStorage.setItem('places', JSON.stringify(places));
+            try {
+              sessionStorage.setItem('places', JSON.stringify(places));
+            } catch (e) {
+              if (e.code === 22 && e.name === 'QuotaExceededError') {
+                throw 'You are using fake backend and you reached the session storage limit!';
+              }
+            }
 
             // respond 200 OK
             return Observable.of(
@@ -136,7 +142,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 } else {
                   place.images.push(reader.result);
                 }
-                sessionStorage.setItem('places', JSON.stringify(places));
+                try {
+                  sessionStorage.setItem('places', JSON.stringify(places));
+                }
+                catch (e) {
+                  if (e.code === 22 && e.name === 'QuotaExceededError') {
+                    throw 'You are using fake backend and you reached the session storage limit!';
+                  }
+                }
               },
               false
             );

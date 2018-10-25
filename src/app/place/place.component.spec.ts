@@ -51,7 +51,6 @@ describe('PlaceComponent', () => {
 
     const multiFileUploaderMock: MultiFileUploaderMock = {
       upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (place: Place) => void, onFailureImageLoad: () => void) {
-        debugger;
         if (place.x == 14 && place.y === 10) {
           place.images = ['testimage'];
           onSuccessImageLoad(place);
@@ -321,7 +320,6 @@ describe('PlaceComponent', () => {
       // act
       selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
 
-      debugger;
       component.onFileChanged({
         target: { files: [new File([], 'fileName')] }
       });
