@@ -2,7 +2,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
@@ -28,4 +30,4 @@ import { fakeBackendProvider } from './fakeBackendInterceptor';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

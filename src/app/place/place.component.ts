@@ -46,6 +46,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private selectedPlaceSubscrption: Subscription;
   private _expandedIndex: number | undefined;
   private _userMessage: UserMessage | undefined = undefined;
+  public newPlaceName: string = "New place";
   MessageType = MessageType;
 
   expandIndex(i: number | undefined) {
@@ -105,7 +106,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   savePlace() {
     this.imageService
-      .savePlace(this._selectedPlace)
+      .savePlace(new Place(this._selectedPlace.x, this._selectedPlace.y, this.newPlaceName, false))
       .subscribe(savePlaceResponse => {
         if (savePlaceResponse.isSuccess) {
           this._selectedPlace = <Place>savePlaceResponse.responseObject;

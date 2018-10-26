@@ -15,8 +15,11 @@
 
 <ng-template #placeUndefinedYet>
   <h2>This place has not been visited yet!</h2>
-  <input id="newPlaceName" [(ngModel)]="_selectedPlace.name"> (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
-  <input id="saveNewPlace" type="button" value="Name this place!" (click)="savePlace()">
+  <form #newPlaceForm="ngForm" (ngSubmit)="savePlace()">
+    {{diagnostic}}
+    <input id="newPlaceName" [(ngModel)]="newPlaceName" name="name">
+    <input id="saveNewPlace" type="submit" value="Name this place!">
+  </form>
 </ng-template>
 
 <ng-template #placeDefined>

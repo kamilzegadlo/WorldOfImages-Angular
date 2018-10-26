@@ -174,7 +174,7 @@ describe('PlaceComponent', () => {
         const compiled = fixture.debugElement.nativeElement;
         expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
         fixture.detectChanges();
-        expect(compiled.querySelector('#newPlaceName').value).toContain('test');
+        expect(compiled.querySelector('#newPlaceName').value).toContain('New place');
         expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
       });
     }
