@@ -5,12 +5,14 @@ import {
   TestBed,
   inject
 } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { FormsModule } from '@angular/forms';
 import { HttpEvent, HttpResponse, HttpClient, HttpHandler } from '@angular/common/http';
 
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import 'rxjs/add/observable/throw';
+
 
 import {
   Coordinates,
@@ -45,22 +47,21 @@ describe('PlaceComponent', () => {
     image: string;
   }
 
+  const multiFileUploaderMock: MultiFileUploaderMock = {
+    upload(images: File[], place: Place, imageService: ImageService): Observable<string> {
+      if (place.x == 14 && place.y === 10) {
+        return of("success");
+      }
+      return Observable.throw('error');
+    }
+  }
+
   beforeEach(async(() => {
     const selectionStateServiceMock: SelectionStateServiceMock = {
       selectedCoordinates: new Subject<Coordinates>()
     };
 
-    const multiFileUploaderMock: MultiFileUploaderMock = {
-      upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void) {
-        if (place.x == 14 && place.y === 10) {
-          onSuccessImageLoad('testimage');
-        }
-        if (place.x === 15 && place.y === 11) {
-          onFailureImageLoad();
-        }
 
-      }
-    }
 
     TestBed.configureTestingModule({
       imports: [FormsModule],
@@ -87,9 +88,7 @@ describe('PlaceComponent', () => {
 
   it('When no selected place, should render message, and no place name', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(
-      compiled.querySelector('#noPlaceSelectedLabel').textContent
-    ).toContain('Click on any place on the map!');
+    expect(compiled.querySelector('#noPlaceSelectedLabel').textContent).toContain('Click on any place on the map!');
     expect(compiled.querySelector('#placeSelectedLabel')).toBeNull();
     expect(compiled.querySelector('#newPlaceName')).toBeNull();
   }));

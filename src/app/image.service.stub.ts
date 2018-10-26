@@ -14,12 +14,7 @@ export class ImageServiceStub extends ImageService {
   getPlace(coordinates: Coordinates): Observable<BackendResponse<Place>> {
     if (coordinates.x === 11 && coordinates.y === 15) {
       return of({
-        isSuccess: true, responseObject: {
-          x: 100,
-          y: 150,
-          name: 'unit test name',
-          isDefined: true
-        } as Place
+        isSuccess: true, responseObject: new Place(100, 150, 'unit test name', true)
       } as BackendResponse<Place>);
     }
     if (coordinates.x === 12 && coordinates.y === 14) {
@@ -62,36 +57,12 @@ export class ImageServiceStub extends ImageService {
     coordinates: Coordinates
   ): Observable<Boolean> {
     if (
-      image.name === 'fileName1' &&
-      coordinates.x === 100 &&
-      coordinates.y === 200
-    ) {
-      return of(false);
-    }
-    if (
       image.name === 'fileName2' &&
-      coordinates.x === 100 &&
-      coordinates.y === 200
-    ) {
-      return of(false);
-    }
-
-    if (
-      image.name === 'fileName1' &&
       coordinates.x === 101 &&
       coordinates.y === 201
     ) {
       return of(true);
     }
-
-    if (
-      image.name === 'fileName2' &&
-      coordinates.x === 101 &&
-      coordinates.y === 201
-    ) {
-      return of(false);
-    }
-
 
     return of(false);
   }

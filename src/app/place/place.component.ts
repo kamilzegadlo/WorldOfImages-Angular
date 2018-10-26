@@ -153,7 +153,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   onFileChanged(change: any) {
     if (change.target.files.length > 0) {
-      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService, this.onSuccessImageLoad.bind(this), this.onFailureImageLoad.bind(this));
+      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService)
+        .subscribe(this.onSuccessImageLoad.bind(this), this.onFailureImageLoad.bind(this));
     }
   }
 

@@ -1,3 +1,7 @@
+
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
+
 import {
   Place,
   ImageService,
@@ -10,22 +14,28 @@ export class MultiFileUploader {
   private images: File[];
   private place: Place;
   private imageService: ImageService;
-  private onSuccessImageLoad: (image: string) => void;
-  private onFailureImageLoad: () => void;
   private reader: FileReader;
+  private observer: Subscriber<{}>;
 
   constructor() {
     this.reader = new FileReader();
   }
 
-  upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void) {
+  upload(images: File[], place: Place, imageService: ImageService): Observable<string> {
     this.imageIndex = 0;
     this.images = images;
     this.place = place;
     this.imageService = imageService;
-    this.onSuccessImageLoad = onSuccessImageLoad;
-    this.onFailureImageLoad = onFailureImageLoad;
 
+    return new Observable((observer) => {
+
+      this.observer = observer;
+
+      this.saveImage();
+    })
+  }
+
+  private saveImage() {
     this.imageService
       .saveImage(this.images[this.imageIndex], this.place)
       .subscribe(this.HandleSaveImageResponse.bind(this));
@@ -37,22 +47,22 @@ export class MultiFileUploader {
       this.reader.readAsDataURL(this.images[this.imageIndex]);
     }
     else {
-      this.onFailureImageLoad();
+      this.observer.error("error in uploading image");
+      this.nextInteration();
+    }
+  }
 
-      if (this.imageIndex < this.images.length - 1)
-        this.imageService
-          .saveImage(this.images[++this.imageIndex], this.place)
-          .subscribe(this.HandleSaveImageResponse.bind(this));
+  private nextInteration() {
+    if (this.imageIndex < this.images.length - 1) {
+      ++this.imageIndex;
+      this.saveImage();
+    } else {
+      this.observer.complete();
     }
   }
 
   private readingImageFinished() {
-    this.onSuccessImageLoad(this.reader.result);
-
-    if (this.imageIndex < this.images.length - 1)
-      this.imageService
-        .saveImage(this.images[++this.imageIndex], this.place)
-        .subscribe(this.HandleSaveImageResponse.bind(this));
+    this.observer.next(this.reader.result)
+    this.nextInteration();
   }
-
 }

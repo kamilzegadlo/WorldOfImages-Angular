@@ -20,15 +20,14 @@ describe('ImageService', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
-  it(
-    'should be created',
-    inject([ImageService], (service: ImageService) => {
-      expect(service).toBeTruthy();
-    })
+  it('should be created', inject([ImageService], (service: ImageService) => {
+    expect(service).toBeTruthy();
+  })
   );
 
   it('get place should return a mocked place',
     inject([ImageService], (service: ImageService) => {
+
       service.getPlace({ x: 13, y: 14 }).subscribe(getPlaceResponse => {
         if (getPlaceResponse && getPlaceResponse.responseObject) {
           expect(getPlaceResponse.responseObject.x).toBe(13);

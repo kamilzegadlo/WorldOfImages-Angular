@@ -1,5 +1,7 @@
 import { Coordinates } from './barrel';
 
+//entity where coordinates are uniq
+
 export class Place implements Coordinates {
 
   constructor(private _x: number, private _y: number, private _name: string, private _isDefined: boolean, private _images: string[] | undefined = undefined) {

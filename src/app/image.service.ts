@@ -39,10 +39,7 @@ export class ImageService {
       }))
   }
 
-  saveImage(
-    image: File,
-    coordinates: Coordinates
-  ): Observable<Boolean> {
+  saveImage(image: File, coordinates: Coordinates): Observable<Boolean> {
     return this.http.put(
       this.imageUrl,
       {
