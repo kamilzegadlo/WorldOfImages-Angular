@@ -16,8 +16,7 @@
 <ng-template #placeUndefinedYet>
   <h2>This place has not been visited yet!</h2>
   <form #newPlaceForm="ngForm" (ngSubmit)="savePlace()">
-    {{diagnostic}}
-    <input id="newPlaceName" [(ngModel)]="newPlaceName" name="name">
+    <input id="newPlaceName" [(ngModel)]="newPlaceName" name="name" [kzFocus]="true" required>
     <input id="saveNewPlace" type="submit" value="Name this place!">
   </form>
 </ng-template>

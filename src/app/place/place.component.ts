@@ -20,7 +20,8 @@ import {
   MultiFileUploader,
   SelectionStateService,
   UserMessage,
-  MessageType
+  MessageType,
+  FocusDirective
 } from '../barrel';
 
 @Component({
@@ -46,7 +47,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private selectedPlaceSubscrption: Subscription;
   private _expandedIndex: number | undefined;
   private _userMessage: UserMessage | undefined = undefined;
-  public newPlaceName: string = "New place";
+  public newPlaceName: string;
   MessageType = MessageType;
 
   expandIndex(i: number | undefined) {
@@ -94,6 +95,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
       .subscribe(getPlaceResponse => {
         if (getPlaceResponse.isSuccess) {
           this._selectedPlace = <Place>getPlaceResponse.responseObject
+          if (!this._selectedPlace.isDefined) {
+            this.newPlaceName = "New place";
+          }
         } else {
           this._userMessage = {
             message: <string>getPlaceResponse.errorMessage,

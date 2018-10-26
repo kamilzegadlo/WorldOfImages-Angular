@@ -14,13 +14,14 @@ import {
   PlaceComponent,
   ImageService,
   MultiFileUploader,
-  SelectionStateService
+  SelectionStateService,
+  FocusDirective
 } from './barrel';
 
 import { fakeBackendProvider } from './fakeBackendInterceptor';
 
 @NgModule({
-  declarations: [MapComponent, ImageComponent, PlaceComponent, AppComponent],
+  declarations: [MapComponent, ImageComponent, FocusDirective, PlaceComponent, AppComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     ImageService,

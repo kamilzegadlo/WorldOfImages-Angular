@@ -9,5 +9,6 @@ export * from './selection-state.service';
 export * from './map/map.component';
 export * from './place/multiFileUploader';
 export * from './place/image/image.component';
+export * from './place/focus.directive';
 export * from './place/place.component';
 export * from './app.component';

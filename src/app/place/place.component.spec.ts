@@ -20,7 +20,8 @@ import {
   SelectionStateService,
   MultiFileUploader,
   MessageType,
-  ImageServiceStub
+  ImageServiceStub,
+  FocusDirective
 } from '../barrel';
 
 describe('PlaceComponent', () => {
@@ -70,7 +71,7 @@ describe('PlaceComponent', () => {
         { provide: SelectionStateService, useValue: selectionStateServiceMock },
         { provide: MultiFileUploader, useValue: multiFileUploaderMock }
       ],
-      declarations: [MockImageComponent, PlaceComponent]
+      declarations: [MockImageComponent, PlaceComponent, FocusDirective]
     }).compileComponents();
   }));
 
