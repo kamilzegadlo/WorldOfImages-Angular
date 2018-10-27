@@ -102,11 +102,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
             this.newPlaceName = 'New place';
           }
         } else {
-          this._userMessage = {
-            message: <string>getPlaceResponse.errorMessage,
-            messageType: MessageType.Error
-          };
-          this.hideUserMessage();
+          this.setUserMessage(
+            <string>getPlaceResponse.errorMessage,
+            MessageType.Error
+          );
         }
       });
   }
@@ -124,19 +123,25 @@ export class PlaceComponent implements OnInit, OnDestroy {
       .subscribe(savePlaceResponse => {
         if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
           this._selectedPlace = savePlaceResponse.result;
-          this._userMessage = {
-            message: 'You have named this place!',
-            messageType: MessageType.Success
-          };
-          this.hideUserMessage();
+          this.setUserMessage(
+            'You have named this place!',
+            MessageType.Success
+          );
         } else {
-          this._userMessage = {
-            message: <string>savePlaceResponse.errorMessage,
-            messageType: MessageType.Error
-          };
-          this.hideUserMessage();
+          this.setUserMessage(
+            <string>savePlaceResponse.errorMessage,
+            MessageType.Error
+          );
         }
       });
+  }
+
+  private setUserMessage(message: string, type: MessageType) {
+    this._userMessage = {
+      message: message,
+      messageType: type
+    };
+    this.hideUserMessage();
   }
 
   private hideUserMessage() {
@@ -153,20 +158,17 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   private onSuccessImageLoad(image: string) {
     this._selectedPlace.addImage(image);
-
-    this._userMessage = {
-      message: 'Your picture has been added to this place!',
-      messageType: MessageType.Success
-    };
-    this.hideUserMessage();
+    this.setUserMessage(
+      'Your picture has been added to this place!',
+      MessageType.Success
+    );
   }
 
   private onFailureImageLoad() {
-    this._userMessage = {
-      message: 'Error while uploading your image. Try again.',
-      messageType: MessageType.Error
-    };
-    this.hideUserMessage();
+    this.setUserMessage(
+      'Error while uploading your image. Try again.',
+      MessageType.Error
+    );
   }
 
   onFileChanged(change: any) {
