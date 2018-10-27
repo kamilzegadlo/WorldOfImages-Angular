@@ -1,6 +1,6 @@
 export * from './coordinates';
 export * from './place';
-export * from './backendResponse';
+export * from './actionResult';
 export * from './messageType';
 export * from './userMessage';
 export * from './image.service';

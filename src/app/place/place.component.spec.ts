@@ -6,13 +6,17 @@ import {
   inject
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { HttpEvent, HttpResponse, HttpClient, HttpHandler } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpResponse,
+  HttpClient,
+  HttpHandler
+} from '@angular/common/http';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import 'rxjs/add/observable/throw';
-
 
 import {
   Coordinates,
@@ -23,8 +27,10 @@ import {
   MultiFileUploader,
   MessageType,
   ImageServiceStub,
-  FocusDirective
+  FocusDirective,
+  ActionResult
 } from '../barrel';
+import { isSuccess } from 'angular-in-memory-web-api';
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;
@@ -35,7 +41,11 @@ describe('PlaceComponent', () => {
   }
 
   interface MultiFileUploaderMock {
-    upload(images: File[], place: Place, imageService: ImageService, onSuccessImageLoad: (image: string) => void, onFailureImageLoad: () => void): void;
+    upload(
+      images: File[],
+      place: Place,
+      imageService: ImageService
+    ): Observable<ActionResult<string>>;
   }
 
   @Component({
@@ -48,20 +58,22 @@ describe('PlaceComponent', () => {
   }
 
   const multiFileUploaderMock: MultiFileUploaderMock = {
-    upload(images: File[], place: Place, imageService: ImageService): Observable<string> {
-      if (place.x == 14 && place.y === 10) {
-        return of("success");
+    upload(
+      images: File[],
+      place: Place,
+      imageService: ImageService
+    ): Observable<ActionResult<string>> {
+      if (place.x === 14 && place.y === 10) {
+        return of({ isSuccess: true, result: 'success' });
       }
       return Observable.throw('error');
     }
-  }
+  };
 
   beforeEach(async(() => {
     const selectionStateServiceMock: SelectionStateServiceMock = {
       selectedCoordinates: new Subject<Coordinates>()
     };
-
-
 
     TestBed.configureTestingModule({
       imports: [FormsModule],
@@ -88,7 +100,9 @@ describe('PlaceComponent', () => {
 
   it('When no selected place, should render message, and no place name', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('#noPlaceSelectedLabel').textContent).toContain('Click on any place on the map!');
+    expect(
+      compiled.querySelector('#noPlaceSelectedLabel').textContent
+    ).toContain('Click on any place on the map!');
     expect(compiled.querySelector('#placeSelectedLabel')).toBeNull();
     expect(compiled.querySelector('#newPlaceName')).toBeNull();
   }));
@@ -174,7 +188,9 @@ describe('PlaceComponent', () => {
         const compiled = fixture.debugElement.nativeElement;
         expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
         fixture.detectChanges();
-        expect(compiled.querySelector('#newPlaceName').value).toContain('New place');
+        expect(compiled.querySelector('#newPlaceName').value).toContain(
+          'New place'
+        );
         expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
       });
     }
@@ -219,17 +235,24 @@ describe('PlaceComponent', () => {
         target: { files: [new File([], 'fileName')] }
       });
 
-      if (component && component.selectedPlace && component.selectedPlace.images) {
+      if (
+        component &&
+        component.selectedPlace &&
+        component.selectedPlace.images
+      ) {
         expect(component.selectedPlace.images.length).toEqual(1);
       } else {
-        fail('component && component.selectedPlace && component.selectedPlace.images should be defined')
+        fail(
+          'component && component.selectedPlace && component.selectedPlace.images should be defined'
+        );
       }
       if (component.userMessage) {
-        expect(component.userMessage.message).toEqual("Your picture has been added to this place!");
+        expect(component.userMessage.message).toEqual(
+          'Your picture has been added to this place!'
+        );
         expect(component.userMessage.messageType).toEqual(MessageType.Success);
-      }
-      else {
-        fail('component.userMessage')
+      } else {
+        fail('component.userMessage');
       }
     }
   ));
@@ -273,10 +296,12 @@ describe('PlaceComponent', () => {
 
       // assert
       if (component.userMessage) {
-        expect('There was a unit test error!').toEqual(component.userMessage.message);
+        expect('There was a unit test error!').toEqual(
+          component.userMessage.message
+        );
         expect(MessageType.Error).toEqual(component.userMessage.messageType);
       } else {
-        fail("component.userMessage undefined!");
+        fail('component.userMessage undefined!');
       }
     }
   ));
@@ -290,17 +315,19 @@ describe('PlaceComponent', () => {
       // arrange
       const selectedCoordinates: Coordinates = {
         x: 902,
-        y: 602,
+        y: 602
       };
       // act
       selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
       component.savePlace();
 
       if (component.userMessage) {
-        expect('There was a unit test error during saving!').toEqual(component.userMessage.message);
+        expect('There was a unit test error during saving!').toEqual(
+          component.userMessage.message
+        );
         expect(MessageType.Error).toEqual(component.userMessage.messageType);
       } else {
-        fail("component.userMessage undefined!");
+        fail('component.userMessage undefined!');
       }
     }
   ));
@@ -326,14 +353,15 @@ describe('PlaceComponent', () => {
       if (component && component.selectedPlace) {
         expect(component.selectedPlace.images).not.toBeDefined();
       } else {
-        fail('component && component.selectedPlace should be defined')
+        fail('component && component.selectedPlace should be defined');
       }
       if (component.userMessage) {
-        expect(component.userMessage.message).toEqual("Error while uploading your image. Try again.");
+        expect(component.userMessage.message).toEqual(
+          'Error while uploading your image. Try again.'
+        );
         expect(component.userMessage.messageType).toEqual(MessageType.Error);
-      }
-      else {
-        fail('component.userMessage')
+      } else {
+        fail('component.userMessage');
       }
     }
   ));

@@ -1,15 +1,9 @@
-
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 
-import {
-  Place,
-  ImageService,
-  BackendResponse
-} from '../barrel';
+import { Place, ImageService, ActionResult } from '../barrel';
 
 export class MultiFileUploader {
-
   private imageIndex: number;
   private images: File[];
   private place: Place;
@@ -21,18 +15,21 @@ export class MultiFileUploader {
     this.reader = new FileReader();
   }
 
-  upload(images: File[], place: Place, imageService: ImageService): Observable<string> {
+  upload(
+    images: File[],
+    place: Place,
+    imageService: ImageService
+  ): Observable<ActionResult<string>> {
     this.imageIndex = 0;
     this.images = images;
     this.place = place;
     this.imageService = imageService;
 
-    return new Observable((observer) => {
-
+    return new Observable(observer => {
       this.observer = observer;
 
       this.saveImage();
-    })
+    });
   }
 
   private saveImage() {
@@ -45,9 +42,11 @@ export class MultiFileUploader {
     if (!output) {
       this.reader.onload = this.readingImageFinished.bind(this);
       this.reader.readAsDataURL(this.images[this.imageIndex]);
-    }
-    else {
-      this.observer.error("error in uploading image");
+    } else {
+      this.observer.next({
+        isSuccess: false,
+        errorMessage: 'error in uploading image'
+      });
       this.nextInteration();
     }
   }
@@ -62,7 +61,7 @@ export class MultiFileUploader {
   }
 
   private readingImageFinished() {
-    this.observer.next(this.reader.result)
+    this.observer.next({ isSuccess: true, result: this.reader.result });
     this.nextInteration();
   }
 }

@@ -5,7 +5,7 @@ import {
   style,
   animate,
   transition,
-  sequence,
+  sequence
   // ...
 } from '@angular/animations';
 
@@ -21,8 +21,10 @@ import {
   SelectionStateService,
   UserMessage,
   MessageType,
-  FocusDirective
+  FocusDirective,
+  ActionResult
 } from '../barrel';
+import { isSuccess } from 'angular-in-memory-web-api';
 
 @Component({
   selector: 'app-place',
@@ -34,10 +36,13 @@ import {
         style({ opacity: 0 }),
         animate('0s', style({ opacity: 1 }))
       ]),
-      transition(':leave', sequence([
-        animate('15s', style({ opacity: 0 })),
-        animate('2s', style({ height: '0px' })),
-      ]))
+      transition(
+        ':leave',
+        sequence([
+          animate('15s', style({ opacity: 0 })),
+          animate('2s', style({ height: '0px' }))
+        ])
+      )
     ])
   ]
 })
@@ -51,10 +56,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
   MessageType = MessageType;
 
   expandIndex(i: number | undefined) {
-    if (this._expandedIndex === i)
-      this.collapseIndex();
-    else
-      this._expandedIndex = i;
+    if (this._expandedIndex === i) this.collapseIndex();
+    else this._expandedIndex = i;
   }
   collapseIndex() {
     this._expandedIndex = undefined;
@@ -76,7 +79,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private imageService: ImageService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
@@ -93,10 +96,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.selectedPlaceSubscrption = this.imageService
       .getPlace(coordinates)
       .subscribe(getPlaceResponse => {
-        if (getPlaceResponse.isSuccess) {
-          this._selectedPlace = <Place>getPlaceResponse.responseObject
+        if (getPlaceResponse.isSuccess && getPlaceResponse.result) {
+          this._selectedPlace = getPlaceResponse.result;
           if (!this._selectedPlace.isDefined) {
-            this.newPlaceName = "New place";
+            this.newPlaceName = 'New place';
           }
         } else {
           this._userMessage = {
@@ -110,12 +113,19 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   savePlace() {
     this.imageService
-      .savePlace(new Place(this._selectedPlace.x, this._selectedPlace.y, this.newPlaceName, false))
+      .savePlace(
+        new Place(
+          this._selectedPlace.x,
+          this._selectedPlace.y,
+          this.newPlaceName,
+          false
+        )
+      )
       .subscribe(savePlaceResponse => {
-        if (savePlaceResponse.isSuccess) {
-          this._selectedPlace = <Place>savePlaceResponse.responseObject;
+        if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
+          this._selectedPlace = savePlaceResponse.result;
           this._userMessage = {
-            message: "You have named this place!",
+            message: 'You have named this place!',
             messageType: MessageType.Success
           };
           this.hideUserMessage();
@@ -130,14 +140,22 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   private hideUserMessage() {
-    Observable.timer(0).subscribe(() => this._userMessage = undefined);
+    Observable.timer(0).subscribe(() => (this._userMessage = undefined));
+  }
+
+  private onImageLoad(response: ActionResult<string>) {
+    if (response.isSuccess && response.result) {
+      this.onSuccessImageLoad(response.result);
+    } else {
+      this.onFailureImageLoad();
+    }
   }
 
   private onSuccessImageLoad(image: string) {
     this._selectedPlace.addImage(image);
 
     this._userMessage = {
-      message: "Your picture has been added to this place!",
+      message: 'Your picture has been added to this place!',
       messageType: MessageType.Success
     };
     this.hideUserMessage();
@@ -145,7 +163,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   private onFailureImageLoad() {
     this._userMessage = {
-      message: "Error while uploading your image. Try again.",
+      message: 'Error while uploading your image. Try again.',
       messageType: MessageType.Error
     };
     this.hideUserMessage();
@@ -153,9 +171,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   onFileChanged(change: any) {
     if (change.target.files.length > 0) {
-      this.multiFileUploader.upload(change.target.files, this._selectedPlace, this.imageService)
-        .subscribe(this.onSuccessImageLoad.bind(this), this.onFailureImageLoad.bind(this));
+      this.multiFileUploader
+        .upload(change.target.files, this._selectedPlace, this.imageService)
+        .subscribe(
+          this.onImageLoad.bind(this),
+          this.onFailureImageLoad.bind(this)
+        );
     }
   }
-
 }
