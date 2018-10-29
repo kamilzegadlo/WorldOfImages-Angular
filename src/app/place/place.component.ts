@@ -6,7 +6,6 @@ import {
   animate,
   transition,
   sequence
-  // ...
 } from '@angular/animations';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -38,6 +37,37 @@ import { isSuccess } from 'angular-in-memory-web-api';
           animate('15s', style({ opacity: 0 })),
           animate('1s', style({ height: '0px' }))
         ])
+      )
+    ]),
+    trigger('noPlaceAnimation', [
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
+      )
+    ]),
+    trigger('placeNotDefinedAnimation', [
+      transition(':enter', sequence([
+        style({ height: 0, overflow: 'hidden' }),
+        animate('0.5s'),
+        animate('0.5s', style({ height: '100%', overflow: 'hidden' }))
+      ])),
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
+      )
+    ]),
+    trigger('placeDefinedAnimation', [
+      transition(':enter', sequence([
+        style({ height: 0, overflow: 'hidden' }),
+        animate('0.5s'),
+        animate('0.5s', style({ height: '100%', overflow: 'hidden' }))
+      ])),
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
       )
     ])
   ]
