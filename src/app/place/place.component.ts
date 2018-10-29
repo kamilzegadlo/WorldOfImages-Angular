@@ -32,15 +32,11 @@ import { isSuccess } from 'angular-in-memory-web-api';
   styleUrls: ['./place.component.css'],
   animations: [
     trigger('userMessageAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0s', style({ opacity: 1 }))
-      ]),
       transition(
         ':leave',
         sequence([
           animate('15s', style({ opacity: 0 })),
-          animate('2s', style({ height: '0px' }))
+          animate('1s', style({ height: '0px' }))
         ])
       )
     ])
@@ -79,7 +75,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private imageService: ImageService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
@@ -113,12 +109,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
   savePlace() {
     this.imageService
       .savePlace(
-        new Place(
-          this._selectedPlace.x,
-          this._selectedPlace.y,
-          this.newPlaceName,
-          false
-        )
+      new Place(
+        this._selectedPlace.x,
+        this._selectedPlace.y,
+        this.newPlaceName,
+        false
+      )
       )
       .subscribe(savePlaceResponse => {
         if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
@@ -176,8 +172,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
       this.multiFileUploader
         .upload(change.target.files, this._selectedPlace, this.imageService)
         .subscribe(
-          this.onImageLoad.bind(this),
-          this.onFailureImageLoad.bind(this)
+        this.onImageLoad.bind(this),
+        this.onFailureImageLoad.bind(this)
         );
     }
   }
