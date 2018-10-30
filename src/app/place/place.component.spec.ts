@@ -12,6 +12,7 @@ import {
   HttpClient,
   HttpHandler
 } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -28,7 +29,8 @@ import {
   MessageType,
   ImageServiceStub,
   FocusDirective,
-  ActionResult
+  ActionResult,
+  TestHelper
 } from '../barrel';
 import { isSuccess } from 'angular-in-memory-web-api';
 
@@ -76,7 +78,7 @@ describe('PlaceComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, BrowserAnimationsModule],
       providers: [
         HttpClient,
         HttpHandler,
@@ -140,61 +142,75 @@ describe('PlaceComponent', () => {
     }
   ));
 
-  it('when received coordinates of defined place, label should be replaced with place data', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
-      // arrange
-      const selectedCoordinates: Coordinates = {
-        x: 11,
-        y: 15
-      };
+  it('when received coordinates of defined place, label should be replaced with place data', function (done) {
+    inject(
+      [ImageService, SelectionStateService],
+      (
+        imageServiceStub: ImageServiceStub,
+        selectionStateServiceMock: SelectionStateServiceMock
+      ) => {
+        // arrange
+        const selectedCoordinates: Coordinates = {
+          x: 11,
+          y: 15
+        };
 
-      // act
-      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
-      fixture.detectChanges();
-
-      // assert
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
-      expect(compiled.querySelector('#newPlaceName')).toBeNull();
-      expect(
-        compiled.querySelector('#placeSelectedLabel').textContent
-      ).toContain('unit test name');
-    }
-  ));
-
-  it('when received coordinates of undefined place, input should be visible and enable', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
-      // arrange
-      const selectedCoordinates: Coordinates = {
-        x: 14,
-        y: 10
-      };
-
-      // act
-      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
-      fixture.detectChanges();
-
-      // assert
-      fixture.whenStable().then(() => {
-        // expect it to be the uppercase version
-        const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+        // act
+        selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
         fixture.detectChanges();
-        expect(compiled.querySelector('#newPlaceName').value).toContain(
-          'New place'
-        );
-        expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
-      });
-    }
-  ));
+
+        // assert
+        const compiled = fixture.debugElement.nativeElement;
+        TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
+          expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+          expect(compiled.querySelector('#newPlaceName')).toBeNull();
+          expect(
+            compiled.querySelector('#placeSelectedLabel').textContent
+          ).toContain('unit test name');
+          done();
+        });
+
+      }
+    )()
+  });
+
+
+
+  it('when received coordinates of undefined place, input should be visible and enable', function (done) {
+    inject(
+      [ImageService, SelectionStateService],
+      (
+        imageServiceStub: ImageServiceStub,
+        selectionStateServiceMock: SelectionStateServiceMock
+      ) => {
+        // arrange
+        const selectedCoordinates: Coordinates = {
+          x: 14,
+          y: 10
+        };
+
+        // act
+        selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+        fixture.detectChanges();
+
+        // assert
+        fixture.whenStable().then(() => {
+          // expect it to be the uppercase version
+          const compiled = fixture.debugElement.nativeElement;
+
+          TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
+            expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+            fixture.detectChanges();
+            expect(compiled.querySelector('#newPlaceName').value).toContain(
+              'New place'
+            );
+            expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
+            done();
+          });
+        });
+      }
+    )()
+  });
 
   it('when click save, image service should be called', inject(
     [ImageService, SelectionStateService],
