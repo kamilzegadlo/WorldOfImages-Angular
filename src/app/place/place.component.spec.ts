@@ -53,12 +53,12 @@ describe('PlaceComponent', () => {
   }
 
   @Component({
-    selector: 'app-image',
-    template: `<p>image</p>`
+    selector: 'app-imageList',
+    template: `<p>imageList</p>`
   })
-  class MockImageComponent {
+  class MockImageListComponent {
     @Input()
-    image: string;
+    images: string;
   }
 
   const multiFileUploaderMock: MultiFileUploaderMock = {
@@ -89,7 +89,7 @@ describe('PlaceComponent', () => {
         { provide: SelectionStateService, useValue: selectionStateServiceMock },
         { provide: MultiFileUploader, useValue: multiFileUploaderMock }
       ],
-      declarations: [MockImageComponent, PlaceComponent, FocusDirective]
+      declarations: [MockImageListComponent, PlaceComponent, FocusDirective]
     }).compileComponents();
   }));
 

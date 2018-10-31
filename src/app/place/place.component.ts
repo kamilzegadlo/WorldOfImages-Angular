@@ -77,25 +77,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private _selectedPlace: Place;
   private selectedCoordinatesSubscrption: Subscription;
   private selectedPlaceSubscrption: Subscription;
-  private _expandedIndex: number | undefined;
   private _userMessage: UserMessage | undefined = undefined;
   public newPlaceName: string;
   MessageType = MessageType;
 
-  expandIndex(i: number | undefined) {
-    if (this._expandedIndex === i) this.collapseIndex();
-    else this._expandedIndex = i;
-  }
-  collapseIndex() {
-    this._expandedIndex = undefined;
-  }
-
   get selectedPlace(): Place {
     return this._selectedPlace;
-  }
-
-  get expandedIndex(): number | undefined {
-    return this._expandedIndex;
   }
 
   get userMessage(): UserMessage | undefined {
