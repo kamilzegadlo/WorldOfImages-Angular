@@ -16,6 +16,7 @@ import {
   Coordinates,
   Place,
   ImageService,
+  PlaceService,
   MultiFileUploader,
   SelectionStateService,
   UserMessage,
@@ -103,6 +104,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private imageService: ImageService,
+    private placeService: PlaceService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
   ) { }
@@ -119,7 +121,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   private getPlace(coordinates: Coordinates) {
-    this.selectedPlaceSubscrption = this.imageService
+    this.selectedPlaceSubscrption = this.placeService
       .getPlace(coordinates)
       .subscribe(getPlaceResponse => {
         if (getPlaceResponse.isSuccess && getPlaceResponse.result) {
@@ -137,7 +139,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   savePlace() {
-    this.imageService
+    this.placeService
       .savePlace(
       new Place(
         this._selectedPlace.x,

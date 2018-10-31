@@ -14,48 +14,9 @@ import { Coordinates, Place, ActionResult } from './barrel';
 
 @Injectable()
 export class ImageService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  private placesUrl = 'api/place';
   private imageUrl = 'api/image';
-
-  getPlace(coordinates: Coordinates): Observable<ActionResult<Place>> {
-    return this.http
-      .get<Place>(this.placesUrl, {
-        params: { x: coordinates.x.toString(), y: coordinates.y.toString() }
-      })
-      .pipe(
-        map((place: Place) => {
-          return <ActionResult<Place>>{
-            isSuccess: true,
-            result: place
-          };
-        }),
-        catchError(() => {
-          return of(<ActionResult<Place>>{
-            isSuccess: false,
-            errorMessage: 'There was an error! Try again!'
-          });
-        })
-      );
-  }
-
-  savePlace(place: Place): Observable<ActionResult<Place>> {
-    return this.http.put<Place>(this.placesUrl, place).pipe(
-      map((place: Place) => {
-        return <ActionResult<Place>>{
-          isSuccess: true,
-          result: place
-        };
-      }),
-      catchError(() => {
-        return of(<ActionResult<Place>>{
-          isSuccess: false,
-          errorMessage: 'There was an error during saving! Try again!'
-        });
-      })
-    );
-  }
 
   saveImage(image: File, coordinates: Coordinates): Observable<Boolean> {
     return this.http
@@ -67,12 +28,12 @@ export class ImageService {
         image: image
       })
       .pipe(
-        map(() => {
-          return false;
-        }),
-        catchError(() => {
-          return of(true);
-        })
+      map(() => {
+        return false;
+      }),
+      catchError(() => {
+        return of(true);
+      })
       );
   }
 }

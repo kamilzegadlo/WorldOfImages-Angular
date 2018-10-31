@@ -22,12 +22,14 @@ import 'rxjs/add/observable/throw';
 import {
   Coordinates,
   ImageService,
+  PlaceService,
   Place,
   PlaceComponent,
   SelectionStateService,
   MultiFileUploader,
   MessageType,
   ImageServiceStub,
+  PlaceServiceStub,
   FocusDirective,
   ActionResult,
   TestHelper
@@ -83,6 +85,7 @@ describe('PlaceComponent', () => {
         HttpClient,
         HttpHandler,
         { provide: ImageService, useClass: ImageServiceStub },
+        { provide: PlaceService, useClass: PlaceServiceStub },
         { provide: SelectionStateService, useValue: selectionStateServiceMock },
         { provide: MultiFileUploader, useValue: multiFileUploaderMock }
       ],
@@ -109,23 +112,14 @@ describe('PlaceComponent', () => {
     expect(compiled.querySelector('#newPlaceName')).toBeNull();
   }));
 
-  it('on init, selected place should be empty', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
-      // assert
-      expect(component.selectedPlace).toBeUndefined();
-    }
-  ));
+  it('on init, selected place should be empty', () => {
+    // assert
+    expect(component.selectedPlace).toBeUndefined();
+  }
+  );
 
   it('when received coordinates, image service should be called', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
         x: 11,
@@ -143,81 +137,67 @@ describe('PlaceComponent', () => {
   ));
 
   it('when received coordinates of defined place, label should be replaced with place data', function (done) {
-    inject(
-      [ImageService, SelectionStateService],
-      (
-        imageServiceStub: ImageServiceStub,
-        selectionStateServiceMock: SelectionStateServiceMock
-      ) => {
-        // arrange
-        const selectedCoordinates: Coordinates = {
-          x: 11,
-          y: 15
-        };
+    inject([SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
+      // arrange
+      const selectedCoordinates: Coordinates = {
+        x: 11,
+        y: 15
+      };
 
-        // act
-        selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
-        fixture.detectChanges();
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+      fixture.detectChanges();
 
-        // assert
-        const compiled = fixture.debugElement.nativeElement;
-        TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
-          expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
-          expect(compiled.querySelector('#newPlaceName')).toBeNull();
-          expect(
-            compiled.querySelector('#placeSelectedLabel').textContent
-          ).toContain('unit test name');
-          done();
-        });
+      // assert
+      const compiled = fixture.debugElement.nativeElement;
+      TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
+        expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+        expect(compiled.querySelector('#newPlaceName')).toBeNull();
+        expect(
+          compiled.querySelector('#placeSelectedLabel').textContent
+        ).toContain('unit test name');
+        done();
+      });
 
-      }
+    }
     )()
   });
 
 
 
   it('when received coordinates of undefined place, input should be visible and enable', function (done) {
-    inject(
-      [ImageService, SelectionStateService],
-      (
-        imageServiceStub: ImageServiceStub,
-        selectionStateServiceMock: SelectionStateServiceMock
-      ) => {
-        // arrange
-        const selectedCoordinates: Coordinates = {
-          x: 14,
-          y: 10
-        };
+    inject([SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
+      // arrange
+      const selectedCoordinates: Coordinates = {
+        x: 14,
+        y: 10
+      };
 
-        // act
-        selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
-        fixture.detectChanges();
+      // act
+      selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);
+      fixture.detectChanges();
 
-        // assert
-        fixture.whenStable().then(() => {
-          // expect it to be the uppercase version
-          const compiled = fixture.debugElement.nativeElement;
+      // assert
+      fixture.whenStable().then(() => {
+        // expect it to be the uppercase version
+        const compiled = fixture.debugElement.nativeElement;
 
-          TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
-            expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
-            fixture.detectChanges();
-            expect(compiled.querySelector('#newPlaceName').value).toContain(
-              'New place'
-            );
-            expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
-            done();
-          });
+        TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
+          expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+          fixture.detectChanges();
+          expect(compiled.querySelector('#newPlaceName').value).toContain(
+            'New place'
+          );
+          expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
+          done();
         });
-      }
+      });
+    }
     )()
   });
 
   it('when click save, image service should be called', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
         x: 14,
@@ -234,12 +214,7 @@ describe('PlaceComponent', () => {
   ));
 
   it('when upload image, MultiFileUploader should be called', inject(
-    [ImageService, SelectionStateService, MultiFileUploader],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock,
-      multiFileUploaderMock: MultiFileUploaderMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       const selectedCoordinates: Coordinates = {
         x: 14,
         y: 10
@@ -274,11 +249,7 @@ describe('PlaceComponent', () => {
   ));
 
   it('when upload image, but image not specified the MultiFileUploader should not be called', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       const selectedCoordinates: Coordinates = {
         x: 14,
         y: 10
@@ -296,11 +267,7 @@ describe('PlaceComponent', () => {
   ));
 
   it('when error occured during retrieving a place, error message should be displayed', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
         x: 901,
@@ -323,11 +290,7 @@ describe('PlaceComponent', () => {
   ));
 
   it('when error occured during saving a place, error message should be displayed', inject(
-    [ImageService, SelectionStateService],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
         x: 902,
@@ -349,12 +312,7 @@ describe('PlaceComponent', () => {
   ));
 
   it('when upload image and MultiFileUploader returns error', inject(
-    [ImageService, SelectionStateService, MultiFileUploader],
-    (
-      imageServiceStub: ImageServiceStub,
-      selectionStateServiceMock: SelectionStateServiceMock,
-      multiFileUploaderMock: MultiFileUploaderMock
-    ) => {
+    [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       const selectedCoordinates: Coordinates = {
         x: 15,
         y: 11
