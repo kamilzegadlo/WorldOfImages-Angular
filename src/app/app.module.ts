@@ -11,8 +11,10 @@ import {
   AppComponent,
   MapComponent,
   ImageComponent,
+  ImageListComponent,
   PlaceComponent,
   ImageService,
+  PlaceService,
   MultiFileUploader,
   SelectionStateService,
   FocusDirective
@@ -21,10 +23,11 @@ import {
 import { fakeBackendProvider } from './fakeBackendInterceptor';
 
 @NgModule({
-  declarations: [MapComponent, ImageComponent, FocusDirective, PlaceComponent, AppComponent],
+  declarations: [MapComponent, ImageComponent, ImageListComponent, FocusDirective, PlaceComponent, AppComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     ImageService,
+    PlaceService,
     SelectionStateService,
     MultiFileUploader,
     fakeBackendProvider
