@@ -1,3 +1,4 @@
+
 # WorldOfImagesAngular
 
 This project is created to refresh my angular knowledge
@@ -21,3 +22,5 @@ The world map is taken from free images published by British Library:
 https://britishlibrary.typepad.co.uk/digital-scholarship/2013/12/a-million-first-steps.html#sthash.3kaubTLH.dpuf
 
 https://www.flickr.com/photos/britishlibrary/
+
+(Really great source of free images even for commercial use)
