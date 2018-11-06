@@ -1,4 +1,3 @@
-
 # WorldOfImagesAngular
 
 This project is created to refresh my angular knowledge
@@ -17,7 +16,7 @@ currently it is just front end. There is a fakebackend.
 
 If i find time I will try to create real backend with .net core and try to write the same with react and vue.
 
-The world map is taken from free images published by British Museum:
+The world map is taken from free images published by British Library:
 
 https://britishlibrary.typepad.co.uk/digital-scholarship/2013/12/a-million-first-steps.html#sthash.3kaubTLH.dpuf
 
