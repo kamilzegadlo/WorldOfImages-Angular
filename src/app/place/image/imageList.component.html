@@ -1,0 +1,14 @@
+<section class="image-grid">
+  <div class="image__cell" [ngClass]="{'is-expanded': expandedIndex==i, 'is-collapsed': expandedIndex!=i}" *ngFor="let image of images; let i = index">
+    <div class="image--basic">
+      <a (click)="expandIndex(i)">
+        <app-image id="expand-jump-{{i}}" [class]="'basic__img'" [image]="image"></app-image>
+      </a>
+    </div>
+    <div class="arrow--up"> </div>
+    <div class="image--expand">
+      <a class="expand__close" (click)="collapseIndex()"></a>
+      <app-image [class]="'image--large'" [image]="image"></app-image>
+    </div>
+  </div>
+</section>

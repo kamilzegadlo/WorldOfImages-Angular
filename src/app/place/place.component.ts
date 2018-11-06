@@ -6,7 +6,6 @@ import {
   animate,
   transition,
   sequence
-  // ...
 } from '@angular/animations';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -17,6 +16,7 @@ import {
   Coordinates,
   Place,
   ImageService,
+  PlaceService,
   MultiFileUploader,
   SelectionStateService,
   UserMessage,
@@ -32,16 +32,43 @@ import { isSuccess } from 'angular-in-memory-web-api';
   styleUrls: ['./place.component.css'],
   animations: [
     trigger('userMessageAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0s', style({ opacity: 1 }))
-      ]),
       transition(
         ':leave',
         sequence([
           animate('15s', style({ opacity: 0 })),
-          animate('2s', style({ height: '0px' }))
+          animate('1s', style({ height: '0px' }))
         ])
+      )
+    ]),
+    trigger('noPlaceAnimation', [
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
+      )
+    ]),
+    trigger('placeNotDefinedAnimation', [
+      transition(':enter', sequence([
+        style({ height: 0, overflow: 'hidden' }),
+        animate('0.5s'),
+        animate('0.5s', style({ height: '100%', overflow: 'hidden' }))
+      ])),
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
+      )
+    ]),
+    trigger('placeDefinedAnimation', [
+      transition(':enter', sequence([
+        style({ height: 0, overflow: 'hidden' }),
+        animate('0.5s'),
+        animate('0.5s', style({ height: '100%', overflow: 'hidden' }))
+      ])),
+      transition(
+        ':leave', [
+          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
+        ]
       )
     ])
   ]
@@ -50,25 +77,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private _selectedPlace: Place;
   private selectedCoordinatesSubscrption: Subscription;
   private selectedPlaceSubscrption: Subscription;
-  private _expandedIndex: number | undefined;
   private _userMessage: UserMessage | undefined = undefined;
   public newPlaceName: string;
   MessageType = MessageType;
 
-  expandIndex(i: number | undefined) {
-    if (this._expandedIndex === i) this.collapseIndex();
-    else this._expandedIndex = i;
-  }
-  collapseIndex() {
-    this._expandedIndex = undefined;
-  }
-
   get selectedPlace(): Place {
     return this._selectedPlace;
-  }
-
-  get expandedIndex(): number | undefined {
-    return this._expandedIndex;
   }
 
   get userMessage(): UserMessage | undefined {
@@ -77,9 +91,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private imageService: ImageService,
+    private placeService: PlaceService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
@@ -93,7 +108,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   private getPlace(coordinates: Coordinates) {
-    this.selectedPlaceSubscrption = this.imageService
+    this.selectedPlaceSubscrption = this.placeService
       .getPlace(coordinates)
       .subscribe(getPlaceResponse => {
         if (getPlaceResponse.isSuccess && getPlaceResponse.result) {
@@ -111,14 +126,14 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   savePlace() {
-    this.imageService
+    this.placeService
       .savePlace(
-        new Place(
-          this._selectedPlace.x,
-          this._selectedPlace.y,
-          this.newPlaceName,
-          false
-        )
+      new Place(
+        this._selectedPlace.x,
+        this._selectedPlace.y,
+        this.newPlaceName,
+        false
+      )
       )
       .subscribe(savePlaceResponse => {
         if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
@@ -176,8 +191,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
       this.multiFileUploader
         .upload(change.target.files, this._selectedPlace, this.imageService)
         .subscribe(
-          this.onImageLoad.bind(this),
-          this.onFailureImageLoad.bind(this)
+        this.onImageLoad.bind(this),
+        this.onFailureImageLoad.bind(this)
         );
     }
   }
