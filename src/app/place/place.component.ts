@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   trigger,
-  state,
   style,
   animate,
   transition,
@@ -21,10 +20,8 @@ import {
   SelectionStateService,
   UserMessage,
   MessageType,
-  FocusDirective,
   ActionResult
 } from '../barrel';
-import { isSuccess } from 'angular-in-memory-web-api';
 
 @Component({
   selector: 'app-place',
@@ -75,14 +72,14 @@ import { isSuccess } from 'angular-in-memory-web-api';
   ]
 })
 export class PlaceComponent implements OnInit, OnDestroy {
-  private _selectedPlace: Place;
+  private _selectedPlace: Place|undefined;
   private selectedCoordinatesSubscrption: Subscription;
   private selectedPlaceSubscrption: Subscription;
   private _userMessage: UserMessage | undefined = undefined;
   public newPlaceName: string;
   MessageType = MessageType;
 
-  get selectedPlace(): Place {
+  get selectedPlace(): Place|undefined {
     return this._selectedPlace;
   }
 
@@ -96,10 +93,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
   ) {
-    this.setUserMessage(
-      'Click on any place on the map!',
-      MessageType.Info
-    );
+    this.SetNoPlace();
    }
 
   ngOnInit() {
@@ -132,29 +126,31 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   savePlace() {
-    this.placeService
-      .savePlace(
-      new Place(
-        this._selectedPlace.x,
-        this._selectedPlace.y,
-        this.newPlaceName,
-        false
-      )
-      )
-      .subscribe(savePlaceResponse => {
-        if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
-          this._selectedPlace = savePlaceResponse.result;
-          this.setUserMessage(
-            'You have named this place!',
-            MessageType.Success
-          );
-        } else {
-          this.setUserMessage(
-            <string>savePlaceResponse.errorMessage,
-            MessageType.Error
-          );
-        }
-      });
+    if(this._selectedPlace){
+      this.placeService
+        .savePlace(
+        new Place(
+          this._selectedPlace.x,
+          this._selectedPlace.y,
+          this.newPlaceName,
+          false
+        )
+        )
+        .subscribe(savePlaceResponse => {
+          if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
+            this._selectedPlace = savePlaceResponse.result;
+            this.setUserMessage(
+              'You have named this place!',
+              MessageType.Success
+            );
+          } else {
+            this.setUserMessage(
+              <string>savePlaceResponse.errorMessage,
+              MessageType.Error
+            );
+          }
+        });
+    }
   }
 
   private setUserMessage(message: string, type: MessageType) {
@@ -178,11 +174,13 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   private onSuccessImageLoad(image: string) {
-    this._selectedPlace.addImage(image);
-    this.setUserMessage(
-      'Your picture has been added to this place!',
-      MessageType.Success
-    );
+    if(this._selectedPlace){
+      this._selectedPlace.addImage(image);
+      this.setUserMessage(
+        'Your picture has been added to this place!',
+        MessageType.Success
+      );
+    }
   }
 
   private onFailureImageLoad() {
@@ -193,7 +191,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   onFileChanged(change: any) {
-    if (change.target.files.length > 0) {
+    if (change.target.files.length > 0 && this._selectedPlace) {
       this.multiFileUploader
         .upload(change.target.files, this._selectedPlace, this.imageService)
         .subscribe(
@@ -201,5 +199,17 @@ export class PlaceComponent implements OnInit, OnDestroy {
         this.onFailureImageLoad.bind(this)
         );
     }
+  }
+
+  collapsePlace(){
+    this.SetNoPlace();
+  }
+
+  private SetNoPlace(){
+    this._selectedPlace=undefined;
+    this.setUserMessage(
+      'Click on any place on the map!',
+      MessageType.Info
+    );
   }
 }

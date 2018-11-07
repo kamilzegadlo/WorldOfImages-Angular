@@ -7,6 +7,7 @@
     <h2 id="placeSelectedLabel">
       {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
     </h2>
+    <a class="place__close" (click)="collapsePlace()"></a>
 
     <label for="imageChooser" id="imageChooserImage">
       <figure>
@@ -24,7 +25,7 @@
 
   <div *ngIf="!selectedPlace?.isDefined" @placeNotDefinedAnimation>
     <h2>This place has not been visited yet!</h2>
-    <form #newPlaceForm="ngForm" (ngSubmit)="savePlace()">
+    <form #newPlaceForm="ngForm" id="newPlaceForm" (ngSubmit)="savePlace()">
       <input id="newPlaceName" [(ngModel)]="newPlaceName" name="name" [kzFocus]="true" required>
       <input id="saveNewPlace" type="submit" value="Name this place!">
     </form>
