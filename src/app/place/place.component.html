@@ -1,12 +1,5 @@
-<h3 *ngIf="userMessage" @userMessageAnimation [ngClass]="{'alert-success': userMessage.messageType===MessageType.Success, 'alert-danger': userMessage.messageType===MessageType.Error}"
+<h3 *ngIf="userMessage" id="userMessage" @userMessageAnimation [ngClass]="{'alert-success': userMessage.messageType===MessageType.Success, 'alert-danger': userMessage.messageType===MessageType.Error, 'alert-primary': userMessage.messageType===MessageType.Info}"
   [textContent]="userMessage.message"></h3>
-
-
-<div *ngIf="!selectedPlace" @noPlaceAnimation>
-  <h1 id="noPlaceSelectedLabel">
-    Click on any place on the map!
-  </h1>
-</div>
 
 <div *ngIf="selectedPlace">
 

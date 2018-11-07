@@ -106,7 +106,7 @@ describe('PlaceComponent', () => {
   it('When no selected place, should render message, and no place name', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     expect(
-      compiled.querySelector('#noPlaceSelectedLabel').textContent
+      compiled.querySelector('#userMessage').textContent
     ).toContain('Click on any place on the map!');
     expect(compiled.querySelector('#placeSelectedLabel')).toBeNull();
     expect(compiled.querySelector('#newPlaceName')).toBeNull();
@@ -162,8 +162,6 @@ describe('PlaceComponent', () => {
     }
     )()
   });
-
-
 
   it('when received coordinates of undefined place, input should be visible and enable', function (done) {
     inject([SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
@@ -262,7 +260,6 @@ describe('PlaceComponent', () => {
       });
 
       expect(component.selectedPlace.images).not.toBeDefined();
-      expect(component.userMessage).not.toBeDefined();
     }
   ));
 

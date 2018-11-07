@@ -35,6 +35,7 @@ import { isSuccess } from 'angular-in-memory-web-api';
       transition(
         ':leave',
         sequence([
+          style({opacity: 0.9}),
           animate('15s', style({ opacity: 0 })),
           animate('1s', style({ height: '0px' }))
         ])
@@ -94,7 +95,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private placeService: PlaceService,
     private selectionStateService: SelectionStateService,
     private multiFileUploader: MultiFileUploader
-  ) { }
+  ) {
+    this.setUserMessage(
+      'Click on any place on the map!',
+      MessageType.Info
+    );
+   }
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
