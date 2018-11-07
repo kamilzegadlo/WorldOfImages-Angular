@@ -13,9 +13,16 @@ Installation:
 To run unit tests: ng test --code-coverage.
 
 
-currently it is just front end. There is a fakebackend.
+----------------------------------------
+currently it is just front end. There is a fakebackend, which is limited to session storage limits.
 
 If i find time I will try to create real backend with .net core and try to write the same with react and vue.
+
+----------------------------------------
+
+The browser compatibility was not tested. Please use the latest Chrome.
+
+----------------------------------------
 
 The world map is taken from free images published by British Library:
 
