@@ -36,6 +36,6 @@ https://www.flickr.com/photos/britishlibrary/
 
 Application was not intensively tested on different screen resolutions. Hence, the recomended one is 1920x1080.
 
-App was not tested at all regarding accessibility.
+No work was done regarding accessibility in the app.
 
 ----------------------------------------
