@@ -8,7 +8,7 @@ Installation:
 1. clone/download the repo
 2. run 'npm install' in main folder of the app.
 3. ng serve
-4. browse lokalhost:4200
+4. browse localhost:4200
 
 To run unit tests: ng test --code-coverage.
 
