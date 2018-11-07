@@ -31,3 +31,11 @@ https://britishlibrary.typepad.co.uk/digital-scholarship/2013/12/a-million-first
 https://www.flickr.com/photos/britishlibrary/
 
 (Really great source of free images even for commercial use)
+
+----------------------------------------
+
+Application was not intensively tested on different screen resolutions. Hence, the recomended one is 1920x1080.
+
+App was not tested at all regarding accessibility.
+
+----------------------------------------
