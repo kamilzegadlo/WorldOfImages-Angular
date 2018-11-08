@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { ElementFinder } from 'protractor';
 
 describe('world-of-images-angular App', () => {
   let page: AppPage;
@@ -7,12 +8,12 @@ describe('world-of-images-angular App', () => {
     page = new AppPage();
   });
 
-  it('should display a map and a message on init. The message should dissapear after some time.', () => {
+  it('Init State. Should display a map and a message on init. The message should dissapear after some time.', () => {
     page.navigateTo();
-    let map=page.getMap();
+    let map: ElementFinder = page.getMap();
     expect(page.isElementPresent(map)).toBeTruthy();
 
-    let userMessage=page.getUserMessage();
+    let userMessage: ElementFinder = page.getUserMessage();
     expect(page.isElementPresent(userMessage)).toBeTruthy();
 
     expect(userMessage.getText()).toBe('Click on any place on the map!');
@@ -20,18 +21,49 @@ describe('world-of-images-angular App', () => {
     expect(page.elementDisappear(userMessage)).toBeTruthy();
   });
 
+  it('Not Defined Place. When click on a undefined place, a proper message, input and button should be displayed', () => {
+    page.navigateTo();
+    page.clickSpecifPlaceOnTheMap(113,13);
+
+    let notDefinedLabel: ElementFinder = page.getNotDefinedLabel();
+    expect(page.isElementPresent(notDefinedLabel)).toBeTruthy();
+    expect(notDefinedLabel.getText()).toBe("This place has not been visited yet!");
+
+    let notDefinedInput = page.getNotDefinedNameInput();
+    expect(notDefinedInput).toBeTruthy();
+    expect(notDefinedInput.getAttribute('value')).toBe("New place");
+    expect(page.isElementFocused(notDefinedInput)).toBeTruthy();
+
+    let notDefinedSubmitButton=page.getNotDefinedSubmitButton();
+    expect(page.isElementPresent(notDefinedSubmitButton)).toBeTruthy();
+  });
+
+  it('Newly added Place. After adding a place proper label, icon, message should be displayed and no images. The message should disaprear after some time.', () => {
+    page.navigateTo();
+    page.clickSpecifPlaceOnTheMap(113,13);
+
+    let notDefinedNameInput = page.getNotDefinedNameInput();
+    page.setValue(notDefinedNameInput, "Test Name")
+    page.getNotDefinedSubmitButton().click();
+
+    let userMessage: ElementFinder = page.getUserMessage();
+    expect(page.isElementPresent(userMessage)).toBeTruthy();
+    expect(userMessage.getText()).toBe('You have named this place!');
+    expect(page.elementDisappear(userMessage)).toBeTruthy();
+
+    let definedPlaceName: ElementFinder= page.getDefinedPlaceName();
+    expect(page.isElementPresent(definedPlaceName)).toBeTruthy();
+    expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
+
+    page.getImages().then(i=>expect(i.length).toBe(0));
+  });
+
 
   /*
 
 E2e tests:
 
-->2.
-Click on any element and ensure the correct label, input and button is visible
-Define place
-Ensure a proper message is displayed
-And it disappears after 15 sec
-->3.
-Ensure proper label and icon is displayed and no images
+
 ->4
 Add an image
 Ensure message is and disappears
@@ -54,6 +86,8 @@ Close a place by clicking x
 Ensure the label is displayed and disappears
 -> 11. 
 Click on the map when a place is opened(defined and not defined)
+->12
+check that enter submits form in not defined place
 
 
   */
