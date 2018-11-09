@@ -32,9 +32,6 @@ Ensure they are displayed
 add more than 5 images
 ->9.
 Click on already defined place
-->10.
-Close a place by clicking x
-Ensure the label is displayed and disappears
 -> 11. 
 Click on the map when a place is opened(defined and not defined)
 ->12

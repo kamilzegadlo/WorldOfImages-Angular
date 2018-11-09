@@ -1,13 +1,14 @@
 <h3 *ngIf="userMessage" id="userMessage" @userMessageAnimation [ngClass]="{'alert-success': userMessage.messageType===MessageType.Success, 'alert-danger': userMessage.messageType===MessageType.Error, 'alert-primary': userMessage.messageType===MessageType.Info}"
   [textContent]="userMessage.message"></h3>
 
-<div *ngIf="selectedPlace">
+<div id="place" *ngIf="selectedPlace">
+
+  <a class="place__close" (click)="collapsePlace()"></a>
 
   <div *ngIf="selectedPlace?.isDefined" @placeDefinedAnimation>
     <h2 id="placeSelectedLabel">
       {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
     </h2>
-    <a class="place__close" (click)="collapsePlace()"></a>
 
     <label for="imageChooser" id="imageChooserImage">
       <figure>

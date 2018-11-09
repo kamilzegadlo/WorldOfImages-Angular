@@ -10,7 +10,7 @@ describe('world-of-images-angular Not Defined Place ', () => {
     page = new NotDefinedPlacePage();
   });
 
-  it('when click on a undefined place, a proper message, input and button should be displayed', () => {
+  it('when click on a undefined place, a proper message, input and button should be displayed. After clicking X, the place should collapse and the message should be displayed and disappear after some time.', () => {
     page.navigateTo();
     page.clickSpecifPlaceOnTheMap(113,13);
 
@@ -25,6 +25,17 @@ describe('world-of-images-angular Not Defined Place ', () => {
 
     let notDefinedSubmitButton=page.getNotDefinedSubmitButton();
     expect(page.isElementPresent(notDefinedSubmitButton)).toBeTruthy();
+
+    expect(page.isElementPresent(page.getPlace())).toBeTruthy();
+
+    page.getClosePlaceButton().click();
+
+    let userMessage: ElementFinder = page.getUserMessage();
+    expect(page.isElementPresent(userMessage)).toBeTruthy();
+    expect(userMessage.getText()).toBe('Click on any place on the map!');
+    expect(page.elementDisappear(userMessage)).toBeTruthy();
+
+    expect(page.elementDisappear(page.getPlace())).toBeTruthy();
   });
 
 });

@@ -1,11 +1,11 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 import { protractor } from 'protractor/built/ptor';
-import { promise, WebElement } from 'selenium-webdriver';
+import { promise } from 'selenium-webdriver';
 
 
 export class AppPage {
   protected EC=protractor.ExpectedConditions;
-  protected timeOut=60000; 
+  protected timeOut=20000; 
 
   navigateTo() {
     return browser.get('/');
@@ -24,7 +24,7 @@ export class AppPage {
   }
 
   elementDisappear(element: ElementFinder): promise.Promise<boolean>{
-    return browser.wait(this.EC.not(this.EC.invisibilityOf(element)), this.timeOut);
+    return browser.wait(this.EC.invisibilityOf(element), this.timeOut);
   }
 
   clickSpecifPlaceOnTheMap(x: number, y: number){

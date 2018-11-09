@@ -1,5 +1,4 @@
-import { browser, by, element, ElementFinder } from 'protractor';
-import { promise } from 'selenium-webdriver';
+import { by, element, ElementFinder } from 'protractor';
 import { AppPage } from './app.po';
 
 
@@ -16,5 +15,13 @@ export class NotDefinedPlacePage extends AppPage {
   getNotDefinedSubmitButton(): ElementFinder{
     return element(by.id('saveNewPlace'));
   }
-  
+
+  getClosePlaceButton(): ElementFinder{
+    return element(by.css('.place__close'));
+  }
+
+  getPlace(): ElementFinder{
+    return element(by.id('place'));
+  }
+
 }
