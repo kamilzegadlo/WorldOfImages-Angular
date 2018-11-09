@@ -4,8 +4,8 @@ import { promise, WebElement } from 'selenium-webdriver';
 
 
 export class AppPage {
-  private EC=protractor.ExpectedConditions;
-  private timeOut=60000; 
+  protected EC=protractor.ExpectedConditions;
+  protected timeOut=60000; 
 
   navigateTo() {
     return browser.get('/');
@@ -34,30 +34,6 @@ export class AppPage {
       .perform();
   }
 
-  getNotDefinedLabel(): ElementFinder{
-    return element(by.id('notDefinedLabel'));
-  }
-
-  getNotDefinedNameInput(): ElementFinder{
-    return element(by.id('newPlaceName'));
-  }
-
-  getNotDefinedSubmitButton(): ElementFinder{
-    return element(by.id('saveNewPlace'));
-  }
-
-  getDefinedPlaceName(): ElementFinder{
-    return element(by.id('placeSelectedLabel'));
-  }
-
-  getDefinedIcon(): ElementFinder{
-    return element(by.id('imageChooserImage'));
-  }
-
-  getDefinedTip(): ElementFinder{
-    return element(by.id('definedPlaceTip'));
-  }
-
   setValue(element: ElementFinder, text: string){
     browser.wait(this.EC.elementToBeClickable(element), this.timeOut).then(()=>
       this.isElementPresent(element).then(()=> 
@@ -70,7 +46,4 @@ export class AppPage {
       idofFocused => element.getAttribute('id').then(idOfGiven=> idofFocused===idOfGiven));
   }
 
-  getImages(): promise.Promise<WebElement[]>{
-    return browser.driver.findElements(by.css('.image--basic'));
-  }
 }

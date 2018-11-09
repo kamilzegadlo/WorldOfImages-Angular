@@ -21,44 +21,6 @@ describe('world-of-images-angular App', () => {
     expect(page.elementDisappear(userMessage)).toBeTruthy();
   });
 
-  it('Not Defined Place. When click on a undefined place, a proper message, input and button should be displayed', () => {
-    page.navigateTo();
-    page.clickSpecifPlaceOnTheMap(113,13);
-
-    let notDefinedLabel: ElementFinder = page.getNotDefinedLabel();
-    expect(page.isElementPresent(notDefinedLabel)).toBeTruthy();
-    expect(notDefinedLabel.getText()).toBe("This place has not been visited yet!");
-
-    let notDefinedInput = page.getNotDefinedNameInput();
-    expect(notDefinedInput).toBeTruthy();
-    expect(notDefinedInput.getAttribute('value')).toBe("New place");
-    expect(page.isElementFocused(notDefinedInput)).toBeTruthy();
-
-    let notDefinedSubmitButton=page.getNotDefinedSubmitButton();
-    expect(page.isElementPresent(notDefinedSubmitButton)).toBeTruthy();
-  });
-
-  it('Newly added Place. After adding a place proper label, icon, message should be displayed and no images. The message should disaprear after some time.', () => {
-    page.navigateTo();
-    page.clickSpecifPlaceOnTheMap(113,13);
-
-    let notDefinedNameInput = page.getNotDefinedNameInput();
-    page.setValue(notDefinedNameInput, "Test Name")
-    page.getNotDefinedSubmitButton().click();
-
-    let userMessage: ElementFinder = page.getUserMessage();
-    expect(page.isElementPresent(userMessage)).toBeTruthy();
-    expect(userMessage.getText()).toBe('You have named this place!');
-    expect(page.elementDisappear(userMessage)).toBeTruthy();
-
-    let definedPlaceName: ElementFinder= page.getDefinedPlaceName();
-    expect(page.isElementPresent(definedPlaceName)).toBeTruthy();
-    expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
-
-    page.getImages().then(i=>expect(i.length).toBe(0));
-  });
-
-
   /*
 
 E2e tests:
