@@ -13,11 +13,19 @@ export class DefinedPlacePage extends AppPage {
     return element(by.id('imageChooserImage'));
   }
 
+  getDefinedFileInput(): ElementFinder{
+    return element(by.id('imageChooser'));
+  }
+
   getDefinedTip(): ElementFinder{
     return element(by.id('definedPlaceTip'));
   }
 
   getImages(): promise.Promise<WebElement[]>{
-    return browser.driver.findElements(by.css('.image--basic'));
+    return browser.driver.findElements(by.css('.basic__img'));
+  }
+
+  getExpandedImage(): ElementFinder{
+    return element(by.id('image--large'));
   }
 }

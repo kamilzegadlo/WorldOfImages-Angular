@@ -25,11 +25,6 @@ describe('world-of-images-angular App', () => {
 
 E2e tests:
 
-
-->4
-Add an image
-Ensure message is and disappears
-Image is displayed
 ->5.
 Extend the image
 Close the extended by clicking the image again
