@@ -25,7 +25,7 @@ The browser compatibility was not tested. Please use the latest Chrome.
 
 ----------------------------------------
 
-The world map is taken from free images published by British Library:
+The world map and other images used in this project are taken from free images published by British Library:
 
 https://britishlibrary.typepad.co.uk/digital-scholarship/2013/12/a-million-first-steps.html#sthash.3kaubTLH.dpuf
 
