@@ -32,8 +32,6 @@ Click on already defined place
 Click on the map when a place is opened(defined and not defined)
 ->12
 check that enter submits form in not defined place
-
-restart browser after each test
   */
 
 });

@@ -34,7 +34,7 @@ describe('world-of-images-angular Defined Place. ', () => {
 
   it('After adding an image proper message and image should be displayed. The message should disapear after some time. No image should be expanded.', () => {
     notDefinedPlacePage.navigateTo();
-    notDefinedPlacePage.clickSpecifPlaceOnTheMap(114,13);
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
     let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
@@ -52,7 +52,7 @@ describe('world-of-images-angular Defined Place. ', () => {
 
   it('An image should be expanded after clicking it. The expanded image should collapse after another click on the small image or clicking X', () => {
     notDefinedPlacePage.navigateTo();
-    notDefinedPlacePage.clickSpecifPlaceOnTheMap(115,13);
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
     let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
@@ -75,7 +75,7 @@ describe('world-of-images-angular Defined Place. ', () => {
 
   it('add 8 images by bulk', () => {
     notDefinedPlacePage.navigateTo();
-    notDefinedPlacePage.clickSpecifPlaceOnTheMap(116,13);
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
     let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
