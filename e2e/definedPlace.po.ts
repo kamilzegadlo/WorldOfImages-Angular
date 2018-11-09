@@ -25,6 +25,15 @@ export class DefinedPlacePage extends AppPage {
     return browser.driver.findElements(by.css('.basic__img'));
   }
 
+  waitUntilThereAreNImages(n: number){
+    browser.wait(
+      ()=> {
+        return this.getImages().then( (images) => {
+            return images.length >= n;
+        });
+      }, this.timeOut);
+  }
+
   getFirstImage(): ElementFinder{
     return element(by.css('.basic__img'));
   }

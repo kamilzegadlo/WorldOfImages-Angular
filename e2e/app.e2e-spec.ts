@@ -8,7 +8,7 @@ describe('world-of-images-angular App', () => {
     page = new AppPage();
   });
 
-  it('Init State. Should display a map and a message on init. The message should dissapear after some time.', () => {
+  it('Init State. Should display a map and a message on init. The message should disappear after some time.', () => {
     page.navigateTo();
     let map: ElementFinder = page.getMap();
     expect(page.isElementPresent(map)).toBeTruthy();
@@ -25,11 +25,7 @@ describe('world-of-images-angular App', () => {
 
 E2e tests:
 
-->7.
-add multiple images by bulk
-Ensure they are displayed
-->8.
-add more than 5 images
+
 ->9.
 Click on already defined place
 -> 11. 
@@ -37,7 +33,7 @@ Click on the map when a place is opened(defined and not defined)
 ->12
 check that enter submits form in not defined place
 
-
+restart browser after each test
   */
 
 });

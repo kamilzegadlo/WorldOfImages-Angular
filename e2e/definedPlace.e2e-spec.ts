@@ -73,4 +73,18 @@ describe('world-of-images-angular Defined Place. ', () => {
     expect(definedPlacePage.elementDisappear(expandedImage)).toBeTruthy();
   });
 
+  it('add 8 images by bulk', () => {
+    notDefinedPlacePage.navigateTo();
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(116,13);
+
+    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
+    notDefinedPlacePage.getNotDefinedSubmitButton().click();
+
+    definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg\n'+__dirname+'\\assets\\2.jpg\n'+__dirname+'\\assets\\3.jpg\n'+__dirname+'\\assets\\4.jpg\n'+__dirname+'\\assets\\5.jpg\n'+__dirname+'\\assets\\6.jpg\n'+__dirname+'\\assets\\7.jpg\n'+__dirname+'\\assets\\8.jpg');
+
+    definedPlacePage.waitUntilThereAreNImages(8);
+    definedPlacePage.getImages().then(i=>{expect(i.length).toBe(8);});
+  });
+
 });

@@ -1,4 +1,4 @@
-import { browser, by, element, ElementFinder } from 'protractor';
+import { browser, by, element, ElementFinder, ElementArrayFinder } from 'protractor';
 import { protractor } from 'protractor/built/ptor';
 import { promise } from 'selenium-webdriver';
 
@@ -16,7 +16,11 @@ export class AppPage {
   }
 
   getUserMessage(): ElementFinder {
-    return element(by.id('userMessage'));
+    return  this.getUserMessages().get(0);
+  }
+
+  getUserMessages(): ElementArrayFinder {
+    return element.all(by.id('userMessage'));
   }
 
   isElementPresent(element: ElementFinder): promise.Promise<boolean> {
