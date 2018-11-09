@@ -20,11 +20,11 @@ export class AppPage {
   }
 
   isElementPresent(element: ElementFinder): promise.Promise<boolean> {
-    return element && element.isDisplayed() && element.isEnabled() && element.isPresent();
+    return browser.wait(element && element.isDisplayed() && element.isEnabled() && element.isPresent(), this.timeOut);
   }
 
   elementDisappear(element: ElementFinder): promise.Promise<boolean>{
-    return browser.wait(this.EC.not(this.EC.presenceOf(element)), this.timeOut);
+    return browser.wait(this.EC.not(this.EC.invisibilityOf(element)), this.timeOut);
   }
 
   clickSpecifPlaceOnTheMap(x: number, y: number){

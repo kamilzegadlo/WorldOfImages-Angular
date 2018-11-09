@@ -25,12 +25,6 @@ describe('world-of-images-angular App', () => {
 
 E2e tests:
 
-->5.
-Extend the image
-Close the extended by clicking the image again
-->6.
-Extend it again
-Close by clicking the X
 ->7.
 add multiple images by bulk
 Ensure they are displayed

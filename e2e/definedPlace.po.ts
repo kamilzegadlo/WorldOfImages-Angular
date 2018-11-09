@@ -25,7 +25,16 @@ export class DefinedPlacePage extends AppPage {
     return browser.driver.findElements(by.css('.basic__img'));
   }
 
-  getExpandedImage(): ElementFinder{
-    return element(by.id('image--large'));
+  getFirstImage(): ElementFinder{
+    return element(by.css('.basic__img'));
   }
+
+  getExpandedImage(): ElementFinder{
+    return element(by.css('.image--large'));
+  }
+
+  getCloseExpandedImageButton(): ElementFinder{
+    return element(by.css('.expand__close'));
+  }
+  
 }

@@ -50,5 +50,27 @@ describe('world-of-images-angular Defined Place. ', () => {
     definedPlacePage.getImages().then(i=>{expect(i.length).toBe(1);});
   });
 
+  it('An image should be expanded after clicking it. The expanded image should collapse after another lick on the small image or clicking X', () => {
+    notDefinedPlacePage.navigateTo();
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(115,13);
+
+    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
+    notDefinedPlacePage.getNotDefinedSubmitButton().click();
+
+    definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg');
+
+    definedPlacePage.getFirstImage().click()
+
+    let expandedImage: ElementFinder = definedPlacePage.getExpandedImage();
+    expect(definedPlacePage.isElementPresent(expandedImage)).toBeTruthy();
+    definedPlacePage.getCloseExpandedImageButton().click()
+    expect(definedPlacePage.elementDisappear(expandedImage)).toBeTruthy();
+
+    definedPlacePage.getFirstImage().click()
+    expect(definedPlacePage.isElementPresent(expandedImage)).toBeTruthy();
+    definedPlacePage.getFirstImage().click()
+    expect(definedPlacePage.elementDisappear(expandedImage)).toBeTruthy();
+  });
 
 });
