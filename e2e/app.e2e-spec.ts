@@ -25,9 +25,6 @@ describe('world-of-images-angular App', () => {
 
 E2e tests:
 
-
-->9.
-Click on already defined place
 -> 11. 
 Click on the map when a place is opened(defined and not defined)
 ->12

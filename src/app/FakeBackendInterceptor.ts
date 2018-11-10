@@ -29,7 +29,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     let places: Place[] = [];
     if (PlacesFromSession) {
       const placesfromSession = JSON.parse(PlacesFromSession);
-      placesfromSession.forEach((p: any) => places.push(new Place(p._x, p._y, p._name, p._isdefined)))
+      placesfromSession.forEach((p: any) => places.push(new Place(p._x, p._y, p._name, p._isDefined, p._images)))
     }
 
     // wrap in delayed observable to simulate server api call

@@ -1,9 +1,9 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 import { promise, WebElement } from 'selenium-webdriver';
-import { AppPage } from './app.po';
+import { PlacePage } from './place.po';
 
 
-export class DefinedPlacePage extends AppPage {
+export class DefinedPlacePage extends PlacePage {
 
   getDefinedPlaceName(): ElementFinder{
     return element(by.id('placeSelectedLabel'));
@@ -27,9 +27,9 @@ export class DefinedPlacePage extends AppPage {
 
   waitUntilThereAreNImages(n: number){
     browser.wait(
-      ()=> {
+      () => {
         return this.getImages().then( (images) => {
-            return images.length >= n;
+            return images.length === n;
         });
       }, this.timeOut);
   }

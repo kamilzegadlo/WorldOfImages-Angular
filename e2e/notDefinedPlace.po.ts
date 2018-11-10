@@ -1,8 +1,7 @@
 import { by, element, ElementFinder } from 'protractor';
-import { AppPage } from './app.po';
+import { PlacePage } from './place.po';
 
-
-export class NotDefinedPlacePage extends AppPage {
+export class NotDefinedPlacePage extends PlacePage {
 
   getNotDefinedLabel(): ElementFinder{
     return element(by.id('notDefinedLabel'));
@@ -14,14 +13,6 @@ export class NotDefinedPlacePage extends AppPage {
 
   getNotDefinedSubmitButton(): ElementFinder{
     return element(by.id('saveNewPlace'));
-  }
-
-  getClosePlaceButton(): ElementFinder{
-    return element(by.css('.place__close'));
-  }
-
-  getPlace(): ElementFinder{
-    return element(by.id('place'));
   }
 
 }

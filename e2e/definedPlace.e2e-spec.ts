@@ -9,40 +9,40 @@ describe('world-of-images-angular Defined Place. ', () => {
 
   beforeEach(() => {
     definedPlacePage = new DefinedPlacePage();
-    notDefinedPlacePage= new NotDefinedPlacePage();
+    notDefinedPlacePage = new NotDefinedPlacePage();
   });
 
   it('Newly added Place. After adding a place proper label, icon, message should be displayed and no images. The message should disapear after some time.', () => {
     notDefinedPlacePage.navigateTo();
     notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
-    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    const notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
     notDefinedPlacePage.getNotDefinedSubmitButton().click();
 
-    let userMessage: ElementFinder = definedPlacePage.getUserMessage();
+    const userMessage: ElementFinder = definedPlacePage.getUserMessage();
     expect(definedPlacePage.isElementPresent(userMessage)).toBeTruthy();
     expect(userMessage.getText()).toBe('You have named this place!');
     expect(definedPlacePage.elementDisappear(userMessage)).toBeTruthy();
 
-    let definedPlaceName: ElementFinder= definedPlacePage.getDefinedPlaceName();
+    const definedPlaceName: ElementFinder= definedPlacePage.getDefinedPlaceName();
     expect(definedPlacePage.isElementPresent(definedPlaceName)).toBeTruthy();
     expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
 
     definedPlacePage.getImages().then(i=>expect(i.length).toBe(0));
   });
 
-  it('After adding an image proper message and image should be displayed. The message should disapear after some time. No image should be expanded.', () => {
+  it('After adding an image proper message and image should be displayed. The message should disapear after some time.', () => {
     notDefinedPlacePage.navigateTo();
     notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
-    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    const notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
     notDefinedPlacePage.getNotDefinedSubmitButton().click();
 
     definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg');
 
-    let userMessage: ElementFinder = definedPlacePage.getUserMessage();
+    const userMessage: ElementFinder = definedPlacePage.getUserMessage();
     expect(definedPlacePage.isElementPresent(userMessage)).toBeTruthy();
     expect(userMessage.getText()).toBe('Your picture has been added to this place!');
     expect(definedPlacePage.elementDisappear(userMessage)).toBeTruthy();
@@ -54,7 +54,7 @@ describe('world-of-images-angular Defined Place. ', () => {
     notDefinedPlacePage.navigateTo();
     notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
-    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    const notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
     notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
     notDefinedPlacePage.getNotDefinedSubmitButton().click();
 
@@ -62,29 +62,39 @@ describe('world-of-images-angular Defined Place. ', () => {
 
     definedPlacePage.getFirstImage().click()
 
-    let expandedImage: ElementFinder = definedPlacePage.getExpandedImage();
+    const expandedImage: ElementFinder = definedPlacePage.getExpandedImage();
     expect(definedPlacePage.isElementPresent(expandedImage)).toBeTruthy();
-    definedPlacePage.getCloseExpandedImageButton().click()
+    definedPlacePage.getCloseExpandedImageButton().click();
     expect(definedPlacePage.elementDisappear(expandedImage)).toBeTruthy();
 
-    definedPlacePage.getFirstImage().click()
+    definedPlacePage.getFirstImage().click();
     expect(definedPlacePage.isElementPresent(expandedImage)).toBeTruthy();
-    definedPlacePage.getFirstImage().click()
+    definedPlacePage.getFirstImage().click();
     expect(definedPlacePage.elementDisappear(expandedImage)).toBeTruthy();
   });
 
-  it('add 8 images by bulk', () => {
+  it('add 2 images by bulk and reopen this place.', () => {
     notDefinedPlacePage.navigateTo();
-    notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
+    notDefinedPlacePage.clickSpecifPlaceOnTheMap(113, 13);
 
-    let notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
-    notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
+    const notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
+    notDefinedPlacePage.setValue(notDefinedNameInput, 'Test Name')
     notDefinedPlacePage.getNotDefinedSubmitButton().click();
 
-    definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg\n'+__dirname+'\\assets\\2.jpg\n'+__dirname+'\\assets\\3.jpg\n'+__dirname+'\\assets\\4.jpg\n'+__dirname+'\\assets\\5.jpg\n'+__dirname+'\\assets\\6.jpg\n'+__dirname+'\\assets\\7.jpg\n'+__dirname+'\\assets\\8.jpg');
+    definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg\n'+__dirname+'\\assets\\2.jpg');
 
-    definedPlacePage.waitUntilThereAreNImages(8);
-    definedPlacePage.getImages().then(i=>{expect(i.length).toBe(8);});
+    definedPlacePage.waitUntilThereAreNImages(2);
+    definedPlacePage.getImages().then(i=>{expect(i.length).toBe(2);});
+
+    definedPlacePage.getClosePlaceButton().click();
+    expect(definedPlacePage.elementDisappear(definedPlacePage.getPlace())).toBeTruthy();
+
+    definedPlacePage.clickSpecifPlaceOnTheMap(113, 13);
+    const definedPlaceName: ElementFinder = definedPlacePage.getDefinedPlaceName();
+    expect(definedPlacePage.isElementPresent(definedPlaceName)).toBeTruthy();
+    expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
+    definedPlacePage.waitUntilThereAreNImages(2);
+    definedPlacePage.getImages().then(i=>{expect(i.length).toBe(2);});
   });
 
 });
