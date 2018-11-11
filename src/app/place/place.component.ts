@@ -38,26 +38,7 @@ import {
         ])
       )
     ]),
-    trigger('noPlaceAnimation', [
-      transition(
-        ':leave', [
-          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
-        ]
-      )
-    ]),
-    trigger('placeNotDefinedAnimation', [
-      transition(':enter', sequence([
-        style({ height: 0, overflow: 'hidden' }),
-        animate('0.5s'),
-        animate('0.5s', style({ height: '100%', overflow: 'hidden' }))
-      ])),
-      transition(
-        ':leave', [
-          animate('0.5s', style({ height: '0px', overflow: 'hidden' }))
-        ]
-      )
-    ]),
-    trigger('placeDefinedAnimation', [
+    trigger('placeAnimation', [
       transition(':enter', sequence([
         style({ height: 0, overflow: 'hidden' }),
         animate('0.5s'),
@@ -108,13 +89,14 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   private getPlace(coordinates: Coordinates) {
+    this._selectedPlace = undefined;
     this.selectedPlaceSubscrption = this.placeService
       .getPlace(coordinates)
       .subscribe(getPlaceResponse => {
         if (getPlaceResponse.isSuccess && getPlaceResponse.result) {
           this._selectedPlace = getPlaceResponse.result;
           if (!this._selectedPlace.isDefined) {
-            this.newPlaceName = 'New place';
+            this.newPlaceName = 'New place (x:'+this._selectedPlace.x+' y:'+this._selectedPlace.y+')';
           }
         } else {
           this.setUserMessage(

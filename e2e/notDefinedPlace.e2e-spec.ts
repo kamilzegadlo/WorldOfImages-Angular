@@ -20,7 +20,7 @@ describe('world-of-images-angular Not Defined Place ', () => {
 
     let notDefinedInput = page.getNotDefinedNameInput();
     expect(notDefinedInput).toBeTruthy();
-    expect(notDefinedInput.getAttribute('value')).toBe("New place");
+    expect(notDefinedInput.getAttribute('value')).toBe("New place (x:113 y:13)");
     expect(page.isElementFocused(notDefinedInput)).toBeTruthy();
 
     let notDefinedSubmitButton=page.getNotDefinedSubmitButton();
@@ -36,6 +36,23 @@ describe('world-of-images-angular Not Defined Place ', () => {
     expect(page.elementDisappear(userMessage)).toBeTruthy();
 
     expect(page.elementDisappear(page.getPlace())).toBeTruthy();
+  });
+
+  it('when click on the map when undefined place is opened it should open this new place', () => {
+    page.navigateTo();
+    page.clickSpecifPlaceOnTheMap(113,13);
+
+    let notDefinedInput = page.getNotDefinedNameInput();
+    expect(notDefinedInput).toBeTruthy();
+    expect(notDefinedInput.getAttribute('value')).toBe("New place (x:113 y:13)");
+    expect(page.isElementFocused(notDefinedInput)).toBeTruthy();
+
+    page.clickSpecifPlaceOnTheMap(114,13);
+
+    expect(notDefinedInput).toBeTruthy();
+    expect(notDefinedInput.getAttribute('value')).toBe("New place (x:114 y:13)");
+    expect(page.isElementFocused(notDefinedInput)).toBeTruthy();
+
   });
 
 });

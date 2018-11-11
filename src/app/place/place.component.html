@@ -1,13 +1,13 @@
 <h3 *ngIf="userMessage" id="userMessage" @userMessageAnimation [ngClass]="{'alert-success': userMessage.messageType===MessageType.Success, 'alert-danger': userMessage.messageType===MessageType.Error, 'alert-primary': userMessage.messageType===MessageType.Info}"
   [textContent]="userMessage.message"></h3>
 
-<div id="place" *ngIf="selectedPlace">
+<div id="place" *ngIf="selectedPlace" @placeAnimation>
 
   <a class="place__close" (click)="collapsePlace()"></a>
 
-  <div *ngIf="selectedPlace?.isDefined" @placeDefinedAnimation>
+  <div *ngIf="selectedPlace?.isDefined" >
     <h2 id="placeSelectedLabel">
-      {{selectedPlace?.name}} (x:{{selectedPlace?.x}} y:{{selectedPlace?.y}})
+      {{selectedPlace?.name}}
     </h2>
 
     <label for="imageChooser" id="imageChooserImage">
@@ -24,7 +24,7 @@
   </div>
 
 
-  <div *ngIf="!selectedPlace?.isDefined" @placeNotDefinedAnimation>
+  <div *ngIf="!selectedPlace?.isDefined">
     <h2 id="notDefinedLabel">This place has not been visited yet!</h2>
     <form #newPlaceForm="ngForm" id="newPlaceForm" (ngSubmit)="savePlace()">
       <input id="newPlaceName" [(ngModel)]="newPlaceName" name="name" [kzFocus]="true" required>

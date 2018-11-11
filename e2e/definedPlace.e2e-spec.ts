@@ -27,7 +27,7 @@ describe('world-of-images-angular Defined Place. ', () => {
 
     const definedPlaceName: ElementFinder= definedPlacePage.getDefinedPlaceName();
     expect(definedPlacePage.isElementPresent(definedPlaceName)).toBeTruthy();
-    expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
+    expect(definedPlaceName.getText()).toBe('Test Name');
 
     definedPlacePage.getImages().then(i=>expect(i.length).toBe(0));
   });
@@ -92,7 +92,7 @@ describe('world-of-images-angular Defined Place. ', () => {
     definedPlacePage.clickSpecifPlaceOnTheMap(113, 13);
     const definedPlaceName: ElementFinder = definedPlacePage.getDefinedPlaceName();
     expect(definedPlacePage.isElementPresent(definedPlaceName)).toBeTruthy();
-    expect(definedPlaceName.getText()).toBe('Test Name (x:113 y:13)');
+    expect(definedPlaceName.getText()).toBe('Test Name');
     definedPlacePage.waitUntilThereAreNImages(2);
     definedPlacePage.getImages().then(i=>{expect(i.length).toBe(2);});
   });
