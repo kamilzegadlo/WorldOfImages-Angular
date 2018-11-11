@@ -42,7 +42,12 @@ export class AppPage {
     browser.wait(this.EC.elementToBeClickable(el), this.timeOut).then(() =>
       this.isElementPresent(el).then(() => 
         el.clear().then(() => 
-        el.sendKeys("Test Name"))));
+        el.sendKeys(text))));
+  }
+
+  submit(el: ElementFinder, text: string) {
+   this.setValue(el, text);
+   el.submit();
   }
 
   isElementFocused(el: ElementFinder): promise.Promise<Boolean>{

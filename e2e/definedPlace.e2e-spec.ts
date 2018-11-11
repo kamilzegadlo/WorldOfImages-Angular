@@ -32,13 +32,12 @@ describe('world-of-images-angular Defined Place. ', () => {
     definedPlacePage.getImages().then(i=>expect(i.length).toBe(0));
   });
 
-  it('After adding an image proper message and image should be displayed. The message should disapear after some time.', () => {
+  it('Enter should submit the form. After adding an image proper message and image should be displayed. The message should disapear after some time.', () => {
     notDefinedPlacePage.navigateTo();
     notDefinedPlacePage.clickSpecifPlaceOnTheMap(113,13);
 
     const notDefinedNameInput = notDefinedPlacePage.getNotDefinedNameInput();
-    notDefinedPlacePage.setValue(notDefinedNameInput, "Test Name")
-    notDefinedPlacePage.getNotDefinedSubmitButton().click();
+    notDefinedPlacePage.submit(notDefinedNameInput, "Test Name")
 
     definedPlacePage.getDefinedFileInput().sendKeys(__dirname+'\\assets\\1.jpg');
 
