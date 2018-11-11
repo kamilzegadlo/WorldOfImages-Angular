@@ -1,0 +1,5 @@
+img{
+    background: url(assets/loading.gif) 50% no-repeat;
+    min-width: 300px;
+    min-height: 300px;
+}

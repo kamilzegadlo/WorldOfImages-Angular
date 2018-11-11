@@ -21,14 +21,4 @@ describe('world-of-images-angular App', () => {
     expect(page.elementDisappear(userMessage)).toBeTruthy();
   });
 
-  /*
-
-E2e tests:
-
--> 11. 
-Click on the map when a place is opened(defined and not defined)
-->12
-check that enter submits form in not defined place
-  */
-
 });

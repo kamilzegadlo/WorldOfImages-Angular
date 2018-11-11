@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ImageComponent implements OnInit {
   constructor() {}
 
-  @Input() image: string;
+  @Input() image: string;//need to add a new class for image which will hold a small image and a full size one
   @Input() class: string;
 
   ngOnInit() {}

@@ -4,6 +4,7 @@
   max-width: 100%;
   height: auto;
   margin: 0 auto;
+  background: url(assets/loading.gif) 50% no-repeat;
 }
 
 .image--large {
@@ -14,4 +15,5 @@
   padding: 40px;
   margin: 0 auto;
   box-sizing: border-box;
+  background: url(assets/loading.gif) 50% no-repeat;
 }
