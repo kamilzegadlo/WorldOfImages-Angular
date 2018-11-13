@@ -18,9 +18,14 @@ Full Continuous Integration (with running unit test and e2e) & Continuous Deploy
 https://worldofimagesangular.azurewebsites.net/
 
 ----------------------------------------
-currently it is just front end. There is a fakebackend, which is limited to session storage limits.
+Currently it is just front end. There is a fakebackend, which is limited to session storage limits.
 
-If i find time I will try to create real backend with .net core and try to write the same with react and vue.
+The plan is that after finishing this project, I will try to achieve the following things:
+1. write the backend in .net core
+2. relational database (probably two approaches one with ORM - maybe Entity Framework, the second will be by database procedures)
+3. Write the same front end but by using React and Vue.
+How much I will manage to do will depend from my time capacity.
+
 
 ----------------------------------------
 
