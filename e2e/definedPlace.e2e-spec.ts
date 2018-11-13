@@ -91,7 +91,7 @@ describe('world-of-images-angular Defined Place. ', () => {
     definedPlacePage.clickSpecifPlaceOnTheMap(113, 13);
     const definedPlaceName: ElementFinder = definedPlacePage.getDefinedPlaceName();
     expect(definedPlacePage.isElementPresent(definedPlaceName)).toBeTruthy();
-    expect(definedPlaceName.getText()).toBe('Test Name Fail');
+    expect(definedPlaceName.getText()).toBe('Test Name');
     definedPlacePage.waitUntilThereAreNImages(2);
     definedPlacePage.getImages().then(i=>{expect(i.length).toBe(2);});
   });
