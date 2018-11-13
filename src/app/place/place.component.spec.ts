@@ -363,7 +363,7 @@ describe('PlaceComponent', () => {
       expect(component.selectedPlace).not.toBeDefined();
       if (component.userMessage) {
         expect(component.userMessage.message).toEqual(
-          'Click on any place on the map!Fail'
+          'Click on any place on the map!'
         );
       } else {
         fail('component.userMessage');
