@@ -14,6 +14,9 @@ To run unit tests: ng test --code-coverage.
 
 Tu run e2e tests: ng e2e
 
+Full Continous Integration & Continous Deployment was set up on Azure DevOps and the deployed app can be reached by:
+https://worldofimagesangular.azurewebsites.net/
+
 ----------------------------------------
 currently it is just front end. There is a fakebackend, which is limited to session storage limits.
 
