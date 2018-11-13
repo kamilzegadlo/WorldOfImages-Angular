@@ -14,7 +14,7 @@ To run unit tests: ng test --code-coverage.
 
 Tu run e2e tests: ng e2e
 
-Full Continuous Integration & Continuous Deployment was set up on Azure DevOps and the deployed app can be reached by:
+Full Continuous Integration (with running unit test and e2e) & Continuous Deployment was set up on Azure DevOps and the deployed app can be reached by:
 https://worldofimagesangular.azurewebsites.net/
 
 ----------------------------------------
