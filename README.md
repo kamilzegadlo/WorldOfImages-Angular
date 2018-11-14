@@ -26,7 +26,7 @@ The plan is that after finishing this project, I will try to achieve the followi
 3. nosql database
 4. Write the same front ends but with using React and Vue.
 
-How much I will manage to do will depend from my time potential.
+How much I will manage to do depends from my free time finder skill.
 
 
 ----------------------------------------
