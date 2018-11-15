@@ -4,9 +4,7 @@ import { TestBed, async } from '@angular/core/testing';
 import {
   AppComponent,
   Coordinates,
-  ImageService,
-  MapComponent,
-  PlaceComponent
+  ImageService
 } from './barrel';
 
 describe('AppComponent', () => {

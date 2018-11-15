@@ -1,12 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
 
-import { ImageService, Place, ActionResult } from './barrel';
+import { ImageService } from './barrel';
 
 describe('ImageService', () => {
   let httpMock: HttpTestingController;
@@ -29,7 +27,7 @@ describe('ImageService', () => {
     (service: ImageService) => {
       service
         .saveImage(new File([], 'fileName'), { x: 14, y: 15 })
-        .subscribe(saveImageResponse => {
+        .subscribe((saveImageResponse: Boolean) => {
           expect(saveImageResponse).toBe(false);
         });
 
@@ -46,7 +44,7 @@ describe('ImageService', () => {
     (service: ImageService) => {
       service
         .saveImage(new File([], 'fileName'), { x: 14, y: 15 })
-        .subscribe(saveImageResponse => {
+        .subscribe((saveImageResponse: Boolean) => {
           if (saveImageResponse) {
             expect(saveImageResponse).toBe(true);
           } else {

@@ -1,9 +1,7 @@
-import { HttpClient, HttpResponse, HttpEvent } from '@angular/common/http';
-
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
 
-import { Coordinates, Place, ActionResult, ImageService } from './barrel';
+import { Coordinates, ImageService } from './barrel';
 
 export class ImageServiceStub extends ImageService {
   saveImage(image: File, coordinates: Coordinates): Observable<Boolean> {

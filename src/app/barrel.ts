@@ -15,6 +15,5 @@ export * from './place/image/imageList.component';
 export * from './place/focus.directive';
 export * from './place/place.component';
 export * from './app.component';
-export * from './testHelper';
 
 

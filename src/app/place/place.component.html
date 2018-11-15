@@ -23,7 +23,6 @@
 
   </div>
 
-
   <div *ngIf="!selectedPlace?.isDefined">
     <h2 id="notDefinedLabel">This place has not been visited yet!</h2>
     <form #newPlaceForm="ngForm" id="newPlaceForm" (ngSubmit)="savePlace()">

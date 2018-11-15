@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { Coordinates, Place } from './barrel';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

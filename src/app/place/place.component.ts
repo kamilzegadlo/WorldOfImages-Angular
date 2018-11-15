@@ -75,11 +75,11 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private multiFileUploader: MultiFileUploader
   ) {
     this.SetNoPlace();
-   }
+  }
 
   ngOnInit() {
     this.selectedCoordinatesSubscrption = this.selectionStateService.selectedCoordinates.subscribe(
-      newSelectedCoordinates => this.getPlace(newSelectedCoordinates)
+      (newSelectedCoordinates: Coordinates) => this.getPlace(newSelectedCoordinates)
     );
   }
 
@@ -92,7 +92,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this._selectedPlace = undefined;
     this.selectedPlaceSubscrption = this.placeService
       .getPlace(coordinates)
-      .subscribe(getPlaceResponse => {
+      .subscribe((getPlaceResponse: ActionResult<Place>) => {
         if (getPlaceResponse.isSuccess && getPlaceResponse.result) {
           this._selectedPlace = getPlaceResponse.result;
           if (!this._selectedPlace.isDefined) {
@@ -118,7 +118,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
           false
         )
         )
-        .subscribe(savePlaceResponse => {
+        .subscribe((savePlaceResponse: ActionResult<Place>) => {
           if (savePlaceResponse.isSuccess && savePlaceResponse.result) {
             this._selectedPlace = savePlaceResponse.result;
             this.setUserMessage(

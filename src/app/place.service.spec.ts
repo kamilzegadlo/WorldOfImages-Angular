@@ -1,6 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
@@ -27,17 +25,17 @@ describe('PlaceService', () => {
   it('get place should return a mocked place', inject(
     [PlaceService],
     (service: PlaceService) => {
-      service.getPlace({ x: 13, y: 14 }).subscribe(getPlaceResponse => {
+      service.getPlace({ x: 13, y: 14 }).subscribe((getPlaceResponse: ActionResult<Place>) => {
         if (getPlaceResponse && getPlaceResponse.result) {
-          expect(getPlaceResponse.result.x).toBe(13);
-          expect(getPlaceResponse.result.y).toEqual(14);
+          expect(getPlaceResponse.result.x).toBe(15);
+          expect(getPlaceResponse.result.y).toEqual(16);
         } else {
           fail('getPlaceResponse or getPlaceResponse.place undefined!');
         }
       });
 
       const placeRequest = httpMock.expectOne('api/place?x=13&y=14');
-      placeRequest.flush(new Place(13, 14, '', true));
+      placeRequest.flush(new Place(15, 16, '', true));
       httpMock.verify();
 
       expect(placeRequest.request.method).toBe('GET');
@@ -47,7 +45,7 @@ describe('PlaceService', () => {
   it('get place, if error, correct isSuccess and errorMessage should be set', inject(
     [PlaceService],
     (service: PlaceService) => {
-      service.getPlace({ x: 13, y: 14 }).subscribe(getPlaceResponse => {
+      service.getPlace({ x: 13, y: 14 }).subscribe((getPlaceResponse: ActionResult<Place>) => {
         if (getPlaceResponse) {
           expect(getPlaceResponse.isSuccess).toBe(false);
           expect(getPlaceResponse.errorMessage).toEqual(
@@ -75,7 +73,7 @@ describe('PlaceService', () => {
     (service: PlaceService) => {
       service
         .savePlace(new Place(14, 15, 'newName', false))
-        .subscribe(savePlaceResponse => {
+        .subscribe((savePlaceResponse: ActionResult<Place>) => {
           if (savePlaceResponse && savePlaceResponse.result) {
             expect(savePlaceResponse.result.x).toBe(16);
             expect(savePlaceResponse.result.y).toEqual(17);
@@ -97,7 +95,7 @@ describe('PlaceService', () => {
     (service: PlaceService) => {
       service
         .savePlace(new Place(14, 15, 'newName', false))
-        .subscribe(savePlaceResponse => {
+        .subscribe((savePlaceResponse: ActionResult<Place>) => {
           if (savePlaceResponse) {
             expect(savePlaceResponse.isSuccess).toBe(false);
             expect(savePlaceResponse.errorMessage).toEqual(

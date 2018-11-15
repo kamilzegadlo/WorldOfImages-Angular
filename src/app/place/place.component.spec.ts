@@ -29,8 +29,7 @@ import {
   ImageServiceStub,
   PlaceServiceStub,
   FocusDirective,
-  ActionResult,
-  TestHelper
+  ActionResult
 } from '../barrel';
 
 describe('PlaceComponent', () => {
@@ -100,14 +99,14 @@ describe('PlaceComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('When no selected place, should render message, and no place name', async(() => {
+  it('When no selected place, should render message, and no place name', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(
       compiled.querySelector('#userMessage').textContent
     ).toContain('Click on any place on the map!');
     expect(compiled.querySelector('#placeSelectedLabel')).toBeNull();
     expect(compiled.querySelector('#newPlaceName')).toBeNull();
-  }));
+  });
 
   it('on init, selected place should be empty', () => {
     // assert
@@ -134,11 +133,10 @@ describe('PlaceComponent', () => {
       }else{
         fail("component.selectedPlace should be defined!");
       }
-      
     }
   ));
 
-  it('when received coordinates of defined place, label should be replaced with place data', function (done: any) {
+  it('when received coordinates of defined place, label should be replaced with place data',  () => {
     inject([SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
@@ -152,20 +150,16 @@ describe('PlaceComponent', () => {
 
       // assert
       const compiled = fixture.debugElement.nativeElement;
-      TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
-        expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
-        expect(compiled.querySelector('#newPlaceName')).toBeNull();
-        expect(
-          compiled.querySelector('#placeSelectedLabel').textContent
-        ).toContain('unit test name');
-        done();
-      });
 
-    }
-    )()
+      expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+      expect(compiled.querySelector('#newPlaceName')).toBeNull();
+      expect(
+        compiled.querySelector('#placeSelectedLabel').textContent
+      ).toContain('unit test name');
+    })
   });
 
-  it('when received coordinates of undefined place, input should be visible and enable', function (done: any) {
+  it('when received coordinates of undefined place, input should be visible and enable', () => {
     inject([SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
@@ -182,18 +176,16 @@ describe('PlaceComponent', () => {
         // expect it to be the uppercase version
         const compiled = fixture.debugElement.nativeElement;
 
-        TestHelper.waitToBeNull(compiled, '#noPlaceSelectedLabel', function () {
-          expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
-          fixture.detectChanges();
-          expect(compiled.querySelector('#newPlaceName').value).toContain(
-            'New place'
-          );
-          expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
-          done();
-        });
+        expect(compiled.querySelector('#noPlaceSelectedLabel')).toBeNull();
+        fixture.detectChanges();
+        expect(compiled.querySelector('#newPlaceName').value).toContain(
+          'New place'
+        );
+        expect(compiled.querySelector('#saveNewPlace')).toBeDefined();
+
       });
     }
-    )()
+    )
   });
 
   it('when click save, image service should be called', inject(
@@ -301,8 +293,8 @@ describe('PlaceComponent', () => {
     [SelectionStateService], (selectionStateServiceMock: SelectionStateServiceMock) => {
       // arrange
       const selectedCoordinates: Coordinates = {
-        x: 902,
-        y: 602
+        x: 11,
+        y: 15
       };
       // act
       selectionStateServiceMock.selectedCoordinates.next(selectedCoordinates);

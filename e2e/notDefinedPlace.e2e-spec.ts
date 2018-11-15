@@ -2,8 +2,7 @@ import { ElementFinder } from 'protractor';
 
 import { NotDefinedPlacePage } from './notDefinedPlace.po';
 
-
-describe('world-of-images-angular Not Defined Place ', () => {
+describe('Not Defined Place, ', () => {
   let page: NotDefinedPlacePage;
 
   beforeEach(() => {

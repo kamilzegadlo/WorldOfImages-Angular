@@ -1,29 +1,15 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  inject
-} from '@angular/core/testing';
-import {
-  HttpClient,
-  HttpEvent,
-  HttpResponse,
-  HttpHandler
-} from '@angular/common/http';
-
-import { of } from 'rxjs/observable/of';
-import { Observable } from 'rxjs/Observable';
+import { async, TestBed, inject } from '@angular/core/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import {
   ImageService,
   ImageServiceStub,
   MultiFileUploader,
   Place,
-  Coordinates
+  ActionResult
 } from '../barrel';
 
 describe('MultiFileUploader', () => {
-  let component: MultiFileUploader;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +42,7 @@ describe('MultiFileUploader', () => {
         let successCounter: number = 0;
 
         service.upload(files, place, imageServiceStub).subscribe(
-          response => {
+          (response: ActionResult<string>) => {
             if (response.isSuccess) {
               ++successCounter;
             }
@@ -86,7 +72,7 @@ describe('MultiFileUploader', () => {
         let failureCounter: number = 0;
 
         service.upload(files, place, imageServiceStub).subscribe(
-          response => {
+          (response: ActionResult<string>) => {
             if (response.isSuccess) {
               ++successCounter;
             } else {

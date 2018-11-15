@@ -1,9 +1,9 @@
+import { ElementFinder } from 'protractor';
+
 import { DefinedPlacePage } from './definedPlace.po';
 import { NotDefinedPlacePage } from './notDefinedPlace.po';
 
-import { ElementFinder } from 'protractor';
-
-describe('world-of-images-angular Defined Place. ', () => {
+describe('Defined Place. ', () => {
   let definedPlacePage: DefinedPlacePage;
   let notDefinedPlacePage: NotDefinedPlacePage;
 

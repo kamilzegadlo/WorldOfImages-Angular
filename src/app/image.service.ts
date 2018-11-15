@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-  HttpEvent,
-  HttpEventType
+  HttpClient
 } from '@angular/common/http';
 import { Observable } from 'rxjs/observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
-import { Coordinates, Place, ActionResult } from './barrel';
+import { Coordinates } from './barrel';
 
 @Injectable()
 export class ImageService {
